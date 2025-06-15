@@ -6,193 +6,199 @@
   <title>Helpar</title>
   <style>
     html, body {
-      margin: 0; padding: 0;
-      width: 100vw; height: 100vh;
-      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
       background: url('22.jpg') no-repeat center center fixed;
       background-size: cover;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      overflow: hidden;
-    }
-    .main-content {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-end;
+      min-height: 100vh;
     }
-    .actions-row {
-      position: fixed;
-      bottom: 24px;
-      left: 0; right: 0;
-      width: 100vw;
+    .welcome-text {
+      position: absolute;
+      top: 38%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2.2rem;
+      color: #00e7ff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      text-shadow: 0 0 15px #00e7ff, 0 0 30px #001a25;
+      font-weight: bold;
+      width: 90%;
+    }
+    .start-button {
+      margin-bottom: 90px;
+      padding: 20px 60px;
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #00ccff;
+      background-color: #000;
+      border: 3px solid #ffffff;
+      border-radius: 30px;
+      cursor: pointer;
+      z-index: 1;
+      box-shadow: 0 0 10px #00ccff, 0 0 40px #00ccff;
+      text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
+      animation: pulse 1.5s infinite alternate;
+      transition: all 0.3s ease;
+      position: relative;
+      display: block;
+    }
+    @keyframes pulse {
+      from { transform: scale(1);}
+      to { transform: scale(1.05);}
+    }
+    .bottom-actions {
+      width: 100%;
       display: flex;
       justify-content: center;
-      gap: 32vw;
-      z-index: 10;
-      pointer-events: none;
-      user-select: none;
+      gap: 36px;
+      position: absolute;
+      bottom: 26px;
+      left: 0;
+      z-index: 2;
     }
     .icon-btn {
-      width: 86px; height: 86px;
-      background: rgba(0,0,0,0.7);
-      border: 2.5px solid #00e7ff;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
+      background: rgba(0,0,0,0.65);
+      border: 2px solid #00e7ff;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 18px #00e7ff99;
+      box-shadow: 0 0 18px #00e7ff80;
+      color: #00e7ff;
+      font-size: 1.2rem;
       position: relative;
-      pointer-events: all;
-      transition: box-shadow 0.2s;
+      cursor: pointer;
+      transition: 0.2s;
     }
-    .icon-btn span {
-      font-size: 2rem;
-      margin-bottom: 6px;
-      color: #00e7ff;
-    }
-    .icon-label {
-      color: #00e7ff;
-      font-size: 1.06rem;
-      font-weight: bold;
-      text-align: center;
-      user-select: none;
-      pointer-events: none;
+    .icon-btn:active, .icon-btn:hover {
+      background: #00e7ff33;
+      color: #fff;
+      box-shadow: 0 0 30px #00e7ff;
     }
     .dropdown {
       display: none;
       position: absolute;
+      bottom: 105%;
       left: 50%;
-      bottom: 94px;
       transform: translateX(-50%);
-      background: rgba(0,0,0,0.92);
+      background: #000d18f2;
       border: 2px solid #00e7ff;
-      border-radius: 15px;
-      box-shadow: 0 0 24px #00e7ff77;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #00e7ff55;
+      z-index: 4;
       min-width: 130px;
-      z-index: 1000;
+      text-align: center;
+      font-size: 1.3rem;
+    }
+    .dropdown.active {
+      display: block;
     }
     .dropdown div {
       color: #00e7ff;
-      padding: 13px 6px;
-      font-size: 1.09rem;
-      text-align: center;
+      padding: 12px 0;
       cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-      border-bottom: 1px solid #2224;
+      border-bottom: 1px solid #00e7ff22;
+      transition: 0.15s;
     }
     .dropdown div:last-child { border-bottom: none; }
-    .dropdown div:hover { background: #00e7ff; color: #111; }
-    .start-button {
-      position: fixed;
-      left: 50%;
-      bottom: 120px;
-      transform: translateX(-50%);
-      padding: 20px 60px;
-      font-size: 2.1rem;
-      font-weight: bold;
-      color: #00ccff;
-      background: #000;
-      border: 3px solid #ffffff;
-      border-radius: 30px;
-      cursor: pointer;
-      z-index: 20;
-      box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff, 0 0 40px #00ccff;
-      text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
-      animation: pulse 1.5s infinite alternate;
-      transition: all 0.3s ease;
-      user-select: none;
-    }
-    @keyframes pulse {
-      from { transform: translateX(-50%) scale(1); }
-      to   { transform: translateX(-50%) scale(1.05); }
-    }
-    @media (max-width: 700px) {
-      .actions-row { gap: 22vw; }
-      .icon-btn { width: 74px; height: 74px; }
-      .dropdown { min-width: 100px; }
+    .dropdown div:hover { background: #00e7ff33; color: #fff;}
+    @media (max-width:500px){
+      .welcome-text{font-size:1.3rem;}
+      .start-button{font-size:1.2rem;padding:10px 35px;margin-bottom:65px;}
+      .icon-btn{width:65px;height:65px;font-size:0.8rem;}
     }
   </style>
 </head>
 <body>
-  <div class="main-content">
-    <!-- الشعار وواجهة الترحيب هنا (صورة فقط) -->
-    <!-- الزر Start يبقى أسفل الواجهة -->
-    <button class="start-button" onclick="playIntro()">START</button>
-    <div class="actions-row">
-      <!-- زر اختيار اللغة -->
-      <div class="icon-btn" id="langBtn">
-        <span>🌐</span>
-        <div class="icon-label">Languages</div>
-        <div class="dropdown" id="langDropdown">
-          <div onclick="setLang('en')">English</div>
-          <div onclick="setLang('ar')">Arabic</div>
-          <div onclick="setLang('tr')">Turkish</div>
-        </div>
+  <div class="welcome-text" id="welcome">Welcome to Helpar</div>
+  <button class="start-button" id="startBtn">START</button>
+  <div class="bottom-actions">
+    <div class="icon-btn" id="langBtn">
+      <span>🌐</span>
+      <div style="margin-top:7px;">Languages</div>
+      <div class="dropdown" id="langDropdown">
+        <div onclick="setLang('en')">English</div>
+        <div onclick="setLang('ar')">Arabic</div>
+        <div onclick="setLang('tr')">Turkish</div>
       </div>
-      <!-- زر اختيار الأفاتار -->
-      <div class="icon-btn" id="avatarBtn">
-        <span>🦸‍♂️</span>
-        <div class="icon-label">Avatar</div>
-        <div class="dropdown" id="avatarDropdown">
-          <div onclick="setAvatar(1)">Avatar 1</div>
-          <div onclick="setAvatar(2)">Avatar 2</div>
-          <div onclick="setAvatar(3)">Avatar 3</div>
-          <div onclick="setAvatar(4)">Avatar 4</div>
-        </div>
+    </div>
+    <div class="icon-btn" id="avatarBtn">
+      <span>🦸‍♂️</span>
+      <div style="margin-top:7px;">Avatar</div>
+      <div class="dropdown" id="avatarDropdown">
+        <div onclick="setAvatar(1)">Avatar 1</div>
+        <div onclick="setAvatar(2)">Avatar 2</div>
+        <div onclick="setAvatar(3)">Avatar 3</div>
+        <div onclick="setAvatar(4)">Avatar 4</div>
       </div>
     </div>
   </div>
-  <!-- غطاء الفيديو -->
-  <div id="overlay" style="display:none; position:fixed; inset:0; background:#000; z-index:999;">
-    <video id="intro" src="intro.mp4" autoplay playsinline style="width:100vw;height:100vh;object-fit:cover;"></video>
-  </div>
   <script>
-    // زر قائمة اللغة
-    const langBtn = document.getElementById('langBtn');
-    const langDropdown = document.getElementById('langDropdown');
-    langBtn.onclick = function(e) {
-      langDropdown.style.display = langDropdown.style.display === 'block' ? 'none' : 'block';
-      avatarDropdown.style.display = 'none';
-      e.stopPropagation();
+    // لغات الواجهة
+    const i18n = {
+      en: {
+        welcome: "Welcome to Helpar",
+        start: "START",
+        lang: "Languages",
+        avatar: "Avatar"
+      },
+      ar: {
+        welcome: "مرحبًا بك في هلبار",
+        start: "ابدأ",
+        lang: "اللغات",
+        avatar: "الشخصية"
+      },
+      tr: {
+        welcome: "Helpar'a Hoşgeldin",
+        start: "Başla",
+        lang: "Diller",
+        avatar: "Avatar"
+      }
     };
-    // زر قائمة الأفاتار
-    const avatarBtn = document.getElementById('avatarBtn');
-    const avatarDropdown = document.getElementById('avatarDropdown');
-    avatarBtn.onclick = function(e) {
-      avatarDropdown.style.display = avatarDropdown.style.display === 'block' ? 'none' : 'block';
-      langDropdown.style.display = 'none';
-      e.stopPropagation();
-    };
-    // غلق القوائم عند الضغط خارجها
-    document.body.onclick = function() {
-      langDropdown.style.display = 'none';
-      avatarDropdown.style.display = 'none';
-    };
-    // اختيار اللغة (بدون انتقال صفحة)
+    let currentLang = 'en';
+
     function setLang(lang) {
-      // هنا ممكن إضافة أكشن التبديل الفعلي للواجهة لاحقاً
-      langDropdown.style.display = 'none';
-      // alert("Language switched to: " + lang);
+      currentLang = lang;
+      document.getElementById('welcome').innerText = i18n[lang].welcome;
+      document.getElementById('startBtn').innerText = i18n[lang].start;
+      document.querySelector("#langBtn div").innerText = i18n[lang].lang;
+      document.querySelector("#avatarBtn div").innerText = i18n[lang].avatar;
+      document.getElementById('langDropdown').classList.remove('active');
     }
-    // اختيار الأفاتار (بدون انتقال صفحة)
-    function setAvatar(id) {
-      avatarDropdown.style.display = 'none';
-      // alert("Avatar switched to: " + id);
+
+    // أزرار القوائم
+    document.getElementById('langBtn').onclick = function(e){
+      e.stopPropagation();
+      document.getElementById('langDropdown').classList.toggle('active');
+      document.getElementById('avatarDropdown').classList.remove('active');
+    };
+    document.getElementById('avatarBtn').onclick = function(e){
+      e.stopPropagation();
+      document.getElementById('avatarDropdown').classList.toggle('active');
+      document.getElementById('langDropdown').classList.remove('active');
+    };
+    document.body.onclick = function(){
+      document.getElementById('langDropdown').classList.remove('active');
+      document.getElementById('avatarDropdown').classList.remove('active');
+    };
+
+    // افاتار (تجريبي)
+    function setAvatar(id){
+      document.getElementById('avatarDropdown').classList.remove('active');
+      // هنا الكود لتبديل الافاتار لاحقاً حسب الحاجة
     }
-    // زر Start يعرض الفيديو ثم ينقل للصفحة التالية
-    function playIntro() {
-      const overlay = document.getElementById('overlay');
-      const intro = document.getElementById('intro');
-      overlay.style.display = 'block';
-      intro.currentTime = 0;
-      intro.play();
-      intro.onended = () => {
-        window.location.href = 'HELPER3/';
-      };
-    }
+    // ضبط لغة افتراضية عند تحميل الصفحة
+    setLang('en');
   </script>
 </body>
-      </html>
+</html>
