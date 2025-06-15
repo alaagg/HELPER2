@@ -18,3 +18,38 @@
 <body>
 </body>
 </html>
+<style>
+  /* Button-specific CSS only, won’t affect the rest of the page */
+  .helber-btn-container {
+    position: fixed;
+    left: 50%;
+    bottom: 40px;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 9999;
+  }
+  .helber-neon-btn {
+    pointer-events: auto;
+    font-size: 2.25rem;
+    padding: 1.16em 3.3em;
+    border: none;
+    border-radius: 62px;
+    color: #fff;
+    background: linear-gradient(110deg, #6bf0fa 8%, #be7afd 60%, #4a97ff 100%);
+    box-shadow:
+      0 14px 44px 16px rgba(116,225,253,0.84),
+      0 2.5px 22px 0 rgba(200,170,255,0.33) inset;
+    font-family: 'Orbitron', Arial, sans-serif;
+    letter-spacing: 0.14em;
+    cursor: pointer;
+    outline: none;
+    transition: transform 0.2s;
+  }
+  .helber-neon-btn:active {
+    transform: scale(0.96);
+  }
+</style>
+
+<div class="helber-btn-container">
+  <button class="helber-neon-btn">START</button>
+</div>
