@@ -6,44 +6,58 @@
   <title>Helpar</title>
   <style>
     html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
+      margin: 0; padding: 0;
+      height: 100%; width: 100%;
       background: url('22.jpg') no-repeat center center fixed;
       background-size: cover;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      position: relative;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .container {
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: flex-end;
-      min-height: 100vh;
+      align-items: center;
+      position: relative;
+      z-index: 1;
     }
-    .welcome-text {
-      position: absolute;
-      top: 38%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 2.2rem;
-      color: #00e7ff;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      text-shadow: 0 0 15px #00e7ff, 0 0 30px #001a25;
+    .title {
+      margin-top: 48px;
+      font-size: 4em;
       font-weight: bold;
-      width: 90%;
+      color: #00cfff;
+      text-align: center;
+      letter-spacing: 2px;
+      text-shadow: 0 0 18px #0099ff88;
+    }
+    .welcome {
+      font-size: 2em;
+      margin-top: 32px;
+      margin-bottom: 36px;
+      color: #ffffff;
+      text-align: center;
+      text-shadow: 0 0 12px #00cfff99;
+      font-weight: 600;
     }
     .start-button {
-      margin-bottom: 90px;
+      margin-bottom: 120px;
       padding: 20px 60px;
-      font-size: 2.5rem;
+      font-size: 2.4em;
       font-weight: bold;
       color: #00ccff;
       background-color: #000;
-      border: 3px solid #ffffff;
+      border: 3px solid #fff;
       border-radius: 30px;
       cursor: pointer;
-      z-index: 1;
-      box-shadow: 0 0 10px #00ccff, 0 0 40px #00ccff;
-      text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
+      z-index: 10;
+      box-shadow:
+        0 0 10px #00ccff,
+        0 0 20px #00ccff,
+        0 0 40px #00ccff;
+      text-shadow: 0 0 8px #00ccff, 0 0 10px #00ccff;
       animation: pulse 1.5s infinite alternate;
       transition: all 0.3s ease;
       position: relative;
@@ -53,152 +67,152 @@
       from { transform: scale(1);}
       to { transform: scale(1.05);}
     }
-    .bottom-actions {
+
+    .bottom-row {
       width: 100%;
       display: flex;
-      justify-content: center;
-      gap: 36px;
+      justify-content: space-between;
       position: absolute;
-      bottom: 26px;
+      bottom: 38px;
       left: 0;
-      z-index: 2;
+      padding: 0 30px;
+      box-sizing: border-box;
+      z-index: 20;
     }
-    .icon-btn {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      background: rgba(0,0,0,0.65);
-      border: 2px solid #00e7ff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 18px #00e7ff80;
+    .bottom-btn {
+      background: rgba(0,0,0,0.85);
       color: #00e7ff;
-      font-size: 1.2rem;
-      position: relative;
+      border: 2px solid #00e7ff;
+      border-radius: 50%;
+      font-size: 1.1em;
+      font-weight: bold;
+      padding: 18px 24px;
+      box-shadow: 0 0 16px #00e7ff88;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      transition: 0.3s;
       cursor: pointer;
-      transition: 0.2s;
+      position: relative;
+      min-width: 120px;
+      justify-content: center;
+      text-shadow: 0 0 6px #00e7ff88;
+      outline: none;
     }
-    .icon-btn:active, .icon-btn:hover {
-      background: #00e7ff33;
-      color: #fff;
-      box-shadow: 0 0 30px #00e7ff;
+    .bottom-btn .icon {
+      font-size: 1.6em;
+      margin-right: 8px;
     }
+
+    /* Dropdown styling */
     .dropdown {
       display: none;
+      flex-direction: column;
       position: absolute;
-      bottom: 105%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #000d18f2;
+      left: 0;
+      bottom: 56px;
+      min-width: 120px;
+      background: rgba(0,0,0,0.92);
       border: 2px solid #00e7ff;
-      border-radius: 20px;
-      box-shadow: 0 0 20px #00e7ff55;
-      z-index: 4;
-      min-width: 130px;
-      text-align: center;
-      font-size: 1.3rem;
+      border-radius: 16px;
+      padding: 8px 0 8px 0;
+      z-index: 99;
+      box-shadow: 0 0 20px #00e7ff99;
+      animation: fadeIn .2s;
     }
-    .dropdown.active {
-      display: block;
-    }
+    @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
     .dropdown div {
       color: #00e7ff;
-      padding: 12px 0;
+      padding: 12px 22px;
+      font-size: 1.1em;
       cursor: pointer;
-      border-bottom: 1px solid #00e7ff22;
-      transition: 0.15s;
+      transition: background 0.18s, color 0.18s;
+      text-align: left;
+      border-radius: 7px;
     }
-    .dropdown div:last-child { border-bottom: none; }
-    .dropdown div:hover { background: #00e7ff33; color: #fff;}
-    @media (max-width:500px){
-      .welcome-text{font-size:1.3rem;}
-      .start-button{font-size:1.2rem;padding:10px 35px;margin-bottom:65px;}
-      .icon-btn{width:65px;height:65px;font-size:0.8rem;}
+    .dropdown div:hover {
+      background: #00e7ff;
+      color: #000;
+    }
+    .bottom-btn.left .dropdown { left: 0;}
+    .bottom-btn.right .dropdown { right: 0; left: auto;}
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      .title { font-size: 2.5em;}
+      .welcome { font-size: 1.2em;}
+      .start-button { font-size: 1.4em; margin-bottom: 100px; padding: 13px 26px;}
+      .bottom-btn { padding: 12px 14px; min-width: 92px;}
+      .dropdown div { font-size: 1em; padding: 9px 14px;}
     }
   </style>
 </head>
 <body>
-  <div class="welcome-text" id="welcome">Welcome to Helpar</div>
-  <button class="start-button" id="startBtn">START</button>
-  <div class="bottom-actions">
-    <div class="icon-btn" id="langBtn">
-      <span>🌐</span>
-      <div style="margin-top:7px;">Languages</div>
-      <div class="dropdown" id="langDropdown">
-        <div onclick="setLang('en')">English</div>
-        <div onclick="setLang('ar')">Arabic</div>
-        <div onclick="setLang('tr')">Turkish</div>
-      </div>
-    </div>
-    <div class="icon-btn" id="avatarBtn">
-      <span>🦸‍♂️</span>
-      <div style="margin-top:7px;">Avatar</div>
-      <div class="dropdown" id="avatarDropdown">
-        <div onclick="setAvatar(1)">Avatar 1</div>
-        <div onclick="setAvatar(2)">Avatar 2</div>
-        <div onclick="setAvatar(3)">Avatar 3</div>
-        <div onclick="setAvatar(4)">Avatar 4</div>
-      </div>
+  <div class="container">
+    <div class="title">Helpar</div>
+    <div class="welcome" id="welcomeText">Welcome to Helpar</div>
+    <button class="start-button" id="startBtn">START</button>
+    <!-- زرار السطر السفلي -->
+    <div class="bottom-row">
+      <button class="bottom-btn left" id="langBtn">
+        <span class="icon">🌐</span>Languages
+        <div class="dropdown" id="langDropdown">
+          <div onclick="setLang('en')">English</div>
+          <div onclick="setLang('ar')">Arabic</div>
+          <div onclick="setLang('tr')">Turkish</div>
+        </div>
+      </button>
+      <button class="bottom-btn right" id="avatarBtn">
+        <span class="icon">🦸‍♂️</span>Avatar
+        <div class="dropdown" id="avatarDropdown">
+          <div onclick="setAvatar(1)">Avatar 1</div>
+          <div onclick="setAvatar(2)">Avatar 2</div>
+          <div onclick="setAvatar(3)">Avatar 3</div>
+          <div onclick="setAvatar(4)">Avatar 4</div>
+        </div>
+      </button>
     </div>
   </div>
   <script>
-    // لغات الواجهة
-    const i18n = {
-      en: {
-        welcome: "Welcome to Helpar",
-        start: "START",
-        lang: "Languages",
-        avatar: "Avatar"
-      },
-      ar: {
-        welcome: "مرحبًا بك في هلبار",
-        start: "ابدأ",
-        lang: "اللغات",
-        avatar: "الشخصية"
-      },
-      tr: {
-        welcome: "Helpar'a Hoşgeldin",
-        start: "Başla",
-        lang: "Diller",
-        avatar: "Avatar"
-      }
+    // Dropdown show/hide
+    const langBtn = document.getElementById('langBtn');
+    const langDropdown = document.getElementById('langDropdown');
+    const avatarBtn = document.getElementById('avatarBtn');
+    const avatarDropdown = document.getElementById('avatarDropdown');
+    // Toggle languages dropdown
+    langBtn.onclick = (e) => {
+      langDropdown.style.display = langDropdown.style.display === 'flex' ? 'none' : 'flex';
+      avatarDropdown.style.display = 'none';
+      e.stopPropagation();
     };
-    let currentLang = 'en';
+    // Toggle avatar dropdown
+    avatarBtn.onclick = (e) => {
+      avatarDropdown.style.display = avatarDropdown.style.display === 'flex' ? 'none' : 'flex';
+      langDropdown.style.display = 'none';
+      e.stopPropagation();
+    };
+    // Hide dropdowns when clicking outside
+    document.body.onclick = () => {
+      langDropdown.style.display = 'none';
+      avatarDropdown.style.display = 'none';
+    };
+    // Prevent closing when click inside dropdown
+    langDropdown.onclick = e => e.stopPropagation();
+    avatarDropdown.onclick = e => e.stopPropagation();
 
+    // Change language (mockup)
     function setLang(lang) {
-      currentLang = lang;
-      document.getElementById('welcome').innerText = i18n[lang].welcome;
-      document.getElementById('startBtn').innerText = i18n[lang].start;
-      document.querySelector("#langBtn div").innerText = i18n[lang].lang;
-      document.querySelector("#avatarBtn div").innerText = i18n[lang].avatar;
-      document.getElementById('langDropdown').classList.remove('active');
+      // Change text as example (you can add i18n here)
+      if(lang === 'en') document.getElementById('welcomeText').innerText = 'Welcome to Helpar';
+      if(lang === 'ar') document.getElementById('welcomeText').innerText = 'مرحباً بك في هيلبر';
+      if(lang === 'tr') document.getElementById('welcomeText').innerText = 'Helpar\'a Hoşgeldiniz';
+      langDropdown.style.display = 'none';
     }
-
-    // أزرار القوائم
-    document.getElementById('langBtn').onclick = function(e){
-      e.stopPropagation();
-      document.getElementById('langDropdown').classList.toggle('active');
-      document.getElementById('avatarDropdown').classList.remove('active');
-    };
-    document.getElementById('avatarBtn').onclick = function(e){
-      e.stopPropagation();
-      document.getElementById('avatarDropdown').classList.toggle('active');
-      document.getElementById('langDropdown').classList.remove('active');
-    };
-    document.body.onclick = function(){
-      document.getElementById('langDropdown').classList.remove('active');
-      document.getElementById('avatarDropdown').classList.remove('active');
-    };
-
-    // افاتار (تجريبي)
-    function setAvatar(id){
-      document.getElementById('avatarDropdown').classList.remove('active');
-      // هنا الكود لتبديل الافاتار لاحقاً حسب الحاجة
+    // Change avatar (mockup)
+    function setAvatar(id) {
+      // You can add code here to visually change avatar
+      avatarDropdown.style.display = 'none';
     }
-    // ضبط لغة افتراضية عند تحميل الصفحة
-    setLang('en');
   </script>
 </body>
 </html>
