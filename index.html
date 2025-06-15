@@ -23,11 +23,7 @@
       border-radius: 30px;
       cursor: pointer;
       z-index: 1;
-      box-shadow:
-        0 0 10px #00ccff,
-        0 0 20px #00ccff,
-        0 0 40px #00ccff,
-        0 0 60px #00ccff;
+      box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff, 0 0 40px #00ccff, 0 0 60px #00ccff;
       text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
       animation: pulse 1.5s infinite alternate;
       transition: all 0.3s ease;
@@ -47,8 +43,8 @@
       z-index: 2;
     }
     .icon-btn {
-      width: 55px !important;
-      height: 55px !important;
+      width: 55px;
+      height: 55px;
       border-radius: 50%;
       background: rgba(0,0,0,0.65);
       border: 2px solid #00e7ff;
@@ -58,7 +54,7 @@
       justify-content: center;
       box-shadow: 0 0 18px #00e7ff80;
       color: #00e7ff;
-      font-size: 0.8rem !important;
+      font-size: 0.8rem;
       position: relative;
       cursor: pointer;
       transition: 0.2s;
@@ -123,12 +119,13 @@
     </div>
   </div>
 
-  <!-- الفيديو مصغّر ويظهر فقط بعد الضغط على START -->
+  <!-- الفيديو المصغّر ويظهر فقط بعد الضغط -->
   <div id="overlay" style="display:none; position:fixed; inset:0; background:#000; z-index:999; display:flex; align-items:center; justify-content:center;">
     <video id="intro" src="intro.mp4" playsinline style="max-width:90vw; max-height:90vh; border-radius:12px;"></video>
   </div>
 
   <script>
+    // ترجمة الواجهة
     const i18n = {
       en: { welcome: "Welcome to Helpar", start: "START", lang: "Languages", avatar: "Avatar" },
       ar: { welcome: "مرحبًا بك في هلبار", start: "ابدأ", lang: "اللغات", avatar: "الشخصية" },
