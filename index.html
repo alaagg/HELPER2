@@ -2,93 +2,106 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Helpar Unified</title>
+<title>Helpar – Touch to Awaken</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+
 <style>
-  /* --- Global --- */
-  html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;
-            font-family:Arial,Helvetica,sans-serif;background:#000;color:#fff}
+/* — الخطوط وتهيئة الصفحة — */
+html,body{
+  margin:0;height:100%;width:100%;background:#000;font-family:Arial,Helvetica,sans-serif;
+  overflow:hidden;display:flex;justify-content:center;align-items:center;flex-direction:column;color:#00ccff;
+}
 
-  /* Each scene fills the screen */
-  .scene{position:fixed;inset:0;display:none;flex-direction:column;
-         justify-content:center;align-items:center;text-align:center}
+/* — نقطتا الضوء — */
+.spark{
+  position:absolute;width:16px;height:16px;border-radius:50%;background:#00ccff;
+  box-shadow:0 0 20px 6px #00ccff, 0 0 50px 20px rgba(0,204,255,.3);
+  animation:sparkMove 4s linear infinite;
+}
 
-  /* --- 1 | Start screen ------------------------------------------------ */
-  #startScene{display:flex;background:url('22.jpg') no-repeat center/cover fixed;
-              align-items:flex-end;padding-bottom:90px}
+/* مسار الحركة */
+@keyframes sparkMove{
+  0%   {transform:translate(-120px,-120px);}
+  25%  {transform:translate(120px,-120px);}
+  50%  {transform:translate(120px,120px);}
+  75%  {transform:translate(-120px,120px);}
+  100% {transform:translate(-120px,-120px);}
+}
 
-  .btn{padding:20px 60px;font-size:5vw;font-weight:bold;color:#00ccff;background:#000;
-       border:none;border-radius:50px;cursor:pointer;text-shadow:0 0 10px #00ccff;
-       box-shadow:0 0 25px #00ccff,0 0 45px #00ccff,0 0 65px #00ccff;
-       transition:box-shadow .3s}
-  .btn:hover{box-shadow:0 0 35px #00ccff,0 0 60px #00ccff,0 0 90px #00ccff}
+/* — زر اللمس — */
+#touchArea{
+  position:relative;width:180px;height:180px;border-radius:50%;cursor:pointer;
+  background:radial-gradient(circle at center,#001933 0%,#001933 50%,#000 70%);
+  box-shadow:0 0 25px #00ccff,0 0 45px #00ccff inset;
+  display:flex;justify-content:center;align-items:center;
+  transition:box-shadow .4s,transform .4s;
+}
+#touchArea:hover{
+  box-shadow:0 0 35px #00ccff,0 0 65px #00ccff inset;
+  transform:scale(1.03);
+}
+#touchArea span{font-size:1.1em;letter-spacing:2px}
 
-  /* --- 2 | Portal scene ----------------------------------------------- */
-  #portalScene{background:#000}
-  #portalScene video{max-width:80%;height:auto;border-radius:12px;
-                     box-shadow:0 0 30px #00ccff}
+/* — حلقة التوسّع عند اللمس — */
+#flash{
+  position:fixed;inset:0;background:#00ccff;opacity:0;pointer-events:none;
+  mix-blend-mode:screen;transition:opacity .7s ease-out;
+}
 
-  /* --- 3 | Welcome scene ---------------------------------------------- */
-  #welcomeScene{background:url('robot_welcome.jpg') no-repeat center/contain #000;
-                justify-content:flex-end;padding-bottom:100px}
-  #welcomeScene .welcome-text{font-size:2em;max-width:90%;line-height:1.4;
-                              text-shadow:0 0 10px #00ccff;margin-bottom:40px}
-
-  /* Larger buttons on wide screens */
-  @media(min-width:768px){
-      .btn{font-size:36px;padding:25px 80px}
-  }
+/* — شاشة الترحيب — */
+#welcome{
+  position:fixed;inset:0;display:none;flex-direction:column;justify-content:center;align-items:center;
+  background:#000;color:#fff;text-align:center;padding:0 10vw;
+  animation:fadeIn .8s ease-out forwards;
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+#welcome h1{margin:0 0 30px;font-size:clamp(32px,6vw,60px);color:#00ccff;text-shadow:0 0 15px #00ccff}
+#welcome p{font-size:clamp(18px,3.5vw,28px);line-height:1.4;margin-bottom:40px}
+#welcome button{
+  padding:18px 60px;font-size:clamp(22px,4vw,32px);font-weight:bold;color:#00ccff;background:#000;border:2px solid #00ccff;border-radius:40px;
+  cursor:pointer;transition:background .3s,box-shadow .3s
+}
+#welcome button:hover{background:#00ccff;color:#000;box-shadow:0 0 25px #00ccff}
 </style>
 </head>
+
 <body>
 
-<!-- 1 – Start scene -->
-<div id="startScene" class="scene">
-  <button class="btn" onclick="startPortal()">START</button>
-</div>
+<!-- شرارة الضوء الأولى والثانية -->
+<div class="spark" style="animation-delay:0s"></div>
+<div class="spark" style="animation-delay:2s"></div>
 
-<!-- 2 – Portal scene -->
-<div id="portalScene" class="scene">
-  <video id="portalVid" src="portal_intro.mp4" autoplay muted playsinline></video>
-</div>
+<!-- دائرة اللمس -->
+<div id="touchArea"><span>Tap&nbsp;to&nbsp;Awaken</span></div>
 
-<!-- 3 – Welcome scene -->
-<div id="welcomeScene" class="scene">
-  <div class="welcome-text">
-    You are one of the first to cross these gates,<br>
-    into a world where the impossible is meaningless,<br>
-    where dreams come alive and adventure begins.<br>
-    Are you ready to lead the way?
-  </div>
-  <button class="btn" onclick="location.href='https://alaagg.github.io/HELPER2/'">CONTINUE</button>
-</div>
+<!-- وميض الفلاش عند اللمس -->
+<div id="flash"></div>
+
+<!-- شاشة الترحيب النهائية -->
+<section id="welcome">
+  <h1>HELLO, I AM HELPAR</h1>
+  <p>You just unlocked a realm where ideas turn into reality.<br>
+     Ready to lead the way?</p>
+  <button onclick="location.href='https://alaagg.github.io/HELPER2/'">CONTINUE</button>
+</section>
 
 <script>
-  /* Helper functions */
-  const show = id => document.getElementById(id).style.display = 'flex';
-  const hide = id => document.getElementById(id).style.display = 'none';
+const touchArea = document.getElementById('touchArea');
+const flash     = document.getElementById('flash');
+const welcome   = document.getElementById('welcome');
 
-  /* Initially show the start scene */
-  show('startScene');
+touchArea.addEventListener('click', () => {
+  // تأثير فلاش
+  flash.style.opacity = 1;
+  setTimeout(()=> flash.style.opacity = 0, 300);
 
-  /* Start the portal sequence */
-  function startPortal(){
-    hide('startScene');
-    show('portalScene');
-
-    const vid = document.getElementById('portalVid');
-
-    /* When the video ends → welcome scene */
-    vid.onended = () => { hide('portalScene'); show('welcomeScene'); };
-
-    /* Fallback timeout in case the video has no onended (e.g., GIF) */
-    setTimeout(() => {
-      if (vid.paused || vid.ended){
-        hide('portalScene');
-        show('welcomeScene');
-      }
-    }, 7000); // max 7 s
-  }
+  // إخفاء العناصر وإظهار شاشة الترحيب
+  setTimeout(()=>{
+    touchArea.style.display = 'none';
+    document.querySelectorAll('.spark').forEach(s=>s.style.display='none');
+    welcome.style.display = 'flex';
+  }, 500);
+});
 </script>
 
 </body>
