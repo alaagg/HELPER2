@@ -123,31 +123,16 @@
     </div>
   </div>
 
-  <!-- تم تصغير الفيديو وتوسيطه -->
+  <!-- الفيديو مصغّر ويظهر فقط بعد الضغط على START -->
   <div id="overlay" style="display:none; position:fixed; inset:0; background:#000; z-index:999; display:flex; align-items:center; justify-content:center;">
-    <video id="intro" src="intro.mp4" autoplay playsinline style="max-width:90vw; max-height:90vh; border-radius:12px;"></video>
+    <video id="intro" src="intro.mp4" playsinline style="max-width:90vw; max-height:90vh; border-radius:12px;"></video>
   </div>
 
   <script>
     const i18n = {
-      en: {
-        welcome: "Welcome to Helpar",
-        start: "START",
-        lang: "Languages",
-        avatar: "Avatar"
-      },
-      ar: {
-        welcome: "مرحبًا بك في هلبار",
-        start: "ابدأ",
-        lang: "اللغات",
-        avatar: "الشخصية"
-      },
-      tr: {
-        welcome: "Helpar'a Hoşgeldin",
-        start: "Başla",
-        lang: "Diller",
-        avatar: "Avatar"
-      }
+      en: { welcome: "Welcome to Helpar", start: "START", lang: "Languages", avatar: "Avatar" },
+      ar: { welcome: "مرحبًا بك في هلبار", start: "ابدأ", lang: "اللغات", avatar: "الشخصية" },
+      tr: { welcome: "Helpar'a Hoşgeldin", start: "Başla", lang: "Diller", avatar: "Avatar" }
     };
     let currentLang = 'en';
 
