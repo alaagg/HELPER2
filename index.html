@@ -17,7 +17,6 @@
       align-items: center;
       justify-content: flex-end;
       min-height: 100vh;
-    }
     .start-button {
       margin-bottom: 90px;
       padding: 20px 60px;
@@ -100,16 +99,15 @@
     .dropdown div:last-child { border-bottom: none; }
     .dropdown div:hover { background: #00e7ff33; color: #fff;}
     @media (max-width:500px){
+      .welcome-text{font-size:1.3rem;}
       .start-button{font-size:1.2rem;padding:10px 35px;margin-bottom:65px;}
       .icon-btn{width:65px;height:65px;font-size:0.8rem;}
     }
   </style>
 </head>
 <body>
-  <button class="start-button" id="startBtn">STAR
-    <video id="introVideo" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:999;" autoplay muted>
-  <source src="intro.mp4" type="video/mp4">
-</video>
+  <div class="welcome-text" id="welcome">Welcome to Helpar</div>
+  <button class="start-button" id="startBtn">START</button>
   <div class="bottom-actions">
     <div class="icon-btn" id="langBtn">
       <span>🌐</span>
@@ -131,23 +129,40 @@
       </div>
     </div>
   </div>
-
   <script>
+    // لغات الواجهة
     const i18n = {
-      en: { start: "START", lang: "Languages", avatar: "Avatar" },
-      ar: { start: "ابدأ", lang: "اللغات", avatar: "الشخصية" },
-      tr: { start: "Başla", lang: "Diller", avatar: "Avatar" }
+      en: {
+        welcome: "Welcome to Helpar",
+        start: "START",
+        lang: "Languages",
+        avatar: "Avatar"
+      },
+      ar: {
+        welcome: "مرحبًا بك في هلبار",
+        start: "ابدأ",
+        lang: "اللغات",
+        avatar: "الشخصية"
+      },
+      tr: {
+        welcome: "Helpar'a Hoşgeldin",
+        start: "Başla",
+        lang: "Diller",
+        avatar: "Avatar"
+      }
     };
     let currentLang = 'en';
 
     function setLang(lang) {
       currentLang = lang;
+      document.getElementById('welcome').innerText = i18n[lang].welcome;
       document.getElementById('startBtn').innerText = i18n[lang].start;
       document.querySelector("#langBtn div").innerText = i18n[lang].lang;
       document.querySelector("#avatarBtn div").innerText = i18n[lang].avatar;
       document.getElementById('langDropdown').classList.remove('active');
     }
 
+    // أزرار القوائم
     document.getElementById('langBtn').onclick = function(e){
       e.stopPropagation();
       document.getElementById('langDropdown').classList.toggle('active');
@@ -163,19 +178,12 @@
       document.getElementById('avatarDropdown').classList.remove('active');
     };
 
+    // افاتار (تجريبي)
     function setAvatar(id){
       document.getElementById('avatarDropdown').classList.remove('active');
+      // هنا الكود لتبديل الافاتار لاحقاً حسب الحاجة
     }
-
-    // تشغيل الفيديو عند الضغط على START
-    document.getElementById('startBtn').onclick = function(){
-      document.getElementById('introVideo').style.display = 'block';
-      this.style.display = 'none';
-      document.querySelector('.bottom-actions').style.display = 'none';
-      document.body.style.background = '#000';
-    };
-
-    // لغة افتراضية
+    // ضبط لغة افتراضية عند تحميل الصفحة
     setLang('en');
   </script>
 </body>
