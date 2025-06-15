@@ -5,77 +5,89 @@
 <title>Helpar Unified</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
-  /* إعدادات أساسية */
-  html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;font-family:Arial,sans-serif;background:#000;color:#fff}
+  /* --- Global --- */
+  html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;
+            font-family:Arial,Helvetica,sans-serif;background:#000;color:#fff}
 
-  /* كل مشهد يملأ الشاشة بالكامل ويُخفى افتراضياً */
-  .scene{position:fixed;inset:0;display:none;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+  /* Each scene fills the screen */
+  .scene{position:fixed;inset:0;display:none;flex-direction:column;
+         justify-content:center;align-items:center;text-align:center}
 
-  /* — 1 — شاشة البداية */
-  #startScene{display:flex;background:url('22.jpg') no-repeat center/cover fixed;align-items:flex-end;padding-bottom:90px}
-  .btn{padding:20px 60px;font-size:5vw;font-weight:bold;color:#00ccff;background:#000;border:none;border-radius:50px;cursor:pointer;
-       text-shadow:0 0 10px #00ccff;box-shadow:0 0 25px #00ccff,0 0 45px #00ccff,0 0 65px #00ccff;transition:box-shadow .3s}
+  /* --- 1 | Start screen ------------------------------------------------ */
+  #startScene{display:flex;background:url('22.jpg') no-repeat center/cover fixed;
+              align-items:flex-end;padding-bottom:90px}
+
+  .btn{padding:20px 60px;font-size:5vw;font-weight:bold;color:#00ccff;background:#000;
+       border:none;border-radius:50px;cursor:pointer;text-shadow:0 0 10px #00ccff;
+       box-shadow:0 0 25px #00ccff,0 0 45px #00ccff,0 0 65px #00ccff;
+       transition:box-shadow .3s}
   .btn:hover{box-shadow:0 0 35px #00ccff,0 0 60px #00ccff,0 0 90px #00ccff}
 
-  /* — 2 — بوّابة زمنية بالفيديو */
+  /* --- 2 | Portal scene ----------------------------------------------- */
   #portalScene{background:#000}
-  #portalScene video{max-width:80%;height:auto;border-radius:12px;box-shadow:0 0 30px #00ccff}
+  #portalScene video{max-width:80%;height:auto;border-radius:12px;
+                     box-shadow:0 0 30px #00ccff}
 
-  /* — 3 — شاشة الترحيب */
-  #welcomeScene{background:url('file-MheimPzQ287akzMCHZvt21.jpg') no-repeat center/contain #000;justify-content:flex-end;padding-bottom:100px}
-  #welcomeScene .welcome-text{font-size:2em;max-width:90%;line-height:1.4;text-shadow:0 0 10px #00ccff;margin-bottom:40px}
+  /* --- 3 | Welcome scene ---------------------------------------------- */
+  #welcomeScene{background:url('robot_welcome.jpg') no-repeat center/contain #000;
+                justify-content:flex-end;padding-bottom:100px}
+  #welcomeScene .welcome-text{font-size:2em;max-width:90%;line-height:1.4;
+                              text-shadow:0 0 10px #00ccff;margin-bottom:40px}
 
-  /* تحجيم الأزرار على الشاشات الواسعة */
-  @media(min-width:768px){.btn{font-size:36px;padding:25px 80px}}
+  /* Larger buttons on wide screens */
+  @media(min-width:768px){
+      .btn{font-size:36px;padding:25px 80px}
+  }
 </style>
 </head>
 <body>
 
-<!-- مشهد 1: البداية -->
+<!-- 1 – Start scene -->
 <div id="startScene" class="scene">
   <button class="btn" onclick="startPortal()">START</button>
 </div>
 
-<!-- مشهد 2: البوّابة الزمنية -->
+<!-- 2 – Portal scene -->
 <div id="portalScene" class="scene">
-  <!-- استبدِل portal_intro.mp4 بملف الفيديو / GIF الذي تريده -->
   <video id="portalVid" src="portal_intro.mp4" autoplay muted playsinline></video>
 </div>
 
-<!-- مشهد 3: الترحيب -->
+<!-- 3 – Welcome scene -->
 <div id="welcomeScene" class="scene">
   <div class="welcome-text">
-    أنت من الأوائل الذين عبَروا هذه الأبواب،<br>
-    إلى عالم لا يعرف المستحيل،<br>
-    حيث تتحقق الأحلام وتبدأ المغامرة.<br>
-    هل أنت مستعد لتكون الرائد في رحلتك؟
+    You are one of the first to cross these gates,<br>
+    into a world where the impossible is meaningless,<br>
+    where dreams come alive and adventure begins.<br>
+    Are you ready to lead the way?
   </div>
-  <button class="btn" onclick="location.href='https://alaagg.github.io/HELPER2/'">Continue</button>
+  <button class="btn" onclick="location.href='https://alaagg.github.io/HELPER2/'">CONTINUE</button>
 </div>
 
 <script>
-  /* إظهار / إخفاء أي مشهد */
+  /* Helper functions */
   const show = id => document.getElementById(id).style.display = 'flex';
   const hide = id => document.getElementById(id).style.display = 'none';
 
-  /* يبدأ من شاشة START */
+  /* Initially show the start scene */
   show('startScene');
 
+  /* Start the portal sequence */
   function startPortal(){
-    hide('startScene');          // إخفاء البداية
-    show('portalScene');         // إظهار الفيديو
+    hide('startScene');
+    show('portalScene');
 
     const vid = document.getElementById('portalVid');
 
-    /* عند انتهاء الفيديو → شاشة الترحيب */
+    /* When the video ends → welcome scene */
     vid.onended = () => { hide('portalScene'); show('welcomeScene'); };
 
-    /* احتياط: لو كان GIF أو الفيديو قصير جداً */
+    /* Fallback timeout in case the video has no onended (e.g., GIF) */
     setTimeout(() => {
-      if (vid.paused || vid.ended) {
-        hide('portalScene'); show('welcomeScene');
+      if (vid.paused || vid.ended){
+        hide('portalScene');
+        show('welcomeScene');
       }
-    }, 7000); // حدّ أقصى 7 ثوانٍ
+    }, 7000); // max 7 s
   }
 </script>
 
