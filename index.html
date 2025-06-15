@@ -6,12 +6,19 @@
   <title>Helpar</title>
   <style>
     html, body {
-      margin: 0; padding: 0;
-      height: 100%; width: 100%;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
       background: url('22.jpg') no-repeat center center fixed;
       background-size: cover;
-      display: flex; align-items: flex-end; justify-content: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      overflow: hidden;
     }
+
     .start-button {
       margin-bottom: 90px;
       padding: 20px 60px;
@@ -22,21 +29,18 @@
       border: 3px solid #ffffff;
       border-radius: 30px;
       cursor: pointer;
-      z-index: 1;
-      box-shadow:
-        0 0 10px #00ccff,
-        0 0 20px #00ccff,
-        0 0 40px #00ccff,
-        0 0 60px #00ccff;
+      z-index: 10;
+      box-shadow: 0 0 10px #00ccff, 0 0 40px #00ccff;
       text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
       animation: pulse 1.5s infinite alternate;
       transition: all 0.3s ease;
     }
+
     @keyframes pulse {
       from { transform: scale(1); }
       to   { transform: scale(1.05); }
     }
-    /* ====== علاء: أزرار اللغة والأفاتار ====== */
+
     .bottom-actions {
       width: 100%;
       display: flex;
@@ -45,8 +49,9 @@
       position: absolute;
       bottom: 26px;
       left: 0;
-      z-index: 2;
+      z-index: 10;
     }
+
     .icon-btn {
       width: 90px;
       height: 90px;
@@ -64,11 +69,13 @@
       cursor: pointer;
       transition: 0.2s;
     }
-    .icon-btn:active, .icon-btn:hover {
+
+    .icon-btn:hover {
       background: #00e7ff33;
       color: #fff;
       box-shadow: 0 0 30px #00e7ff;
     }
+
     .dropdown {
       display: none;
       position: absolute;
@@ -79,14 +86,14 @@
       border: 2px solid #00e7ff;
       border-radius: 20px;
       box-shadow: 0 0 20px #00e7ff55;
-      z-index: 4;
+      z-index: 99;
       min-width: 130px;
       text-align: center;
       font-size: 1.3rem;
     }
-    .dropdown.active {
-      display: block;
-    }
+
+    .dropdown.active { display: block; }
+
     .dropdown div {
       color: #00e7ff;
       padding: 12px 0;
@@ -94,20 +101,38 @@
       border-bottom: 1px solid #00e7ff22;
       transition: 0.15s;
     }
+
     .dropdown div:last-child { border-bottom: none; }
-    .dropdown div:hover { background: #00e7ff33; color: #fff;}
-    @media (max-width:500px){
-      .start-button{font-size:1.2rem;padding:10px 35px;margin-bottom:65px;}
-      .icon-btn{width:65px;height:65px;font-size:0.8rem;}
+
+    .dropdown div:hover {
+      background: #00e7ff33;
+      color: #fff;
     }
-    /* ====== نهاية كود علاء ====== */
+
+    #overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      background: #000;
+      z-index: 999;
+    }
+
+    #overlay video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @media (max-width: 500px) {
+      .start-button { font-size: 1.2rem; padding: 10px 35px; margin-bottom: 65px; }
+      .icon-btn { width: 65px; height: 65px; font-size: 0.8rem; }
+    }
   </style>
 </head>
 <body>
 
   <button class="start-button" onclick="playIntro()">START</button>
 
-  <!-- ====== علاء: الأزرار ====== -->
   <div class="bottom-actions">
     <div class="icon-btn" id="langBtn">
       <span>🌐</span>
@@ -118,6 +143,7 @@
         <div onclick="setLang('tr')">Turkish</div>
       </div>
     </div>
+
     <div class="icon-btn" id="avatarBtn">
       <span>🦸‍♂️</span>
       <div style="margin-top:7px;">Avatar</div>
@@ -129,51 +155,48 @@
       </div>
     </div>
   </div>
-  <!-- ====== نهاية أزرار علاء ====== -->
 
-  <!-- فيديو المقدمة الإجباري -->
   <div id="overlay">
     <video id="intro" src="intro.mp4" autoplay playsinline></video>
   </div>
 
   <script>
-    // ====== علاء: الجافاسكربت للأزرار ======
-    document.getElementById('langBtn').onclick = function(e){
-      e.stopPropagation();
-      document.getElementById('langDropdown').classList.toggle('active');
-      document.getElementById('avatarDropdown').classList.remove('active');
-    };
-    document.getElementById('avatarBtn').onclick = function(e){
-      e.stopPropagation();
-      document.getElementById('avatarDropdown').classList.toggle('active');
-      document.getElementById('langDropdown').classList.remove('active');
-    };
-    document.body.onclick = function(){
-      document.getElementById('langDropdown').classList.remove('active');
-      document.getElementById('avatarDropdown').classList.remove('active');
-    };
-    // دوال اللغات والأفاتار حسب نظامك:
-    function setLang(lang) {
-      // هنا يمكن إضافة التفاعل حسب نظامك
-    }
-    function setAvatar(id) {
-      // هنا يمكن إضافة التفاعل حسب نظامك
-    }
-    // ====== نهاية جافاسكربت علاء ======
-
-    // كود الفيديو
+    // تشغيل الفيديو
     const overlay = document.getElementById('overlay');
-    const intro   = document.getElementById('intro');
+    const intro = document.getElementById('intro');
 
     function playIntro(){
       overlay.style.display = 'block';
       intro.currentTime = 0;
       intro.play();
     }
+
     intro.addEventListener('ended', () => {
       window.location.href = 'HELPER3/';
     });
+
+    // القوائم المنسدلة
+    document.getElementById('langBtn').onclick = function(e){
+      e.stopPropagation();
+      document.getElementById('langDropdown').classList.toggle('active');
+      document.getElementById('avatarDropdown').classList.remove('active');
+    };
+
+    document.getElementById('avatarBtn').onclick = function(e){
+      e.stopPropagation();
+      document.getElementById('avatarDropdown').classList.toggle('active');
+      document.getElementById('langDropdown').classList.remove('active');
+    };
+
+    document.body.onclick = function(){
+      document.getElementById('langDropdown').classList.remove('active');
+      document.getElementById('avatarDropdown').classList.remove('active');
+    };
+
+    // placeholder functions
+    function setLang(lang) {}
+    function setAvatar(id) {}
   </script>
 
 </body>
-</html>
+        </html>
