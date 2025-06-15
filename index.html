@@ -4,9 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Helpar</title>
-
   <style>
-    /* الخلفية والزر الأصلي */
     html, body {
       margin: 0; padding: 0;
       height: 100%; width: 100%;
@@ -38,30 +36,100 @@
       from { transform: scale(1); }
       to   { transform: scale(1.05); }
     }
-
-    /* غطاء الفيديو */
-    #overlay {
-      position: fixed;
-      inset: 0;
-      display: none;
-      background: #000;
-      z-index: 999;
-      animation: fadeIn 0.7s forwards;
-    }
-    #overlay video {
+    /* ====== علاء: أزرار اللغة والأفاتار ====== */
+    .bottom-actions {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      display: flex;
+      justify-content: center;
+      gap:150px;
+      position: absolute;
+      bottom: 26px;
+      left: 0;
+      z-index: 2;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
+    .icon-btn {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.65);
+      border: 2px solid #00e7ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 18px #00e7ff80;
+      color: #00e7ff;
+      font-size: 1.2rem;
+      position: relative;
+      cursor: pointer;
+      transition: 0.2s;
     }
+    .icon-btn:active, .icon-btn:hover {
+      background: #00e7ff33;
+      color: #fff;
+      box-shadow: 0 0 30px #00e7ff;
+    }
+    .dropdown {
+      display: none;
+      position: absolute;
+      bottom: 105%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #000d18f2;
+      border: 2px solid #00e7ff;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #00e7ff55;
+      z-index: 4;
+      min-width: 130px;
+      text-align: center;
+      font-size: 1.3rem;
+    }
+    .dropdown.active {
+      display: block;
+    }
+    .dropdown div {
+      color: #00e7ff;
+      padding: 12px 0;
+      cursor: pointer;
+      border-bottom: 1px solid #00e7ff22;
+      transition: 0.15s;
+    }
+    .dropdown div:last-child { border-bottom: none; }
+    .dropdown div:hover { background: #00e7ff33; color: #fff;}
+    @media (max-width:500px){
+      .start-button{font-size:1.2rem;padding:10px 35px;margin-bottom:65px;}
+      .icon-btn{width:65px;height:65px;font-size:0.8rem;}
+    }
+    /* ====== نهاية كود علاء ====== */
   </style>
 </head>
 <body>
 
   <button class="start-button" onclick="playIntro()">START</button>
+
+  <!-- ====== علاء: الأزرار ====== -->
+  <div class="bottom-actions">
+    <div class="icon-btn" id="langBtn">
+      <span>🌐</span>
+      <div style="margin-top:7px;">Languages</div>
+      <div class="dropdown" id="langDropdown">
+        <div onclick="setLang('en')">English</div>
+        <div onclick="setLang('ar')">Arabic</div>
+        <div onclick="setLang('tr')">Turkish</div>
+      </div>
+    </div>
+    <div class="icon-btn" id="avatarBtn">
+      <span>🦸‍♂️</span>
+      <div style="margin-top:7px;">Avatar</div>
+      <div class="dropdown" id="avatarDropdown">
+        <div onclick="setAvatar(1)">Avatar 1</div>
+        <div onclick="setAvatar(2)">Avatar 2</div>
+        <div onclick="setAvatar(3)">Avatar 3</div>
+        <div onclick="setAvatar(4)">Avatar 4</div>
+      </div>
+    </div>
+  </div>
+  <!-- ====== نهاية أزرار علاء ====== -->
 
   <!-- فيديو المقدمة الإجباري -->
   <div id="overlay">
@@ -69,16 +137,39 @@
   </div>
 
   <script>
+    // ====== علاء: الجافاسكربت للأزرار ======
+    document.getElementById('langBtn').onclick = function(e){
+      e.stopPropagation();
+      document.getElementById('langDropdown').classList.toggle('active');
+      document.getElementById('avatarDropdown').classList.remove('active');
+    };
+    document.getElementById('avatarBtn').onclick = function(e){
+      e.stopPropagation();
+      document.getElementById('avatarDropdown').classList.toggle('active');
+      document.getElementById('langDropdown').classList.remove('active');
+    };
+    document.body.onclick = function(){
+      document.getElementById('langDropdown').classList.remove('active');
+      document.getElementById('avatarDropdown').classList.remove('active');
+    };
+    // دوال اللغات والأفاتار حسب نظامك:
+    function setLang(lang) {
+      // هنا يمكن إضافة التفاعل حسب نظامك
+    }
+    function setAvatar(id) {
+      // هنا يمكن إضافة التفاعل حسب نظامك
+    }
+    // ====== نهاية جافاسكربت علاء ======
+
+    // كود الفيديو
     const overlay = document.getElementById('overlay');
     const intro   = document.getElementById('intro');
 
     function playIntro(){
       overlay.style.display = 'block';
       intro.currentTime = 0;
-      intro.play();  // إضافة intro.muted = true; إذا أردت الصوت صامتاً
+      intro.play();
     }
-
-    // عند انتهاء الفيديو ينقل المستخدم إلى الصفحة الثالثة داخل نفس الموقع
     intro.addEventListener('ended', () => {
       window.location.href = 'HELPER3/';
     });
