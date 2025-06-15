@@ -1,80 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Helpar</title>
+  <meta charset="UTF-8" />
+  <title>Helpar Unified</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
+      margin: 0; padding: 0; height: 100%; width: 100%;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
       background: url('22.jpg') no-repeat center center fixed;
       background-size: cover;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
+      color: white;
     }
-
-    .start-button {
-      margin-bottom: 90px;
+    .scene {
+      display: none;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0; left: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      background-color: rgba(0,0,0,0.6);
+    }
+    #startScene {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      padding-bottom: 90px;
+    }
+    .start-button, .continue-button {
       padding: 20px 60px;
       font-size: 5vw;
       font-weight: bold;
       color: #00ccff;
-      background-color: #000;
-      border: 3px solid #ffffff;
-      border-radius: 30px;
-      position: relative;
-      z-index: 1;
+      background-color: black;
+      border-radius: 50px;
+      border: none;
       cursor: pointer;
       box-shadow:
-        0 0 10px #00ccff,
         0 0 20px #00ccff,
         0 0 40px #00ccff,
         0 0 60px #00ccff;
-      text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
-      animation: pulse 1.5s infinite alternate;
-      transition: all 0.3s ease;
+      text-shadow: 0 0 10px #00ccff;
+      transition: box-shadow 0.3s ease;
     }
-
-    .start-button:hover {
+    .start-button:hover, .continue-button:hover {
       box-shadow:
-        0 0 15px #00ccff,
         0 0 30px #00ccff,
-        0 0 60px #00ccff,
+        0 0 50px #00ccff,
         0 0 80px #00ccff;
     }
-
-    @keyframes pulse {
-      from {
-        transform: scale(1);
-        box-shadow:
-          0 0 10px #00ccff,
-          0 0 20px #00ccff,
-          0 0 40px #00ccff;
-      }
-      to {
-        transform: scale(1.05);
-        box-shadow:
-          0 0 20px #00ccff,
-          0 0 40px #00ccff,
-          0 0 60px #00ccff;
-      }
+    /* Tunnel Styles */
+    #portalScene .tunnel {
+      position: absolute;
+      width: 2000px; height: 2000px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #00ccff 0%, transparent 60%);
+      animation: pulse 3s infinite ease-in-out;
+      z-index: 1;
     }
-
-    @media (min-width: 768px) {
-      .start-button {
-        font-size: 36px;
-        padding: 25px 80px;
-      }
+    @keyframes pulse {
+      0% {transform: scale(1); opacity: 0.4;}
+      100% {transform: scale(1.5); opacity: 0;}
+    }
+    #portalScene .particles {
+      position: absolute;
+      width: 100%; height: 100%;
+      overflow: hidden;
+      z-index: 2;
+    }
+    #portalScene .particle {
+      position: absolute;
+      width: 8px; height: 8px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: float 10s linear infinite;
+    }
+    @keyframes float {
+      0% {transform: translateY(100vh) scale(0.5); opacity: 0.2;}
+      100% {transform: translateY(-10vh) scale(1.2); opacity: 1;}
+    }
+    #portalScene .text {
+      position: relative;
+      z-index: 3;
+      font-size: 3em;
+      text-shadow: 0 0 10px #00ccff;
+      margin-bottom: 100px;
+    }
+    /* Welcome Styles */
+    #welcomeScene {
+      background: url('file-MheimPzQ287akzMCHZvt21.jpg') no-repeat center center fixed;
+      background-size: contain;
+      justify-content: flex-end;
+      padding-bottom: 100px;
+    }
+    #welcomeScene .welcome-text {
+      font-size: 2em;
+      text-shadow: 0 0 10px #00ccff;
+      line-height: 1.4;
+      margin-bottom: 40px;
+      max-width: 90%;
     }
   </style>
 </head>
 <body>
 
-  <button class="start-button" onclick="window.location.href='https://alaagg.github.io/HELPER2/';">START</button>
+  <!-- Start Scene -->
+  <div id="startScene" class="scene">
+    <button class="start-button" onclick="startPortal()">START</button>
+  </div>
+
+  <!-- Portal Scene -->
+  <div id="portalScene" class="scene">
+    <div class="tunnel"></div>
+    <div class="particles">
+      <div class="particle" style="left: 0vw; animation-delay: 0s;"></div>
+      <div class="particle" style="left: 3vw; animation-delay: 1s;"></div>
+      <div class="particle" style="left: 6vw; animation-delay: 2s;"></div>
+      <div class="particle" style="left: 9vw; animation-delay: 3s;"></div>
+      <div class="particle" style="left: 12vw; animation-delay: 4s;"></div>
+      <div class="particle" style="left: 15vw; animation-delay: 5s;"></div>
+      <div class="particle" style="left: 18vw; animation-delay: 6s;"></div>
+      <div class="particle" style="left: 21vw; animation-delay: 7s;"></div>
+      <div class="particle" style="left: 24vw; animation-delay: 8s;"></div>
+      <div class="particle" style="left: 27vw; animation-delay: 9s;"></div>
+    </div>
+    <div class="text">Entering Time Gate...</div>
+  </div>
+
+  <!-- Welcome Scene -->
+  <div id="welcomeScene" class="scene">
+    <div class="welcome-text">
+      أنت من الأوائل الذين عبَروا هذه الأبواب،<br>
+      إلى عالم لا يعرف المستحيل،<br>
+      حيث تتحقق الأحلام وتبدأ المغامرة.<br>
+      هل أنت مستعد لتكون الرائد في رحلتك؟
+    </div>
+    <button class="continue-button" onclick="window.location.href='https://alaagg.github.io/HELPER2/'">Continue</button>
+  </div>
+
+<script>
+  function startPortal() {
+    document.getElementById('startScene').style.display = 'none';
+    document.getElementById('portalScene').style.display = 'flex';
+
+    setTimeout(() => {
+      document.getElementById('portalScene').style.display = 'none';
+      document.getElementById('welcomeScene').style.display = 'flex';
+    }, 3000); // 3 seconds portal
+  }
+
+  // Initially show only start scene
+  document.getElementById('startScene').style.display = 'flex';
+</script>
 
 </body>
-</html>
+  </html>
