@@ -1,102 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Helpar – One-Page Flow</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Helpar</title>
   <style>
-    /* إعداد عام */
-    html,body{margin:0;height:100%;width:100%;overflow:hidden;
-      font-family:Arial,Helvetica,sans-serif;background:#000;color:#fff}
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      background: url('22.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
 
-    /* كل مشهد يغطي الشاشة كاملًا */
-    .scene{position:fixed;inset:0;display:none;
-      flex-direction:column;justify-content:center;align-items:center;text-align:center}
+    .start-button {
+      margin-bottom: 90px;
+      padding: 20px 60px;
+      font-size: 5vw;
+      font-weight: bold;
+      color: #00ccff;
+      background-color: #000;
+      border: 3px solid #ffffff;
+      border-radius: 30px;
+      position: relative;
+      z-index: 1;
+      cursor: pointer;
+      box-shadow:
+        0 0 10px #00ccff,
+        0 0 20px #00ccff,
+        0 0 40px #00ccff,
+        0 0 60px #00ccff;
+      text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
+      animation: pulse 1.5s infinite alternate;
+      transition: all 0.3s ease;
+    }
 
-    /* ─── 1) شاشة البداية ─── */
-    #start{display:flex;background:url('background.jpg') center/cover fixed;
-      align-items:flex-end;padding-bottom:90px}
-    .start-btn{
-      padding:20px 60px;font-size:5vw;font-weight:bold;
-      color:#00ccff;background:#000;border:none;border-radius:50px;cursor:pointer;
-      text-shadow:0 0 10px #00ccff;
-      box-shadow:0 0 25px #00ccff,0 0 45px #00ccff,0 0 65px #00ccff;transition:.3s}
-    .start-btn:hover{box-shadow:0 0 35px #00ccff,0 0 60px #00ccff,0 0 90px #00ccff}
+    .start-button:hover {
+      box-shadow:
+        0 0 15px #00ccff,
+        0 0 30px #00ccff,
+        0 0 60px #00ccff,
+        0 0 80px #00ccff;
+    }
 
-    /* ─── 2) مشهد النفق بالفيديو ─── */
-    #portal{background:#000}
-    #portal video{max-width:80%;border-radius:12px;box-shadow:0 0 30px #00ccff;background:#111}
+    @keyframes pulse {
+      from {
+        transform: scale(1);
+        box-shadow:
+          0 0 10px #00ccff,
+          0 0 20px #00ccff,
+          0 0 40px #00ccff;
+      }
+      to {
+        transform: scale(1.05);
+        box-shadow:
+          0 0 20px #00ccff,
+          0 0 40px #00ccff,
+          0 0 60px #00ccff;
+      }
+    }
 
-    /* ─── 3) شاشة الترحيب بالروبوت ─── */
-    #welcome{background:url('welcome.jpg') center/contain #000;
-      justify-content:flex-end;padding-bottom:100px}
-    .msg{font-size:2em;max-width:90%;line-height:1.4;
-      text-shadow:0 0 10px #00ccff;margin-bottom:40px;background:rgba(0,0,0,.35);padding:12px;border-radius:12px}
-    .continue-btn{
-      padding:20px 60px;font-size:5vw;font-weight:bold;
-      color:#00ccff;background:#000;border:none;border-radius:50px;cursor:pointer;
-      text-shadow:0 0 10px #00ccff;
-      box-shadow:0 0 25px #00ccff,0 0 45px #00ccff,0 0 65px #00ccff;transition:.3s}
-    .continue-btn:hover{background:#00ccff;color:#000;
-      box-shadow:0 0 35px #00ccff,0 0 60px #00ccff,0 0 90px #00ccff}
-
-    /* تكبير الأزرار على الشاشات العريضة */
-    @media(min-width:768px){
-      .start-btn,.continue-btn{font-size:36px;padding:25px 80px}
+    @media (min-width: 768px) {
+      .start-button {
+        font-size: 36px;
+        padding: 25px 80px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- 1) البداية -->
-  <section id="start" class="scene">
-    <button class="start-btn" onclick="goPortal()">START</button>
-  </section>
-
-  <!-- 2) النفق -->
-  <section id="portal" class="scene">
-    <!-- غيّر الاسم إذا كان الفيديو مختلفًا -->
-    <video id="vid" src="portal.mp4" autoplay muted playsinline></video>
-  </section>
-
-  <!-- 3) الترحيب -->
-  <section id="welcome" class="scene">
-    <div class="msg">
-      You are one of the first to cross these gates,<br>
-      into a world where dreams come alive.<br>
-      Ready to lead the way?
-    </div>
-    <button class="continue-btn"
-            onclick="location.href='https://alaagg.github.io/HELPER2/'">
-      CONTINUE
-    </button>
-  </section>
-
-<script>
-  /* دوالّ إظهار/إخفاء */
-  const show = id => document.getElementById(id).style.display='flex';
-  const hide = id => document.getElementById(id).style.display='none';
-
-  /* ابدأ بشاشة START */
-  show('start');
-
-  /* انتقال START → Portal */
-  function goPortal(){
-    hide('start');      // أخفِ البداية
-    show('portal');     // أظهر الفيديو
-    const v = document.getElementById('vid');
-
-    /* عند انتهاء الفيديو اذهب للترحيب */
-    v.onended = () => { hide('portal'); show('welcome'); };
-
-    /* احتياط… لو الملف GIF بلا onended */
-    setTimeout(() => {
-      if (v.paused || v.ended){
-        hide('portal'); show('welcome');
-      }
-    }, 7000); // أقصى 7 ثوانٍ
-  }
-</script>
+  <button class="start-button" onclick="window.location.href='https://alaagg.github.io/HELPER2/';">START</button>
 
 </body>
 </html>
