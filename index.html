@@ -123,8 +123,8 @@
     </div>
   </div>
 
-  <div id="overlay" style="display:none; position:fixed; inset:0; background:#000; z-index:999;">
-    <video id="intro" src="intro.mp4" autoplay playsinline></video>
+  <div id="overlay" style="display:none; position:fixed; inset:0; background:#000; z-index:999; display:flex; align-items:center; justify-content:center;">
+    <video id="intro" src="intro.mp4" autoplay playsinline style="max-width:90vw; max-height:90vh; border-radius:12px;"></video>
   </div>
 
   <script>
@@ -190,7 +190,7 @@
 
     function playIntro(){
       speak(i18n[currentLang].start);
-      overlay.style.display = 'block';
+      overlay.style.display = 'flex';
       intro.currentTime = 0;
       intro.play();
     }
