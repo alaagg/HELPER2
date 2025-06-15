@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,74 +13,26 @@
       overflow: hidden;
       font-family: Arial, sans-serif;
       background-color: #000;
-    }/* شاشة الترحيب */
-#welcome-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: url('22.jpg') no-repeat center center;
-  background-size: cover;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-  flex-direction: column;
-}
-
-.start-button {
-  padding: 20px 60px;
-  font-size: 5vw;
-  font-weight: bold;
-  color: #00ccff;
-  background-color: #000;
-  border: 3px solid #ffffff;
-  border-radius: 30px;
-  cursor: pointer;
-  box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff, 0 0 40px #00ccff;
-  text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
-  animation: pulse 1.5s infinite alternate;
-  transition: all 0.3s ease;
-}
-
-@keyframes pulse {
-  from { transform: scale(1); }
-  to { transform: scale(1.05); }
-}
-
-/* فيديو الخلفية */
-#intro {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  min-width: 100vw;
-  min-height: 100vh;
-  width: auto;
-  height: auto;
-  object-fit: cover;
-  z-index: 0;
-}
-
-  </style>
-</head>
-<body>  <!-- شاشة الترحيب -->  <div id="welcome-screen">
-    <button class="start-button" onclick="startExperience()">START</button>
-  </div>  <!-- فيديو الخلفية -->  <video id="intro" autoplay muted playsinline>
-    <source src="intro.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>  <script>
-    function startExperience() {
-      document.getElementById('welcome-screen').style.display = 'none';
-      const intro = document.getElementById('intro');
-      intro.style.display = 'block';
-      intro.play();
-
-      intro.addEventListener('ended', () => {
-        window.location.href = 'HELPER3';
-      });
     }
-  </script></body>
-</html>
+    /* شاشة الترحيب */
+    #welcome-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: url('22.jpg') no-repeat center center;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      z-index: 2;
+      animation: fadein 1.2s;
+    }
+    @keyframes fadein {
+      0% {opacity: 0;}
+      100% {opacity: 1;}
+    }
+    .helpar-logo {
+      width: 130px;
