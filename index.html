@@ -3,78 +3,129 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Helpar</title>
+  <title>Helpar – Choose Avatar</title>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary-color: #00ccff;
+      --bg-dark: #0a0a0a;
+      --font-family: 'Poppins', sans-serif;
+      --transition-speed: 0.3s;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-      background: url('22.jpg') no-repeat center center fixed;
-      background-size: cover;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
+      width: 100%; height: 100%; overflow: hidden;
+      font-family: var(--font-family);
+      background: var(--bg-dark);
+      display: flex; align-items: center; justify-content: center;
+      perspective: 1000px;
     }
-
-    .start-button {
-      margin-bottom: 90px;
-      padding: 20px 60px;
-      font-size: 5vw;
-      font-weight: bold;
-      color: #00ccff;
-      background-color: #000;
-      border: 3px solid #ffffff;
-      border-radius: 30px;
+    /* Portal Animation */
+    .portal {
+      position: absolute; top: 50%; left: 50%;
+      width: 150vmax; height: 150vmax;
+      background: radial-gradient(circle at center, #001122 20%, #000 80%);
+      opacity: 0.7;
+      transform: translate(-50%, -50%) rotateX(75deg);
+      filter: blur(80px) saturate(120%);
+      animation: rotatePortal 12s linear infinite;
+    }
+    @keyframes rotatePortal {
+      0% { transform: translate(-50%, -50%) rotateX(75deg) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotateX(75deg) rotate(360deg); }
+    }
+    /* UI Container */
+    .ui {
+      position: relative; z-index: 1;
+      max-width: 480px; width: 90%; padding: 2rem;
+      background: rgba(10,10,10,0.7);
+      border-radius: 16px;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px);
+      text-align: center;
+      color: #fff;
+    }
+    .ui h1 {
+      font-weight: 800; font-size: clamp(1.5rem,4vw,2.5rem);
+      letter-spacing: 2px;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 10px var(--primary-color);
+    }
+    /* Avatar Grid */
+    .avatar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .avatar {
       position: relative;
-      z-index: 1;
+      width: 100%; padding-top: 100%;
+      border-radius: 50%; overflow: hidden;
       cursor: pointer;
-      box-shadow:
-        0 0 10px #00ccff,
-        0 0 20px #00ccff,
-        0 0 40px #00ccff,
-        0 0 60px #00ccff;
-      text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
-      animation: pulse 1.5s infinite alternate;
-      transition: all 0.3s ease;
+      border: 3px solid transparent;
+      transition: transform var(--transition-speed), border-color var(--transition-speed), box-shadow var(--transition-speed);
     }
-
-    .start-button:hover {
-      box-shadow:
-        0 0 15px #00ccff,
-        0 0 30px #00ccff,
-        0 0 60px #00ccff,
-        0 0 80px #00ccff;
+    .avatar img {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%; object-fit: cover;
     }
-
-    @keyframes pulse {
-      from {
-        transform: scale(1);
-        box-shadow:
-          0 0 10px #00ccff,
-          0 0 20px #00ccff,
-          0 0 40px #00ccff;
-      }
-      to {
-        transform: scale(1.05);
-        box-shadow:
-          0 0 20px #00ccff,
-          0 0 40px #00ccff,
-          0 0 60px #00ccff;
-      }
+    .avatar:hover {
+      transform: scale(1.1);
     }
-
-    @media (min-width: 768px) {
-      .start-button {
-        font-size: 36px;
-        padding: 25px 80px;
-      }
+    .avatar.selected {
+      border-color: #fff;
+      box-shadow: 0 0 15px var(--primary-color), 0 0 30px var(--primary-color);
+    }
+    /* Next Button */
+    .next-btn {
+      display: inline-block;
+      padding: 0.8rem 2.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--primary-color);
+      background: transparent;
+      border: 2px solid #fff;
+      border-radius: 24px;
+      opacity: 0.5;
+      pointer-events: none;
+      transition: all var(--transition-speed);
+      text-decoration: none;
+    }
+    .next-btn.active {
+      opacity: 1;
+      pointer-events: auto;
+      background: rgba(0,204,255,0.1);
+    }
+    .next-btn.active:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 0 15px var(--primary-color);
     }
   </style>
 </head>
 <body>
-
-  <button class="start-button" onclick="window.location.href='https://alaagg.github.io/HELPER2/';">START</button>
-
+  <div class="portal"></div>
+  <div class="ui">
+    <h1>CHOOSE YOUR AVATAR</h1>
+    <div class="avatar-grid">
+      <div class="avatar"><img src="avatar1.png" alt="Avatar 1"></div>
+      <div class="avatar"><img src="avatar2.png" alt="Avatar 2"></div>
+      <div class="avatar"><img src="avatar3.png" alt="Avatar 3"></div>
+      <div class="avatar"><img src="avatar4.png" alt="Avatar 4"></div>
+    </div>
+    <a class="next-btn" href="https://alaagg.github.io/HELPER3/">NEXT</a>
+  </div>
+  <script>
+    const avatars = document.querySelectorAll('.avatar');
+    const nextBtn = document.querySelector('.next-btn');
+    avatars.forEach(av => {
+      av.addEventListener('click', () => {
+        avatars.forEach(a => a.classList.remove('selected'));
+        av.classList.add('selected');
+        nextBtn.classList.add('active');
+      });
+    });
+  </script>
 </body>
 </html>
