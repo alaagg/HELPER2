@@ -1,163 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Helpar Unified</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    html, body {
-      margin: 0; padding: 0; height: 100%; width: 100%;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
-      background: url('22.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: white;
-    }
-    .scene {
-      display: none;
-      height: 100%;
-      width: 100%;
-      position: absolute;
-      top: 0; left: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      text-align: center;
-      background-color: rgba(0,0,0,0.6);
-    }
-    #startScene {
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      padding-bottom: 90px;
-    }
-    .start-button, .continue-button {
-      padding: 20px 60px;
-      font-size: 5vw;
-      font-weight: bold;
-      color: #00ccff;
-      background-color: black;
-      border-radius: 50px;
-      border: none;
-      cursor: pointer;
-      box-shadow:
-        0 0 20px #00ccff,
-        0 0 40px #00ccff,
-        0 0 60px #00ccff;
-      text-shadow: 0 0 10px #00ccff;
-      transition: box-shadow 0.3s ease;
-    }
-    .start-button:hover, .continue-button:hover {
-      box-shadow:
-        0 0 30px #00ccff,
-        0 0 50px #00ccff,
-        0 0 80px #00ccff;
-    }
-    /* Tunnel Styles */
-    #portalScene .tunnel {
-      position: absolute;
-      width: 2000px; height: 2000px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #00ccff 0%, transparent 60%);
-      animation: pulse 3s infinite ease-in-out;
-      z-index: 1;
-    }
-    @keyframes pulse {
-      0% {transform: scale(1); opacity: 0.4;}
-      100% {transform: scale(1.5); opacity: 0;}
-    }
-    #portalScene .particles {
-      position: absolute;
-      width: 100%; height: 100%;
-      overflow: hidden;
-      z-index: 2;
-    }
-    #portalScene .particle {
-      position: absolute;
-      width: 8px; height: 8px;
-      background: white;
-      border-radius: 50%;
-      opacity: 0.6;
-      animation: float 10s linear infinite;
-    }
-    @keyframes float {
-      0% {transform: translateY(100vh) scale(0.5); opacity: 0.2;}
-      100% {transform: translateY(-10vh) scale(1.2); opacity: 1;}
-    }
-    #portalScene .text {
-      position: relative;
-      z-index: 3;
-      font-size: 3em;
-      text-shadow: 0 0 10px #00ccff;
-      margin-bottom: 100px;
-    }
-    /* Welcome Styles */
-    #welcomeScene {
-      background: url('file-MheimPzQ287akzMCHZvt21.jpg') no-repeat center center fixed;
-      background-size: contain;
-      justify-content: flex-end;
-      padding-bottom: 100px;
-    }
-    #welcomeScene .welcome-text {
-      font-size: 2em;
-      text-shadow: 0 0 10px #00ccff;
-      line-height: 1.4;
-      margin-bottom: 40px;
-      max-width: 90%;
-    }
-  </style>
+<meta charset="UTF-8" />
+<title>Helpar Unified</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  /* إعدادات أساسية */
+  html,body{margin:0;padding:0;height:100%;width:100%;overflow:hidden;font-family:Arial,sans-serif;background:#000;color:#fff}
+
+  /* كل مشهد يملأ الشاشة بالكامل ويُخفى افتراضياً */
+  .scene{position:fixed;inset:0;display:none;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+
+  /* — 1 — شاشة البداية */
+  #startScene{display:flex;background:url('22.jpg') no-repeat center/cover fixed;align-items:flex-end;padding-bottom:90px}
+  .btn{padding:20px 60px;font-size:5vw;font-weight:bold;color:#00ccff;background:#000;border:none;border-radius:50px;cursor:pointer;
+       text-shadow:0 0 10px #00ccff;box-shadow:0 0 25px #00ccff,0 0 45px #00ccff,0 0 65px #00ccff;transition:box-shadow .3s}
+  .btn:hover{box-shadow:0 0 35px #00ccff,0 0 60px #00ccff,0 0 90px #00ccff}
+
+  /* — 2 — بوّابة زمنية بالفيديو */
+  #portalScene{background:#000}
+  #portalScene video{max-width:80%;height:auto;border-radius:12px;box-shadow:0 0 30px #00ccff}
+
+  /* — 3 — شاشة الترحيب */
+  #welcomeScene{background:url('file-MheimPzQ287akzMCHZvt21.jpg') no-repeat center/contain #000;justify-content:flex-end;padding-bottom:100px}
+  #welcomeScene .welcome-text{font-size:2em;max-width:90%;line-height:1.4;text-shadow:0 0 10px #00ccff;margin-bottom:40px}
+
+  /* تحجيم الأزرار على الشاشات الواسعة */
+  @media(min-width:768px){.btn{font-size:36px;padding:25px 80px}}
+</style>
 </head>
 <body>
 
-  <!-- Start Scene -->
-  <div id="startScene" class="scene">
-    <button class="start-button" onclick="startPortal()">START</button>
-  </div>
+<!-- مشهد 1: البداية -->
+<div id="startScene" class="scene">
+  <button class="btn" onclick="startPortal()">START</button>
+</div>
 
-  <!-- Portal Scene -->
-  <div id="portalScene" class="scene">
-    <div class="tunnel"></div>
-    <div class="particles">
-      <div class="particle" style="left: 0vw; animation-delay: 0s;"></div>
-      <div class="particle" style="left: 3vw; animation-delay: 1s;"></div>
-      <div class="particle" style="left: 6vw; animation-delay: 2s;"></div>
-      <div class="particle" style="left: 9vw; animation-delay: 3s;"></div>
-      <div class="particle" style="left: 12vw; animation-delay: 4s;"></div>
-      <div class="particle" style="left: 15vw; animation-delay: 5s;"></div>
-      <div class="particle" style="left: 18vw; animation-delay: 6s;"></div>
-      <div class="particle" style="left: 21vw; animation-delay: 7s;"></div>
-      <div class="particle" style="left: 24vw; animation-delay: 8s;"></div>
-      <div class="particle" style="left: 27vw; animation-delay: 9s;"></div>
-    </div>
-    <div class="text">Entering Time Gate...</div>
-  </div>
+<!-- مشهد 2: البوّابة الزمنية -->
+<div id="portalScene" class="scene">
+  <!-- استبدِل portal_intro.mp4 بملف الفيديو / GIF الذي تريده -->
+  <video id="portalVid" src="portal_intro.mp4" autoplay muted playsinline></video>
+</div>
 
-  <!-- Welcome Scene -->
-  <div id="welcomeScene" class="scene">
-    <div class="welcome-text">
-      أنت من الأوائل الذين عبَروا هذه الأبواب،<br>
-      إلى عالم لا يعرف المستحيل،<br>
-      حيث تتحقق الأحلام وتبدأ المغامرة.<br>
-      هل أنت مستعد لتكون الرائد في رحلتك؟
-    </div>
-    <button class="continue-button" onclick="window.location.href='https://alaagg.github.io/HELPER2/'">Continue</button>
+<!-- مشهد 3: الترحيب -->
+<div id="welcomeScene" class="scene">
+  <div class="welcome-text">
+    أنت من الأوائل الذين عبَروا هذه الأبواب،<br>
+    إلى عالم لا يعرف المستحيل،<br>
+    حيث تتحقق الأحلام وتبدأ المغامرة.<br>
+    هل أنت مستعد لتكون الرائد في رحلتك؟
   </div>
+  <button class="btn" onclick="location.href='https://alaagg.github.io/HELPER2/'">Continue</button>
+</div>
 
 <script>
-  function startPortal() {
-    document.getElementById('startScene').style.display = 'none';
-    document.getElementById('portalScene').style.display = 'flex';
+  /* إظهار / إخفاء أي مشهد */
+  const show = id => document.getElementById(id).style.display = 'flex';
+  const hide = id => document.getElementById(id).style.display = 'none';
 
+  /* يبدأ من شاشة START */
+  show('startScene');
+
+  function startPortal(){
+    hide('startScene');          // إخفاء البداية
+    show('portalScene');         // إظهار الفيديو
+
+    const vid = document.getElementById('portalVid');
+
+    /* عند انتهاء الفيديو → شاشة الترحيب */
+    vid.onended = () => { hide('portalScene'); show('welcomeScene'); };
+
+    /* احتياط: لو كان GIF أو الفيديو قصير جداً */
     setTimeout(() => {
-      document.getElementById('portalScene').style.display = 'none';
-      document.getElementById('welcomeScene').style.display = 'flex';
-    }, 3000); // 3 seconds portal
+      if (vid.paused || vid.ended) {
+        hide('portalScene'); show('welcomeScene');
+      }
+    }, 7000); // حدّ أقصى 7 ثوانٍ
   }
-
-  // Initially show only start scene
-  document.getElementById('startScene').style.display = 'flex';
 </script>
 
 </body>
-  </html>
+</html>
