@@ -124,7 +124,16 @@
   </div>
 
   <div id="overlay" style="display:none; position:fixed; inset:0; background:#000; z-index:999;">
-    <video id="intro" src="intro.mp4" autoplay playsinline></video>
+    <video id="intro" src="intro.mp4" autoplay playsinline muted style="
+      max-width: 100vw;
+      max-height: 100vh;
+      object-fit: contain;
+      display: block;
+      margin: auto;
+      border-radius: 20px;
+      background: #000;
+      box-shadow: 0 0 40px #000a;
+    "></video>
   </div>
 
   <script>
