@@ -1,119 +1,143 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Helpar</title>
   <style>
-    /* تأثير وميض نيون تنبيهي */
+    /* تأثير وميض نيون دائم وقوي */
     .glow-pulse {
-      animation: glowPulse 0.8s ease-in-out 0s 3;
-      box-shadow: 0 0 15px #00e7ff, 0 0 30px #00e7ff, 0 0 60px #00e7ff;
+      animation: glowPulse 1s ease-in-out infinite;
+      box-shadow:
+        0 0 20px #00e7ff,
+        0 0 40px #00e7ff,
+        0 0 80px #00e7ff,
+        0 0 120px #00e7ff;
       border-color: #00e7ff;
     }
     @keyframes glowPulse {
-      0%   { box-shadow: 0 0 0 transparent; }
-      50%  { box-shadow: 0 0 20px #00e7ff; }
-      100% { box-shadow: 0 0 0 transparent; }
-    }html, body {
-  margin: 0; padding: 0;
-  width: 100vw; height: 100vh;
-  overflow: hidden;
-  background: url('22.jpg') no-repeat center center fixed;
-  background-size: cover;
-  font-family: 'Segoe UI', Arial, sans-serif;
-}
+      0%, 100% {
+        box-shadow:
+          0 0 10px #00e7ff,
+          0 0 20px #00e7ff,
+          0 0 40px #00e7ff;
+      }
+      50% {
+        box-shadow:
+          0 0 30px #00e7ff,
+          0 0 60px #00e7ff,
+          0 0 120px #00e7ff,
+          0 0 160px #00e7ff;
+      }
+    }
 
-.start-button {
-  position: absolute;
-  left: 50%; bottom: 11vh;
-  transform: translate(-50%, 0);
-  padding: 14px 44px;
-  font-size: 3.4vw;
-  font-weight: bold;
-  color: #00ccff;
-  background: #000;
-  border: 3px solid #fff;
-  border-radius: 30px;
-  cursor: pointer;
-  z-index: 3;
-  box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff, 0 0 40px #00ccff, 0 0 60px #00ccff;
-  text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
-  animation: pulse 1.5s infinite alternate;
-  transition: all 0.3s ease;
-}
+    html, body {
+      margin: 0; padding: 0;
+      width: 100vw; height: 100vh;
+      overflow: hidden;
+      background: url('22.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
 
-@keyframes pulse {
-  from { transform: translate(-50%, 0) scale(1); }
-  to   { transform: translate(-50%, 0) scale(1.05); }
-}
+    .start-button {
+      position: absolute;
+      left: 50%; bottom: 11vh;
+      transform: translate(-50%, 0);
+      padding: 14px 44px;
+      font-size: 3.4vw;
+      font-weight: bold;
+      color: #00ccff;
+      background: #000;
+      border: 3px solid #fff;
+      border-radius: 30px;
+      cursor: pointer;
+      z-index: 3;
+      box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff, 0 0 40px #00ccff, 0 0 60px #00ccff;
+      text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
+      animation: pulse 1.5s infinite alternate;
+      transition: all 0.3s ease;
+    }
 
-.bottom-actions {
-  position: absolute;
-  bottom: 5vh;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 55vw;
-  z-index: 2;
-}
+    @keyframes pulse {
+      from { transform: translate(-50%, 0) scale(1); }
+      to   { transform: translate(-50%, 0) scale(1.05); }
+    }
 
-.icon-btn {
-  width: 55px; height: 55px;
-  border-radius: 50%; background: rgba(0,0,0,0.65);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  color: #00e7ff; font-size: 0.8rem;
-  cursor: pointer; transition: 0.2s;
-  position: relative;
-  border: 2px solid #00e7ff;
-  box-shadow: 0 0 18px #00e7ff80;
-}
-.icon-btn:hover {
-  background: #00e7ff33; color: #fff;
-  box-shadow: 0 0 30px #00e7ff;
-}
-.icon-btn > span,
-.icon-btn > img {
-  border: none !important;
-  box-shadow: none !important;
-  background: none !important;
-  width: auto !important;
-  height: auto !important;
-}
-.icon-btn > span {
-  font-size: 1.5rem;
-}
-.icon-btn > div:not(.dropdown) {
-  margin-top: 7px; font-size: 1rem;
-}
-.dropdown {
-  display: none; position: absolute;
-  bottom: 105%; left: 50%; transform: translateX(-50%);
-  background: #000d18f2; border: 2px solid #00e7ff;
-  border-radius: 20px; box-shadow: 0 0 20px #00e7ff55;
-  z-index: 4; min-width: 130px; text-align: center;
-  font-size: 1.15rem;
-}
-.dropdown.active { display: block; }
-.dropdown div {
-  color: #00e7ff; padding: 12px 0;
-  cursor: pointer; border-bottom: 1px solid #00e7ff22;
-  transition: 0.15s;
-}
-.dropdown div:last-child { border-bottom: none; }
-.dropdown div:hover { background: #00e7ff33; color: #fff; }
+    .bottom-actions {
+      position: absolute;
+      bottom: 5vh;
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 55vw;
+      z-index: 2;
+    }
 
-#overlay {
-  display: none; position: fixed; inset: 0;
-  background: #000; z-index: 999;
-  align-items: center; justify-content: center;
-}
-#intro {
-  width: 360px; height: 640px;
-  object-fit: contain; background: #000;
-}
+    .icon-btn {
+      width: 55px; height: 55px;
+      border-radius: 50%; background: rgba(0,0,0,0.65);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      color: #00e7ff; font-size: 0.8rem;
+      cursor: pointer; transition: 0.2s;
+      position: relative;
+      border: 2px solid #00e7ff;
+      box-shadow: 0 0 18px #00e7ff80;
+    }
 
+    .icon-btn:hover {
+      background: #00e7ff33; color: #fff;
+      box-shadow: 0 0 30px #00e7ff;
+    }
+
+    .icon-btn > span,
+    .icon-btn > img {
+      border: none !important;
+      box-shadow: none !important;
+      background: none !important;
+      width: auto !important;
+      height: auto !important;
+    }
+
+    .icon-btn > span {
+      font-size: 1.5rem;
+    }
+
+    .icon-btn > div:not(.dropdown) {
+      margin-top: 7px; font-size: 1rem;
+    }
+
+    .dropdown {
+      display: none; position: absolute;
+      bottom: 105%; left: 50%; transform: translateX(-50%);
+      background: #000d18f2; border: 2px solid #00e7ff;
+      border-radius: 20px; box-shadow: 0 0 20px #00e7ff55;
+      z-index: 4; min-width: 130px; text-align: center;
+      font-size: 1.15rem;
+    }
+
+    .dropdown.active { display: block; }
+    .dropdown div {
+      color: #00e7ff; padding: 12px 0;
+      cursor: pointer; border-bottom: 1px solid #00e7ff22;
+      transition: 0.15s;
+    }
+
+    .dropdown div:last-child { border-bottom: none; }
+    .dropdown div:hover { background: #00e7ff33; color: #fff; }
+
+    #overlay {
+      display: none; position: fixed; inset: 0;
+      background: #000; z-index: 999;
+      align-items: center; justify-content: center;
+    }
+
+    #intro {
+      width: 360px; height: 640px;
+      object-fit: contain; background: #000;
+    }
   </style>
 </head>
 <body>
@@ -147,83 +171,85 @@
       en: { welcome: "Welcome to Helpar", start: "START", lang: "Languages", avatar: "Avatar" },
       ar: { welcome: "مرحبًا بك في هلبر", start: "ابدأ", lang: "اللغات", avatar: "الشخصية" },
       tr: { welcome: "Helpar'a Hoşgeldin", start: "Başla", lang: "Diller", avatar: "Avatar" }
-    };let currentLang = 'en';
-let langTouched = false;
-let avatarSelected = false;
+    };
 
-function setLang(lang) {
-  currentLang = lang;
-  langTouched = true;
-  document.documentElement.lang = lang;
-  document.getElementById('startBtn').innerText = i18n[lang].start;
-  document.querySelector("#langBtn div:not(.dropdown)").innerText = i18n[lang].lang;
-  document.querySelector("#avatarBtn div:not(.dropdown)").innerText = i18n[lang].avatar;
-  document.getElementById('langDropdown').classList.remove('active');
-  document.getElementById('avatarDropdown').classList.remove('active');
-}
+    let currentLang = 'en';
+    let langTouched = false;
+    let avatarSelected = false;
 
-function setAvatar(id) {
-  avatarSelected = true;
-  document.getElementById('avatarDropdown').classList.remove('active');
-  document.getElementById('langDropdown').classList.remove('active');
-}
+    function setLang(lang) {
+      currentLang = lang;
+      langTouched = true;
+      document.documentElement.lang = lang;
+      document.getElementById('startBtn').innerText = i18n[lang].start;
+      document.querySelector("#langBtn div:not(.dropdown)").innerText = i18n[lang].lang;
+      document.querySelector("#avatarBtn div:not(.dropdown)").innerText = i18n[lang].avatar;
+      document.getElementById('langDropdown').classList.remove('active');
+      document.getElementById('avatarDropdown').classList.remove('active');
+    }
 
-function validateAndStart() {
-  const startBtn = document.getElementById('startBtn');
-  const langBtn = document.getElementById('langBtn');
-  const avatarBtn = document.getElementById('avatarBtn');
+    function setAvatar(id) {
+      avatarSelected = true;
+      document.getElementById('avatarDropdown').classList.remove('active');
+      document.getElementById('langDropdown').classList.remove('active');
+    }
 
-  langBtn.classList.remove('glow-pulse');
-  avatarBtn.classList.remove('glow-pulse');
+    function validateAndStart() {
+      const startBtn = document.getElementById('startBtn');
+      const langBtn = document.getElementById('langBtn');
+      const avatarBtn = document.getElementById('avatarBtn');
 
-  let valid = true;
+      langBtn.classList.remove('glow-pulse');
+      avatarBtn.classList.remove('glow-pulse');
 
-  if (!avatarSelected) {
-    avatarBtn.classList.add('glow-pulse');
-    valid = false;
-  }
-  if (!langTouched) {
-    langBtn.classList.add('glow-pulse');
-  }
+      let valid = true;
 
-  if (valid) {
-    playIntro();
-  }
-}
+      if (!avatarSelected) {
+        avatarBtn.classList.add('glow-pulse');
+        valid = false;
+      }
 
-document.getElementById('langBtn').onclick = function(e){
-  e.stopPropagation();
-  document.getElementById('langDropdown').classList.toggle('active');
-  document.getElementById('avatarDropdown').classList.remove('active');
-};
+      if (!langTouched) {
+        langBtn.classList.add('glow-pulse');
+      }
 
-document.getElementById('avatarBtn').onclick = function(e){
-  e.stopPropagation();
-  document.getElementById('avatarDropdown').classList.toggle('active');
-  document.getElementById('langDropdown').classList.remove('active');
-};
+      if (valid) {
+        playIntro();
+      }
+    }
 
-document.body.onclick = function(){
-  document.getElementById('langDropdown').classList.remove('active');
-  document.getElementById('avatarDropdown').classList.remove('active');
-};
+    document.getElementById('langBtn').onclick = function(e){
+      e.stopPropagation();
+      document.getElementById('langDropdown').classList.toggle('active');
+      document.getElementById('avatarDropdown').classList.remove('active');
+    };
 
-const overlay = document.getElementById('overlay');
-const intro = document.getElementById('intro');
+    document.getElementById('avatarBtn').onclick = function(e){
+      e.stopPropagation();
+      document.getElementById('avatarDropdown').classList.toggle('active');
+      document.getElementById('langDropdown').classList.remove('active');
+    };
 
-function playIntro(){
-  overlay.style.display = 'flex';
-  intro.currentTime = 0;
-  intro.muted = false;
-  intro.play();
-}
+    document.body.onclick = function(){
+      document.getElementById('langDropdown').classList.remove('active');
+      document.getElementById('avatarDropdown').classList.remove('active');
+    };
 
-intro.addEventListener('ended', () => {
-  overlay.style.display = 'none';
-});
+    const overlay = document.getElementById('overlay');
+    const intro = document.getElementById('intro');
 
-setLang('en');
+    function playIntro(){
+      overlay.style.display = 'flex';
+      intro.currentTime = 0;
+      intro.muted = false;
+      intro.play();
+    }
 
+    intro.addEventListener('ended', () => {
+      overlay.style.display = 'none';
+    });
+
+    setLang('en');
   </script>
 </body>
 </html>
