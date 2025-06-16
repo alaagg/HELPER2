@@ -121,12 +121,84 @@
         <div onclick="setAvatar(4)">Avatar 4</div>
       </div>
     </div>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Helpar</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      background: url('22.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .start-button {
+      margin-bottom: 90px;
+      padding: 20px 60px;
+      font-size: 5vw;
+      font-weight: bold;
+      color: #00ccff;
+      background-color: #000;
+      border: 3px solid #ffffff;
+      border-radius: 30px;
+      cursor: pointer;
+      z-index: 1;
+      box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff;
+    }
+
+    #overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 999;
+    }
+
+    #intro {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+
+  <button class="start-button" onclick="playIntro()">START</button>
+
+  <div id="overlay">
+    <video id="intro" src="Intro.mp4" autoplay playsinline muted></video>
   </div>
 
-  <div id="overlay" style="display:none; position:fixed; inset:0; background:#000; z-index:999;">
-    <video id="intro" src="intro.mp4" autoplay playsinline></video>
-  </div>
-<video id="intro" src="intro.mp4" autoplay playsinline style="max-width: 30vw; max-height: 50vh; border-radius: 12px;"></video>
+  <script>
+    function playIntro() {
+      const overlay = document.getElementById('overlay');
+      const video = document.getElementById('intro');
+      overlay.style.display = 'block';
+      video.currentTime = 0;
+      video.play();
+    }
+
+    function closeOverlay() {
+      document.getElementById('overlay').style.display = 'none';
+    }
+
+    // إغلاق الفيديو تلقائيًا بعد الانتهاء
+    document.addEventListener("DOMContentLoaded", () => {
+      const video = document.getElementById('intro');
+      video.addEventListener('ended', closeOverlay);
+    });
+  </script>
+
+</body>
+</html>
   <script>
     const i18n = {
       en: {
@@ -136,7 +208,7 @@
         avatar: "Avatar"
       },
       ar: {
-        
+        welcome: "مرحبًا بك في هلبار",
         start: "ابدأ",
         lang: "اللغات",
         avatar: "الشخصية"
