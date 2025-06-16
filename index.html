@@ -9,9 +9,26 @@
       width: 100vw; height: 100vh;
       overflow: hidden;
       font-family: 'Segoe UI', Arial, sans-serif;
-      background: url('22.jpg') no-repeat center center fixed;
-      background-size: cover;
-    }.hidden { display: none !important; }
+    }.hidden { display: none; }
+
+.page {
+  position: absolute;
+  inset: 0;
+  width: 100vw; height: 100vh;
+}
+
+#homePage {
+  background: url('22.jpg') no-repeat center center fixed;
+  background-size: cover;
+}
+
+#productPage {
+  background: url('bakrawnd.jpg') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .start-button {
   position: absolute;
@@ -26,12 +43,29 @@
   border-radius: 30px;
   cursor: pointer;
   z-index: 3;
+  box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff;
+  text-shadow: 0 0 5px #00ccff;
   animation: pulse 1.5s infinite alternate;
 }
 
 @keyframes pulse {
   from { transform: translate(-50%, 0) scale(1); }
   to   { transform: translate(-50%, 0) scale(1.05); }
+}
+
+.glow-pulse {
+  animation: glowPulse 1s ease-in-out infinite;
+  box-shadow: 0 0 20px #00e7ff, 0 0 40px #00e7ff;
+  border-color: #00e7ff;
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 10px #00e7ff;
+  }
+  50% {
+    box-shadow: 0 0 30px #00e7ff;
+  }
 }
 
 .bottom-actions {
@@ -49,53 +83,55 @@
   border-radius: 50%; background: rgba(0,0,0,0.65);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   color: #00e7ff; font-size: 0.8rem;
-  cursor: pointer;
+  cursor: pointer; transition: 0.2s;
+  border: 2px solid #00e7ff;
+  box-shadow: 0 0 18px #00e7ff80;
+}
+
+.icon-btn:hover {
+  background: #00e7ff33; color: #fff;
+  box-shadow: 0 0 30px #00e7ff;
+}
+
+#avatarBtn > img#avatarIcon {
+  width: 30px; height: 30px;
+  border-radius: 50%; object-fit: cover;
 }
 
 .dropdown {
   display: none; position: absolute;
   bottom: 70px; left: 50%; transform: translateX(-50%);
   background: #000d18f2; border: 2px solid #00e7ff;
-  border-radius: 12px; z-index: 4; text-align: center;
-  overflow: hidden; min-width: 100px; max-width: 120px;
+  border-radius: 12px; box-shadow: 0 0 20px #00e7ff55;
+  z-index: 4; min-width: 100px; max-width: 120px;
+  text-align: center; font-size: 1rem;
 }
+
 .dropdown.active { display: block; }
+
 .dropdown div {
-  padding: 10px; color: #00e7ff; cursor: pointer;
+  padding: 10px; color: #00e7ff;
+  cursor: pointer; border-bottom: 1px solid #00e7ff22;
 }
+
 .dropdown div:hover { background: #00e7ff33; color: #fff; }
+.dropdown div:last-child { border-bottom: none; }
 
-#overlay {
-  display: none; position: fixed; inset: 0;
-  background: #000; z-index: 999;
-  align-items: center; justify-content: center;
-}
-#intro {
-  width: 360px; height: 640px;
-  object-fit: contain; background: #000;
-}
-
-.avatar-screen {
-  display: none; position: absolute;
-  inset: 0;
-  background: url('bakrawnd.jpg') no-repeat center center fixed;
-  background-size: cover;
-}
-#backBtn {
+.back-btn {
   position: absolute;
   top: 20px; left: 20px;
-  font-size: 2rem;
-  color: white;
+  font-size: 2rem; color: #00e7ff;
   background: rgba(0,0,0,0.5);
-  border-radius: 50%; padding: 10px;
+  border: 2px solid #00e7ff;
+  border-radius: 50%; width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
   cursor: pointer;
-  z-index: 10;
 }
 
   </style>
 </head>
 <body>
-  <div id="homeScreen">
+  <div id="homePage" class="page">
     <button class="start-button" id="startBtn" onclick="validateAndStart()">START</button>
     <div class="bottom-actions">
       <div class="icon-btn" id="langBtn">
@@ -108,7 +144,7 @@
         </div>
       </div>
       <div class="icon-btn" id="avatarBtn">
-        <img id="avatarIcon" src="avatar1.png" width="30" height="30" style="border-radius:50%" />
+        <img id="avatarIcon" src="avatar1.png" alt="Avatar" />
         <div>Avatar</div>
         <div class="dropdown" id="avatarDropdown">
           <div onclick="setAvatar(1)">Avatar 1</div>
@@ -118,31 +154,68 @@
         </div>
       </div>
     </div>
-  </div>  <div id="overlay">
+  </div>  <div id="productPage" class="page hidden">
+    <div class="back-btn" onclick="goBack()">←</div>
+  </div>  <div id="overlay" style="display:none; position:fixed; inset:0; background:#000; z-index: 999; align-items:center; justify-content:center;">
     <video id="intro" src="intro.mp4" autoplay playsinline muted></video>
-  </div>  <div id="avatarScreen" class="avatar-screen">
-    <div id="backBtn" onclick="goBack()">←</div>
-    <!-- محتوى عرض المنتج هنا -->
   </div>  <script>
+    const i18n = {
+      en: { start: "START", lang: "Languages", avatar: "Avatar" },
+      ar: { start: "ابدأ", lang: "اللغات", avatar: "الشخصية" },
+      tr: { start: "Başla", lang: "Diller", avatar: "Avatar" }
+    };
+
     let currentLang = 'en', langTouched = false, avatarSelected = false;
 
     function setLang(lang) {
       currentLang = lang;
       langTouched = true;
       document.documentElement.lang = lang;
-      document.getElementById('langDropdown').classList.remove('active');
-      document.getElementById('avatarDropdown').classList.remove('active');
+      document.getElementById('startBtn').innerText = i18n[lang].start;
+      document.querySelector('#langBtn div:not(.dropdown)').innerText = i18n[lang].lang;
+      document.querySelector('#avatarBtn div:not(.dropdown)').innerText = i18n[lang].avatar;
+      closeDropdowns();
     }
 
     function setAvatar(id) {
       avatarSelected = true;
       document.getElementById('avatarIcon').src = `avatar${id}.png`;
-      document.getElementById('avatarDropdown').classList.remove('active');
-      document.getElementById('langDropdown').classList.remove('active');
+      closeDropdowns();
     }
 
     function validateAndStart() {
-      if (avatarSelected && langTouched) playIntro();
+      const langBtn = document.getElementById('langBtn');
+      const avatarBtn = document.getElementById('avatarBtn');
+      langBtn.classList.remove('glow-pulse');
+      avatarBtn.classList.remove('glow-pulse');
+      let valid = true;
+      if (!avatarSelected) { avatarBtn.classList.add('glow-pulse'); valid = false; }
+      if (!langTouched)  { langBtn.classList.add('glow-pulse'); valid = false; }
+      if (valid) playIntro();
+    }
+
+    function playIntro() {
+      const overlay = document.getElementById('overlay');
+      const intro = document.getElementById('intro');
+      overlay.style.display = 'flex';
+      intro.currentTime = 0;
+      intro.muted = false;
+      intro.play();
+      intro.onended = () => {
+        overlay.style.display = 'none';
+        document.getElementById('homePage').classList.add('hidden');
+        document.getElementById('productPage').classList.remove('hidden');
+      };
+    }
+
+    function goBack() {
+      document.getElementById('productPage').classList.add('hidden');
+      document.getElementById('homePage').classList.remove('hidden');
+    }
+
+    function closeDropdowns() {
+      document.getElementById('langDropdown').classList.remove('active');
+      document.getElementById('avatarDropdown').classList.remove('active');
     }
 
     document.getElementById('langBtn').onclick = e => {
@@ -150,35 +223,15 @@
       document.getElementById('langDropdown').classList.toggle('active');
       document.getElementById('avatarDropdown').classList.remove('active');
     };
+
     document.getElementById('avatarBtn').onclick = e => {
       e.stopPropagation();
       document.getElementById('avatarDropdown').classList.toggle('active');
       document.getElementById('langDropdown').classList.remove('active');
     };
-    document.body.onclick = () => {
-      document.getElementById('langDropdown').classList.remove('active');
-      document.getElementById('avatarDropdown').classList.remove('active');
-    };
 
-    const overlay = document.getElementById('overlay');
-    const intro = document.getElementById('intro');
+    document.body.onclick = closeDropdowns;
 
-    function playIntro() {
-      overlay.style.display = 'flex';
-      intro.currentTime = 0;
-      intro.muted = false;
-      intro.play();
-    }
-
-    intro.addEventListener('ended', () => {
-      overlay.style.display = 'none';
-      document.getElementById('homeScreen').classList.add('hidden');
-      document.getElementById('avatarScreen').style.display = 'block';
-    });
-
-    function goBack() {
-      document.getElementById('avatarScreen').style.display = 'none';
-      document.getElementById('homeScreen').classList.remove('hidden');
-    }
+    setLang('en');
   </script></body>
-      </html>
+</html>
