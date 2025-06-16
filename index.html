@@ -83,21 +83,18 @@
   background: #00e7ff33; color: #fff;
   box-shadow: 0 0 30px #00e7ff;
 }
-/* حجم ثابت لأيقونة الأفاتار داخل الزر */
+/* صورة الأفاتار تملأ الزر بالكامل */
 #avatarBtn > img#avatarIcon {
   width: 100% !important;
   height: 100% !important;
-  border-radius: 50%;
-  object-fit: cover;
-  border: none !important;
-  box-shadow: none !important;
+  border-radius: 50%; object-fit: cover;
+  border: none !important; box-shadow: none !important;
 }
 
-/* نص الأيقونة */
 .icon-btn > span { font-size: 1.5rem; }
 .icon-btn > div:not(.dropdown) { margin-top: 7px; font-size: 1rem; }
 
-/* Dropdown styling */
+/* القوائم المنسدلة */
 .dropdown {
   display: none; position: absolute;
   bottom: 70px; left: 50%; transform: translateX(-50%);
@@ -115,11 +112,19 @@
 }
 .dropdown div:last-child { border-bottom: none; }
 .dropdown div:hover { background: #00e7ff33; color: #fff; }
-/* حجم الصور داخل القائمة */
 .dropdown img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; }
 
+/* تصغير قائمة اللغة أفقياً */
+#langDropdown {
+  min-width: 100px !important;
+}
+#langDropdown div {
+  padding: 8px;
+  font-size: 1rem;
+}
+
 #overlay {
-  display: none; position: fixed; inset: 0;
+  display: false; position: fixed; inset: 0;
   background: #000; z-index: 999;
   align-items: center; justify-content: center;
 }
@@ -130,7 +135,7 @@
 <body>
   <button class="start-button" id="startBtn" onclick="validateAndStart()">START</button>
   <div class="bottom-actions">
-    <!-- Languages Button -->
+    <!-- زر اللغة -->
     <div class="icon-btn" id="langBtn">
       <span>🌐</span>
       <div>Languages</div>
@@ -140,7 +145,7 @@
         <div onclick="setLang('tr')">Turkish</div>
       </div>
     </div>
-    <!-- Avatar Button -->
+    <!-- زر الأفاتار -->
     <div class="icon-btn" id="avatarBtn">
       <img id="avatarIcon" src="avatar1.png" alt="Avatar" />
       <div>Avatar</div>
