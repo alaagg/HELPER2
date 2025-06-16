@@ -27,11 +27,7 @@
       border-radius: 30px;
       cursor: pointer;
       z-index: 2;
-      box-shadow:
-        0 0 10px #00ccff,
-        0 0 20px #00ccff,
-        0 0 40px #00ccff,
-        0 0 60px #00ccff;
+      box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff, 0 0 40px #00ccff, 0 0 60px #00ccff;
       text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
       animation: pulse 1.5s infinite alternate;
       transition: all 0.3s ease;
@@ -115,8 +111,8 @@
     }
 
     #intro {
-      width: 1080px;
-      height: 1920px;
+      width: 360px;
+      height: 640px;
       object-fit: contain;
       background: #000;
     }
@@ -149,7 +145,7 @@
   </div>
 
   <div id="overlay">
-    <video id="intro" src="intro.mp4" autoplay playsinline></video>
+    <video id="intro" src="intro.mp4" autoplay playsinline muted></video>
   </div>
 
   <script>
@@ -175,10 +171,12 @@
       document.querySelector("#avatarBtn div").innerText = i18n[lang].avatar;
       speak(i18n[lang].welcome);
       document.getElementById('langDropdown').classList.remove('active');
+      document.getElementById('avatarDropdown').classList.remove('active');
     }
 
     function setAvatar(id) {
       document.getElementById('avatarDropdown').classList.remove('active');
+      document.getElementById('langDropdown').classList.remove('active');
     }
 
     document.getElementById('langBtn').onclick = function(e){
