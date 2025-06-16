@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Helpar</title>
   <style>
-    /* تأثير وميض نيون دائم وقوي */
+    /* وميض نيون دائم وقوي */
     .glow-pulse {
       animation: glowPulse 1s ease-in-out infinite;
       box-shadow:
@@ -153,7 +153,7 @@
       </div>
     </div>
     <div class="icon-btn" id="avatarBtn">
-      <span>🦸‍♂️</span>
+      <img id="avatarIcon" src="default-avatar.png" style="width:30px; height:30px; border-radius:50%;" />
       <div>Avatar</div>
       <div class="dropdown" id="avatarDropdown">
         <div onclick="setAvatar(1)">Avatar 1</div>
@@ -190,12 +190,12 @@
 
     function setAvatar(id) {
       avatarSelected = true;
+      document.getElementById('avatarIcon').src = `avatar${id}.png`;
       document.getElementById('avatarDropdown').classList.remove('active');
       document.getElementById('langDropdown').classList.remove('active');
     }
 
     function validateAndStart() {
-      const startBtn = document.getElementById('startBtn');
       const langBtn = document.getElementById('langBtn');
       const avatarBtn = document.getElementById('avatarBtn');
 
