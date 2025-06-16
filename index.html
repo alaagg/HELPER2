@@ -98,6 +98,7 @@
 </head>
 <body>
 
+  <!-- ✅ زر START لتشغيل الفيديو -->
   <button class="start-button" id="startBtn" onclick="playIntro()">START</button>
 
   <div class="bottom-actions">
@@ -122,11 +123,20 @@
     </div>
   </div>
 
-  <!-- ✅ الفيديو بحجم أكبر (45vw × 81vh) -->
-  <div id="overlay" style="display:none; position:fixed; inset:0; background:#000; z-index:999; display:flex; align-items:center; justify-content:center;">
+  <!-- ✅ الفيديو لا يظهر إلا بعد الضغط -->
+  <div id="overlay" style="
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  ">
     <video id="intro" src="intro.mp4" autoplay playsinline muted style="
-      width: 45vw;
-      height: 81vh;
+      width: 38vw;
+      height: 68vh;
       object-fit: cover;
       border-radius: 20px;
       display: block;
@@ -207,7 +217,7 @@
       overlay.style.display = 'none';
     });
 
-    setLang('en');
+    setLang('en'); // لا تضف بعدها playIntro()
   </script>
 
 </body>
