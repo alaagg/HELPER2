@@ -11,6 +11,7 @@
       background: url('22.jpg') no-repeat center center fixed;
       background-size: cover;
       display: flex; align-items: flex-end; justify-content: center;
+      overflow: hidden;
     }
     .start-button {
       margin-bottom: 90px;
@@ -23,11 +24,10 @@
       border-radius: 30px;
       cursor: pointer;
       z-index: 1;
-      box-shadow:
-        0 0 10px #00ccff,
-        0 0 20px #00ccff,
-        0 0 40px #00ccff,
-        0 0 60px #00ccff;
+      box-shadow: 0 0 10px #00ccff,
+                  0 0 20px #00ccff,
+                  0 0 40px #00ccff,
+                  0 0 60px #00ccff;
       text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
       animation: pulse 1.5s infinite alternate;
       transition: all 0.3s ease;
@@ -94,7 +94,7 @@
       transition: 0.15s;
     }
     .dropdown div:last-child { border-bottom: none; }
-    .dropdown div:hover { background: #00e7ff33; color: #fff; }
+    .dropdown div:hover { background: #00e7ff33; color: #fff;}
   </style>
 </head>
 <body>
@@ -123,15 +123,13 @@
     </div>
   </div>
 
-  <!-- ✅ الفيديو في المنتصف تمامًا وبالحجم الكامل مع صوت -->
-  <div id="overlay" style="display:none; position:fixed; inset:0; background:#000; z-index:999; display: flex; align-items: center; justify-content: center;">
+  <div id="overlay" style="display:none; position:fixed; inset:0; background:#000; z-index:999; display:flex; align-items:center; justify-content:center;">
     <video id="intro" src="intro.mp4" autoplay playsinline style="
       width: 1080px;
       height: 1920px;
       object-fit: contain;
-      border-radius: 20px;
       background: #000;
-      box-shadow: 0 0 40px #000a;
+      display: block;
     "></video>
   </div>
 
