@@ -8,13 +8,16 @@
     html, body {
       margin: 0; padding: 0;
       height: 100%; width: 100%;
+      overflow: hidden;
       background: url('22.jpg') no-repeat center center fixed;
       background-size: cover;
-      display: flex; align-items: flex-end; justify-content: center;
-      overflow: hidden;
     }
+
     .start-button {
-      margin-bottom: 90px;
+      position: absolute;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%);
       padding: 20px 60px;
       font-size: 5vw;
       font-weight: bold;
@@ -23,32 +26,36 @@
       border: 3px solid #ffffff;
       border-radius: 30px;
       cursor: pointer;
-      z-index: 1;
-      box-shadow: 0 0 10px #00ccff,
-                  0 0 20px #00ccff,
-                  0 0 40px #00ccff,
-                  0 0 60px #00ccff;
+      z-index: 2;
+      box-shadow:
+        0 0 10px #00ccff,
+        0 0 20px #00ccff,
+        0 0 40px #00ccff,
+        0 0 60px #00ccff;
       text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
       animation: pulse 1.5s infinite alternate;
       transition: all 0.3s ease;
     }
+
     @keyframes pulse {
       from { transform: scale(1); }
       to   { transform: scale(1.05); }
     }
+
     .bottom-actions {
       width: 100%;
       display: flex;
       justify-content: center;
-      gap:150px;
+      gap: 150px;
       position: absolute;
       bottom: 26px;
       left: 0;
       z-index: 2;
     }
+
     .icon-btn {
-      width: 55px !important;
-      height: 55px !important;
+      width: 55px;
+      height: 55px;
       border-radius: 50%;
       background: rgba(0,0,0,0.65);
       border: 2px solid #00e7ff;
@@ -58,16 +65,17 @@
       justify-content: center;
       box-shadow: 0 0 18px #00e7ff80;
       color: #00e7ff;
-      font-size: 0.8rem !important;
-      position: relative;
+      font-size: 0.8rem;
       cursor: pointer;
       transition: 0.2s;
     }
-    .icon-btn:active, .icon-btn:hover {
+
+    .icon-btn:hover {
       background: #00e7ff33;
       color: #fff;
       box-shadow: 0 0 30px #00e7ff;
     }
+
     .dropdown {
       display: none;
       position: absolute;
@@ -83,9 +91,8 @@
       text-align: center;
       font-size: 1.3rem;
     }
-    .dropdown.active {
-      display: block;
-    }
+
+    .dropdown.active { display: block; }
     .dropdown div {
       color: #00e7ff;
       padding: 12px 0;
@@ -93,8 +100,26 @@
       border-bottom: 1px solid #00e7ff22;
       transition: 0.15s;
     }
+
     .dropdown div:last-child { border-bottom: none; }
-    .dropdown div:hover { background: #00e7ff33; color: #fff;}
+    .dropdown div:hover { background: #00e7ff33; color: #fff; }
+
+    #overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #intro {
+      width: 1080px;
+      height: 1920px;
+      object-fit: contain;
+      background: #000;
+    }
   </style>
 </head>
 <body>
@@ -123,37 +148,17 @@
     </div>
   </div>
 
-  <div id="overlay" style="display:none; position:fixed; inset:0; background:#000; z-index:999; display:flex; align-items:center; justify-content:center;">
-    <video id="intro" src="intro.mp4" autoplay playsinline style="
-      width: 1080px;
-      height: 1920px;
-      object-fit: contain;
-      background: #000;
-      display: block;
-    "></video>
+  <div id="overlay">
+    <video id="intro" src="intro.mp4" autoplay playsinline></video>
   </div>
 
   <script>
     const i18n = {
-      en: {
-        welcome: "Welcome to Helpar",
-        start: "START",
-        lang: "Languages",
-        avatar: "Avatar"
-      },
-      ar: {
-        welcome: "مرحبًا بك في هلبار",
-        start: "ابدأ",
-        lang: "اللغات",
-        avatar: "الشخصية"
-      },
-      tr: {
-        welcome: "Helpar'a Hoşgeldin",
-        start: "Başla",
-        lang: "Diller",
-        avatar: "Avatar"
-      }
+      en: { welcome: "Welcome to Helpar", start: "START", lang: "Languages", avatar: "Avatar" },
+      ar: { welcome: "مرحبًا بك في هلبار", start: "ابدأ", lang: "اللغات", avatar: "الشخصية" },
+      tr: { welcome: "Helpar'a Hoşgeldin", start: "Başla", lang: "Diller", avatar: "Avatar" }
     };
+
     let currentLang = 'en';
 
     function speak(text) {
@@ -181,23 +186,26 @@
       document.getElementById('langDropdown').classList.toggle('active');
       document.getElementById('avatarDropdown').classList.remove('active');
     };
+
     document.getElementById('avatarBtn').onclick = function(e){
       e.stopPropagation();
       document.getElementById('avatarDropdown').classList.toggle('active');
       document.getElementById('langDropdown').classList.remove('active');
     };
+
     document.body.onclick = function(){
       document.getElementById('langDropdown').classList.remove('active');
       document.getElementById('avatarDropdown').classList.remove('active');
     };
 
     const overlay = document.getElementById('overlay');
-    const intro   = document.getElementById('intro');
+    const intro = document.getElementById('intro');
 
     function playIntro(){
       speak(i18n[currentLang].start);
       overlay.style.display = 'flex';
       intro.currentTime = 0;
+      intro.muted = false;
       intro.play();
     }
 
