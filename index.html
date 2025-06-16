@@ -10,7 +10,7 @@
       height: 100%; width: 100%;
       background: url('22.jpg') no-repeat center center fixed;
       background-size: cover;
-      display: flex; align-items: flex-end; justify-content: center;
+      display: flex; align-items: flex-end; justify-content:center;
     }
     .start-button {
       margin-bottom: 90px;
@@ -23,11 +23,10 @@
       border-radius: 30px;
       cursor: pointer;
       z-index: 1;
-      box-shadow:
-        0 0 10px #00ccff,
-        0 0 20px #00ccff,
-        0 0 40px #00ccff,
-        0 0 60px #00ccff;
+      box-shadow: 0 0 10px #00ccff,
+                  0 0 20px #00ccff,
+                  0 0 40px #00ccff,
+                  0 0 60px #00ccff;
       text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
       animation: pulse 1.5s infinite alternate;
       transition: all 0.3s ease;
@@ -123,10 +122,11 @@
     </div>
   </div>
 
+  <!-- ✅ الفيديو المعدل للثلث -->
   <div id="overlay" style="display:none; position:fixed; inset:0; background:#000; z-index:999; display:flex; align-items:center; justify-content:center;">
     <video id="intro" src="intro.mp4" autoplay playsinline muted style="
-      width: 1080px;
-      height: 1920px;
+      width: 33vw;
+      height: 59vh;
       object-fit: cover;
       border-radius: 20px;
       display: block;
