@@ -17,10 +17,10 @@
     .start-button {
       position: absolute;
       left: 50%;
-      bottom: 11vh; /* تم تنزيله أكثر للأسفل */
+      bottom: 11vh;
       transform: translate(-50%, 0);
-      padding: 14px 44px; /* تصغير البادينغ */
-      font-size: 3.4vw;   /* تصغير الخط */
+      padding: 14px 44px;
+      font-size: 3.4vw;
       font-weight: bold;
       color: #00ccff;
       background: #000;
@@ -33,12 +33,23 @@
       animation: pulse 1.5s infinite alternate;
       transition: all 0.3s ease;
     }
-
+    .start-button.disabled {
+      filter: grayscale(0.8) opacity(0.6);
+      cursor: not-allowed;
+      animation: none;
+    }
+    .glow {
+      box-shadow: 0 0 18px #ff0055, 0 0 32px #ff0055 !important;
+      animation: glowPulse 0.8s infinite alternate !important;
+    }
     @keyframes pulse {
       from { transform: translate(-50%, 0) scale(1);}
       to   { transform: translate(-50%, 0) scale(1.05);}
     }
-
+    @keyframes glowPulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.08);}
+    }
     .bottom-actions {
       position: absolute;
       bottom: 5vh;
@@ -47,11 +58,10 @@
       flex-direction: row;
       justify-content: center;
       align-items: center;
-      gap: 55vw; /* توسعة المسافة الأفقية */
+      gap: 55vw;
       z-index: 2;
       pointer-events: auto;
     }
-
     .icon-btn {
       width: 55px;
       height: 55px;
@@ -69,22 +79,18 @@
       transition: 0.2s;
       position: relative;
     }
-
-    .icon-btn:hover {
-      background: #00e7ff33;
-      color: #fff;
-      box-shadow: 0 0 30px #00e7ff;
-    }
-
-    .icon-btn > span {
+    .icon-btn > span, .icon-btn > img {
       font-size: 1.5rem;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid #00e7ff;
     }
-
     .icon-btn > div:not(.dropdown) {
       margin-top: 7px;
       font-size: 1rem;
     }
-
     .dropdown {
       display: none;
       position: absolute;
@@ -100,7 +106,6 @@
       text-align: center;
       font-size: 1.15rem;
     }
-
     .dropdown.active { display: block; }
     .dropdown div {
       color: #00e7ff;
@@ -111,7 +116,6 @@
     }
     .dropdown div:last-child { border-bottom: none; }
     .dropdown div:hover { background: #00e7ff33; color: #fff; }
-
     #overlay {
       display: none;
       position: fixed;
@@ -121,7 +125,6 @@
       align-items: center;
       justify-content: center;
     }
-
     #intro {
       width: 360px;
       height: 640px;
@@ -131,10 +134,10 @@
   </style>
 </head>
 <body>
-  <button class="start-button" id="startBtn" onclick="playIntro()">START</button>
+  <button class="start-button" id="startBtn" onclick="validateAndStart()">START</button>
   <div class="bottom-actions">
     <div class="icon-btn" id="langBtn">
-      <span>🌐</span>
+      <span id="lang-icon">🌐</span>
       <div>Languages</div>
       <div class="dropdown" id="langDropdown">
         <div onclick="setLang('en')">English</div>
@@ -143,7 +146,7 @@
       </div>
     </div>
     <div class="icon-btn" id="avatarBtn">
-      <span>🦸‍♂️</span>
+      <img id="avatar-icon" src="avatar.png" />
       <div>Avatar</div>
       <div class="dropdown" id="avatarDropdown">
         <div onclick="setAvatar(1)">Avatar 1</div>
@@ -154,7 +157,7 @@
     </div>
   </div>
   <div id="overlay">
-    <video id="intro" src="intro..mp4" autoplay playsinline muted></video>
+    <video id="intro" src="intro.mp4" autoplay playsinline muted></video>
   </div>
   <script>
     const i18n = {
@@ -164,9 +167,15 @@
     };
 
     let currentLang = 'en';
+    let avatarSelected = false;
+    let selectedAvatar = 'avatar.png';
+
+    // هل لمس زر اللغة (حتى لو لم يغيرها)
+    let langTouched = false;
 
     function setLang(lang) {
       currentLang = lang;
+      langTouched = true;
       document.documentElement.lang = lang;
       document.getElementById('startBtn').innerText = i18n[lang].start;
       document.querySelector("#langBtn div:not(.dropdown)").innerText = i18n[lang].lang;
@@ -176,6 +185,14 @@
     }
 
     function setAvatar(id) {
+      avatarSelected = true;
+      switch(id) {
+        case 1: selectedAvatar = "avatar.png"; break;
+        case 2: selectedAvatar = "avatar2.png"; break;
+        case 3: selectedAvatar = "avatar3.png"; break;
+        case 4: selectedAvatar = "avatar4.png"; break;
+      }
+      document.getElementById('avatar-icon').src = selectedAvatar;
       document.getElementById('avatarDropdown').classList.remove('active');
       document.getElementById('langDropdown').classList.remove('active');
     }
@@ -197,19 +214,45 @@
       document.getElementById('avatarDropdown').classList.remove('active');
     };
 
-    const overlay = document.getElementById('overlay');
-    const intro = document.getElementById('intro');
+    // الزر الذكي مع تنبيه/تعطيل
+    function validateAndStart() {
+      const avatarBtn = document.getElementById('avatarBtn');
+      const langBtn = document.getElementById('langBtn');
+      avatarBtn.classList.remove('glow');
+      langBtn.classList.remove('glow');
+      let valid = true;
 
+      // يجب اختيار أفاتار
+      if (!avatarSelected) {
+        avatarBtn.classList.add('glow');
+        valid = false;
+      }
+
+      // إذا المستخدم لم يلمس زر اللغة مطلقًا
+      if (!langTouched) {
+        langBtn.classList.add('glow');
+      }
+
+      if (valid) {
+        playIntro();
+      }
+    }
+
+    // تشغيل الفيديو ثم الانتقال للصفحة الثانية مع الأفاتار
     function playIntro(){
+      const overlay = document.getElementById('overlay');
+      const intro = document.getElementById('intro');
       overlay.style.display = 'flex';
       intro.currentTime = 0;
       intro.muted = false;
       intro.play();
-    }
 
-    intro.addEventListener('ended', () => {
-      overlay.style.display = 'none';
-    });
+      intro.onended = function() {
+        overlay.style.display = 'none';
+        // انتقال لصفحة عرض الأفاتار الكامل
+        window.location.href = `avatar.html?img=${selectedAvatar}`;
+      }
+    }
 
     setLang('en');
   </script>
