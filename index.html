@@ -4,7 +4,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Helpar</title>
   <style>
-    /* وميض نيون دائم وقوي */
     .glow-pulse {
       animation: glowPulse 1s ease-in-out infinite;
       box-shadow:
@@ -16,17 +15,10 @@
     }
     @keyframes glowPulse {
       0%, 100% {
-        box-shadow:
-          0 0 10px #00e7ff,
-          0 0 20px #00e7ff,
-          0 0 40px #00e7ff;
+        box-shadow: 0 0 10px #00e7ff, 0 0 20px #00e7ff, 0 0 40px #00e7ff;
       }
       50% {
-        box-shadow:
-          0 0 30px #00e7ff,
-          0 0 60px #00e7ff,
-          0 0 120px #00e7ff,
-          0 0 160px #00e7ff;
+        box-shadow: 0 0 30px #00e7ff, 0 0 60px #00e7ff, 0 0 120px #00e7ff, 0 0 160px #00e7ff;
       }
     }html, body {
   margin: 0; padding: 0;
@@ -50,7 +42,7 @@
   border-radius: 30px;
   cursor: pointer;
   z-index: 3;
-  box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff;
+  box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff, 0 0 40px #00ccff, 0 0 60px #00ccff;
   text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
   animation: pulse 1.5s infinite alternate;
   transition: all 0.3s ease;
@@ -64,9 +56,7 @@
   position: absolute;
   bottom: 5vh;
   width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: flex; justify-content: center; align-items: center;
   gap: 55vw;
   z-index: 2;
 }
@@ -74,79 +64,56 @@
 .icon-btn {
   position: relative;
   width: 55px; height: 55px;
-  border-radius: 50%;
-  background: rgba(0,0,0,0.65);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #00e7ff;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: 0.2s;
+  border-radius: 50%; background: rgba(0,0,0,0.65);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: #00e7ff; font-size: 0.8rem;
+  cursor: pointer; transition: 0.2s;
   border: 2px solid #00e7ff;
   box-shadow: 0 0 18px #00e7ff80;
 }
 .icon-btn:hover {
-  background: #00e7ff33;
-  color: #fff;
+  background: #00e7ff33; color: #fff;
   box-shadow: 0 0 30px #00e7ff;
 }
 
 #avatarBtn > img#avatarIcon {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  object-fit: cover;
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 50%; object-fit: cover;
+  border: none !important; box-shadow: none !important;
 }
 
 .icon-btn > span { font-size: 1.5rem; }
 .icon-btn > div:not(.dropdown) { margin-top: 7px; font-size: 1rem; }
 
 .dropdown {
-  display: none;
-  position: absolute;
-  bottom: 70px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #000d18f2;
-  border: 2px solid #00e7ff;
-  border-radius: 12px;
-  box-shadow: 0 0 20px #00e7ff55;
-  z-index: 4;
-  min-width: 100px;
-  text-align: center;
-  font-size: 1rem;
+  display: none; position: absolute;
+  bottom: 70px; left: 50%; transform: translateX(-50%);
+  background: #000d18f2; border: 2px solid #00e7ff;
+  border-radius: 12px; box-shadow: 0 0 20px #00e7ff55;
+  z-index: 4; min-width: 100px; max-width: 120px;
+  text-align: center; font-size: 1rem;
   overflow: hidden;
 }
 .dropdown.active { display: block; }
 .dropdown div {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px;
-  color: #00e7ff;
-  cursor: pointer;
-  border-bottom: 1px solid #00e7ff22;
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px; color: #00e7ff;
+  cursor: pointer; border-bottom: 1px solid #00e7ff22;
+  transition: background 0.15s;
 }
 .dropdown div:last-child { border-bottom: none; }
 .dropdown div:hover { background: #00e7ff33; color: #fff; }
 .dropdown img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; }
 
 #overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: #000;
-  z-index: 999;
-  align-items: center;
-  justify-content: center;
+  display: none; position: fixed; inset: 0;
+  background: #000; z-index: 999;
+  align-items: center; justify-content: center;
 }
 #intro {
-  width: 360px;
-  height: 640px;
-  object-fit: contain;
-  background: #000;
+  width: 360px; height: 640px;
+  object-fit: contain; background: #000;
 }
 
   </style>
@@ -167,10 +134,10 @@
       <img id="avatarIcon" src="avatar1.png" alt="Avatar" />
       <div>Avatar</div>
       <div class="dropdown" id="avatarDropdown">
-        <div onclick="setAvatar(1)"><img src="avatar1.png" alt=""/>Avatar 1</div>
-        <div onclick="setAvatar(2)"><img src="avatar2.png" alt=""/>Avatar 2</div>
-        <div onclick="setAvatar(3)"><img src="avatar3.png" alt=""/>Avatar 3</div>
-        <div onclick="setAvatar(4)"><img src="avatar4.png" alt=""/>Avatar 4</div>
+        <div onclick="setAvatar(1)"><img src="avatar1.png" alt="Avatar 1"/>Avatar 1</div>
+        <div onclick="setAvatar(2)"><img src="avatar2.png" alt="Avatar 2"/>Avatar 2</div>
+        <div onclick="setAvatar(3)"><img src="avatar3.png" alt="Avatar 3"/>Avatar 3</div>
+        <div onclick="setAvatar(4)"><img src="avatar4.png" alt="Avatar 4"/>Avatar 4</div>
       </div>
     </div>
   </div>
@@ -181,17 +148,68 @@
     const i18n = {
       en: { welcome: "Welcome to Helpar", start: "START", lang: "Languages", avatar: "Avatar" },
       ar: { welcome: "مرحبًا بك في هلبر", start: "ابدأ", lang: "اللغات", avatar: "الشخصية" },
-      tr: { welcome: "Helpar'a Hoşgeldin", start: "Başلا", lang: "Diller", avatar: "Avatar" }
-    };
-    let currentLang = 'en';
-    let langTouched = false;
-    let avatarSelected = false;
-    let selectedAvatarId = null;function setLang(lang) {
+      tr: { welcome: "Helpar'a Hoşgeldin", start: "Başla", lang: "Diller", avatar: "Avatar" }
+    };let currentLang = 'en', langTouched = false, avatarSelected = false;
+
+function setLang(lang) {
   currentLang = lang;
   langTouched = true;
   document.documentElement.lang = lang;
   document.getElementById('startBtn').innerText = i18n[lang].start;
   document.querySelector('#langBtn div:not(.dropdown)').innerText = i18n[lang].lang;
   document.querySelector('#avatarBtn div:not(.dropdown)').innerText = i18n[lang].avatar;
+  document.getElementById('langDropdown').classList.remove('active');
+  document.getElementById('avatarDropdown').classList.remove('active');
+}
 
-    
+function setAvatar(id) {
+  avatarSelected = true;
+  document.getElementById('avatarIcon').src = `avatar${id}.png`;
+  document.getElementById('avatarDropdown').classList.remove('active');
+  document.getElementById('langDropdown').classList.remove('active');
+}
+
+function validateAndStart() {
+  const langBtn = document.getElementById('langBtn');
+  const avatarBtn = document.getElementById('avatarBtn');
+  langBtn.classList.remove('glow-pulse');
+  avatarBtn.classList.remove('glow-pulse');
+  let valid = true;
+  if (!avatarSelected) { avatarBtn.classList.add('glow-pulse'); valid = false; }
+  if (!langTouched)  { langBtn.classList.add('glow-pulse'); }
+  if (valid) playIntro();
+}
+
+document.getElementById('langBtn').onclick = e => {
+  e.stopPropagation();
+  document.getElementById('langDropdown').classList.toggle('active');
+  document.getElementById('avatarDropdown').classList.remove('active');
+};
+
+document.getElementById('avatarBtn').onclick = e => {
+  e.stopPropagation();
+  document.getElementById('avatarDropdown').classList.toggle('active');
+  document.getElementById('langDropdown').classList.remove('active');
+};
+
+document.body.onclick = () => {
+  document.getElementById('langDropdown').classList.remove('active');
+  document.getElementById('avatarDropdown').classList.remove('active');
+};
+
+const overlay = document.getElementById('overlay');
+const intro = document.getElementById('intro');
+
+function playIntro() {
+  overlay.style.display = 'flex';
+  intro.currentTime = 0;
+  intro.muted = false;
+  intro.play();
+}
+
+intro.addEventListener('ended', () => overlay.style.display = 'none');
+setLang('en');
+
+  </script>
+</body>
+</html>
