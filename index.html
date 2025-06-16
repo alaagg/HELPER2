@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -6,122 +7,135 @@
   <style>
     html, body {
       margin: 0; padding: 0;
-      height: 100%; width: 100%;
+      width: 100vw; height: 100vh;
       overflow: hidden;
       background: url('22.jpg') no-repeat center center fixed;
       background-size: cover;
-    }.start-button {
-  position: absolute;
-  bottom: 90px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 20px 60px;
-  font-size: 5vw;
-  font-weight: bold;
-  color: #00ccff;
-  background-color: #000;
-  border: 3px solid #ffffff;
-  border-radius: 30px;
-  cursor: pointer;
-  z-index: 2;
-  box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff, 0 0 40px #00ccff, 0 0 60px #00ccff;
-  text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
-  animation: pulse 1.5s infinite alternate;
-  transition: all 0.3s ease;
-}
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
 
-@keyframes pulse {
-  from { transform: scale(1); }
-  to   { transform: scale(1.05); }
-}
+    .start-button {
+      position: absolute;
+      left: 50%;
+      bottom: 18vh;
+      transform: translate(-50%, 0);
+      padding: 20px 60px;
+      font-size: 5vw;
+      font-weight: bold;
+      color: #00ccff;
+      background: #000;
+      border: 3px solid #fff;
+      border-radius: 30px;
+      cursor: pointer;
+      z-index: 3;
+      box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff, 0 0 40px #00ccff, 0 0 60px #00ccff;
+      text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
+      animation: pulse 1.5s infinite alternate;
+      transition: all 0.3s ease;
+    }
 
-.bottom-actions {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 150px;
-  position: absolute;
-  bottom: 26px;
-  left: 0;
-  z-index: 2;
-}
+    @keyframes pulse {
+      from { transform: translate(-50%, 0) scale(1);}
+      to   { transform: translate(-50%, 0) scale(1.05);}
+    }
 
-.icon-btn {
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  background: rgba(0,0,0,0.65);
-  border: 2px solid #00e7ff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 18px #00e7ff80;
-  color: #00e7ff;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: 0.2s;
-}
+    .bottom-actions {
+      position: absolute;
+      bottom: 5vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 42vw; /* يجعل الأزرار على الجانبين */
+      z-index: 2;
+      pointer-events: auto;
+    }
 
-.icon-btn:hover {
-  background: #00e7ff33;
-  color: #fff;
-  box-shadow: 0 0 30px #00e7ff;
-}
+    .icon-btn {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.65);
+      border: 2px solid #00e7ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 18px #00e7ff80;
+      color: #00e7ff;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: 0.2s;
+      position: relative;
+    }
 
-.dropdown {
-  display: none;
-  position: absolute;
-  bottom: 105%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #000d18f2;
-  border: 2px solid #00e7ff;
-  border-radius: 20px;
-  box-shadow: 0 0 20px #00e7ff55;
-  z-index: 4;
-  min-width: 130px;
-  text-align: center;
-  font-size: 1.3rem;
-}
+    .icon-btn:hover {
+      background: #00e7ff33;
+      color: #fff;
+      box-shadow: 0 0 30px #00e7ff;
+    }
 
-.dropdown.active { display: block; }
-.dropdown div {
-  color: #00e7ff;
-  padding: 12px 0;
-  cursor: pointer;
-  border-bottom: 1px solid #00e7ff22;
-  transition: 0.15s;
-}
+    .icon-btn > span {
+      font-size: 1.5rem;
+    }
 
-.dropdown div:last-child { border-bottom: none; }
-.dropdown div:hover { background: #00e7ff33; color: #fff; }
+    .icon-btn > div:not(.dropdown) {
+      margin-top: 7px;
+      font-size: 1rem;
+    }
 
-#overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: #000;
-  z-index: 999;
-  align-items: center;
-  justify-content: center;
-}
+    .dropdown {
+      display: none;
+      position: absolute;
+      bottom: 105%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #000d18f2;
+      border: 2px solid #00e7ff;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #00e7ff55;
+      z-index: 4;
+      min-width: 130px;
+      text-align: center;
+      font-size: 1.15rem;
+    }
 
-#intro {
-  width: 360px;
-  height: 640px;
-  object-fit: contain;
-  background: #000;
-}
+    .dropdown.active { display: block; }
+    .dropdown div {
+      color: #00e7ff;
+      padding: 12px 0;
+      cursor: pointer;
+      border-bottom: 1px solid #00e7ff22;
+      transition: 0.15s;
+    }
+    .dropdown div:last-child { border-bottom: none; }
+    .dropdown div:hover { background: #00e7ff33; color: #fff; }
 
+    #overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #intro {
+      width: 360px;
+      height: 640px;
+      object-fit: contain;
+      background: #000;
+    }
   </style>
 </head>
-<body><button class="start-button" id="startBtn" onclick="playIntro()">START</button>
-
+<body>
+  <button class="start-button" id="startBtn" onclick="playIntro()">START</button>
   <div class="bottom-actions">
     <div class="icon-btn" id="langBtn">
       <span>🌐</span>
-      <div style="margin-top:7px;">Languages</div>
+      <div>Languages</div>
       <div class="dropdown" id="langDropdown">
         <div onclick="setLang('en')">English</div>
         <div onclick="setLang('ar')">Arabic</div>
@@ -130,7 +144,7 @@
     </div>
     <div class="icon-btn" id="avatarBtn">
       <span>🦸‍♂️</span>
-      <div style="margin-top:7px;">Avatar</div>
+      <div>Avatar</div>
       <div class="dropdown" id="avatarDropdown">
         <div onclick="setAvatar(1)">Avatar 1</div>
         <div onclick="setAvatar(2)">Avatar 2</div>
@@ -138,13 +152,15 @@
         <div onclick="setAvatar(4)">Avatar 4</div>
       </div>
     </div>
-  </div>  <div id="overlay">
+  </div>
+  <div id="overlay">
     <video id="intro" src="intro..mp4" autoplay playsinline muted></video>
-  </div>  <script>
+  </div>
+  <script>
     const i18n = {
       en: { welcome: "Welcome to Helpar", start: "START", lang: "Languages", avatar: "Avatar" },
-      ar: { welcome: "\u0645\u0631\u062d\u0628\u064b\u0627 \u0628\u0643 \u0641\u064a \u0647\u0644\u0628\u0627\u0631", start: "\u0627\u0628\u062f\u0623", lang: "\u0627\u0644\u0644\u063a\u0627\u062a", avatar: "\u0627\u0644\u0634\u062e\u0635\u064a\u0629" },
-      tr: { welcome: "Helpar'a Ho\u015fgeldin", start: "Ba\u015fla", lang: "Diller", avatar: "Avatar" }
+      ar: { welcome: "مرحبًا بك في هلبر", start: "ابدأ", lang: "اللغات", avatar: "الشخصية" },
+      tr: { welcome: "Helpar'a Hoşgeldin", start: "Başla", lang: "Diller", avatar: "Avatar" }
     };
 
     let currentLang = 'en';
@@ -153,8 +169,8 @@
       currentLang = lang;
       document.documentElement.lang = lang;
       document.getElementById('startBtn').innerText = i18n[lang].start;
-      document.querySelector("#langBtn div").innerText = i18n[lang].lang;
-      document.querySelector("#avatarBtn div").innerText = i18n[lang].avatar;
+      document.querySelector("#langBtn div:not(.dropdown)").innerText = i18n[lang].lang;
+      document.querySelector("#avatarBtn div:not(.dropdown)").innerText = i18n[lang].avatar;
       document.getElementById('langDropdown').classList.remove('active');
       document.getElementById('avatarDropdown').classList.remove('active');
     }
@@ -196,5 +212,6 @@
     });
 
     setLang('en');
-  </script></body>
+  </script>
+</body>
 </html>
