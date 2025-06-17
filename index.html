@@ -1,24 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Helpar</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Helpar Start</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/script.js" defer></script>
   <style>
-    html, body {
-      margin:0; padding:0;
-      width:100vw; height:100vh;
-      overflow:hidden;
-      background: url('22.jpg') no-repeat center center fixed;
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('images/22.jpg') no-repeat center center fixed;
       background-size: cover;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      gap: 30px;
     }
-
-    button {
+    .avatars, .languages {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .avatars img, .languages img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.3s;
+    }
+    .avatars img:hover, .languages img:hover {
+      transform: scale(1.1);
+    }
+    .selected {
+      border-color: #00ccff !important;
+      box-shadow: 0 0 10px #00ccff;
+    }
+    #selected-avatar {
+      width: 140px;
+      height: 140px;
+      margin-top: 20px;
+      border-radius: 50%;
+      border: 4px solid #00ccff;
+      display: none;
+    }
+    #start-button {
+      display: none;
       padding: 14px 44px;
-      font-size: 2vw;
+      font-size: 1.2em;
       font-weight: bold;
       color: #00ccff;
       background: #000;
@@ -26,84 +60,56 @@
       border-radius: 30px;
       box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff;
       cursor: pointer;
-      transition: transform .2s;
-      margin: 10px;
-    }
-    button:active { transform: scale(.95); }
-
-    #overlay {
-      display: none;
-      position: fixed; inset:0;
-      background: rgba(0,0,0,0.9);
-      align-items: center; justify-content: center;
-      z-index: 999;
-    }
-
-    #intro {
-      width:360px; height:640px;
-      object-fit: contain;
     }
   </style>
 </head>
-<body>
-
-  <button id="langBtn" onclick="selectLanguage()">Select Language</button>
-  <button id="avatarBtn" onclick="selectAvatar()" style="display:none;">Select Avatar</button>
-  <button id="startBtn" onclick="startSequence()" style="display:none;">START</button>
-
-  <div id="overlay">
-    <video id="intro" src="intro.mp4" playsinline muted></video>
-  </div>
-
-  <script>
-    const i18n = {
-      en: { start: "START", lang: "Select Language", avatar: "Select Avatar" },
-      ar: { start: "ابدأ", lang: "اختر اللغة", avatar: "اختر الأفاتار" },
-      tr: { start: "Başla", lang: "Dil Seç", avatar: "Avatar Seç" }
-    };
-
-    let currentLang = 'en';
-
-    function selectLanguage() {
-      const lang = prompt("Select language:\n'en' = English\n'ar' = العربية\n'tr' = Türkçe", currentLang);
-      if (!i18n[lang]) return;
-      currentLang = lang;
-      document.documentElement.lang = lang;
-
-      document.getElementById('langBtn').style.display = 'none';
-      document.getElementById('avatarBtn').innerText = i18n[lang].avatar;
-      document.getElementById('avatarBtn').style.display = 'inline-block';
-    }
-
-    let selectedAvatar = null;
-    function selectAvatar() {
-      const avatar = prompt("Select avatar number (1, 2 or 3):", "1");
-      if (!["1","2","3"].includes(avatar)) return;
-      selectedAvatar = avatar;
-
-      document.getElementById('avatarBtn').style.display = 'none';
-      document.getElementById('startBtn').innerText = i18n[currentLang].start;
-      document.getElementById('startBtn').style.display = 'inline-block';
-    }
-
-    function startSequence() {
-      playIntro();
-    }
-
-    function playIntro() {
-      const overlay = document.getElementById('overlay');
-      const intro   = document.getElementById('intro');
-      overlay.style.display = 'flex';
-      intro.currentTime     = 0;
-      intro.muted           = false;
-      intro.play();
-      intro.onended = () => {
-        overlay.style.display = 'none';
-        document.body.style.background = "url('bakrawnd.png') no-repeat center center fixed";
-        document.body.style.backgroundSize = "cover";
-        document.getElementById('startBtn').style.display = 'none';
+<body>  <h2 id="language-label">Choose Language</h2>
+  <div class="languages">
+    <img src="https://flagcdn.com/w80/sa.png" alt="Arabic" onclick="setLanguage('ar')">
+    <img src="https://flagcdn.com/w80/us.png" alt="English" onclick="setLanguage('en')">
+  </div>  <div id="avatar-section" style="display:none; flex-direction:column; align-items:center; gap:20px;">
+    <h2 id="title">Select Your Avatar</h2>
+    <div class="avatars">
+      <img src="images/avatar1.png" onclick="selectAvatar(this)">
+      <img src="images/avatar2.png" onclick="selectAvatar(this)">
+      <img src="images/avatar3.png" onclick="selectAvatar(this)">
+      <img src="images/avatar4.png" onclick="selectAvatar(this)">
+    </div>
+    <img id="selected-avatar" src="">
+    <button id="start-button" onclick="goToVideo()">ابدأ</button>
+  </div>  <script>
+    function setLanguage(lang) {
+      const content = {
+        en: {
+          title: "Select Your Avatar",
+          lang: "Choose Language",
+          start: "Start"
+        },
+        ar: {
+          title: "اختر صورتك الرمزية",
+          lang: "اختر اللغة",
+          start: "ابدأ"
+        }
       };
+      document.getElementById('title').innerText = content[lang].title;
+      document.getElementById('language-label').innerText = content[lang].lang;
+      document.getElementById('start-button').innerText = content[lang].start;
+      document.querySelector('.languages').style.display = 'none';
+      document.getElementById('language-label').style.display = 'none';
+      document.getElementById('avatar-section').style.display = 'flex';
     }
-  </script>
-</body>
+
+    function selectAvatar(img) {
+      document.querySelectorAll('.avatars img').forEach(el => el.classList.remove('selected'));
+      img.classList.add('selected');
+      const selected = document.getElementById('selected-avatar');
+      selected.src = img.src;
+      selected.style.display = 'block';
+      document.getElementById('start-button').style.display = 'inline-block';
+    }
+
+    function goToVideo() {
+      window.location.href = 'intro.html';
+    }
+  </script></body>
 </html>
