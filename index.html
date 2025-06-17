@@ -1,164 +1,108 @@
 <!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Helpar Embedded</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Helpar</title>
   <style>
-    body {
+    html, body {
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
-      background: #000 url('22.jpg') no-repeat center center fixed;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: url('22.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: #fff;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      position: relative;
     }
-    .assistant {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 999;
-    }
-    #robot-face {
-      width: 100px;
+    .start-button {
+      position: absolute;
+      bottom: 12%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 14px 44px;
+      font-size: 3.4vw;
+      font-weight: bold;
+      color: #00ccff;
+      background: #000;
+      border: 3px solid #fff;
+      border-radius: 30px;
+      box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff;
       cursor: pointer;
+      transition: transform .2s;
+      z-index: 1;
     }
-    #chat-box {
+    .start-button:active {
+      transform: scale(.95);
+    }
+    #overlay {
       display: none;
       position: fixed;
-      bottom: 130px;
-      right: 20px;
-      width: 320px;
-      max-height: 400px;
-      background: rgba(34, 34, 34, 0.95);
-      border: 2px solid #00eaff;
-      border-radius: 10px;
-      padding: 15px;
-      z-index: 1000;
-      overflow-y: auto;
-      box-shadow: 0 0 15px #00eaff;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
     }
-    #chat {
-      max-height: 250px;
-      overflow-y: auto;
-      margin-bottom: 10px;
-    }
-    .message {
-      margin-bottom: 10px;
-      padding: 8px 10px;
-      border-radius: 8px;
-      line-height: 1.4em;
-    }
-    .bot {
-      background-color: #003a4d;
-      color: #00eaff;
-      text-align: left;
-    }
-    .user {
-      background-color: #1e3b1e;
-      color: #afff95;
-      text-align: right;
-    }
-    input[type="text"] {
-      width: 72%;
-      padding: 5px;
-    }
-    button {
-      padding: 6px 8px;
-      background: #00eaff;
-      border: none;
-      cursor: pointer;
-    }
-    #voiceBtn {
-      background: #222;
-      border: 1px solid #00eaff;
-      color: #00eaff;
-      margin-left: 5px;
+    #intro {
+      width: 360px;
+      height: 640px;
+      object-fit: contain;
     }
   </style>
 </head>
-<body>  <div class="assistant">
-    <img id="robot-face" src="robot.png" alt="Helpar" onclick="toggleChat()">
-  </div>  <div id="chat-box">
-    <div id="chat">
-      <div class="message bot">هلبر: أهلين! شو حابب أدوّرلك اليوم؟ ✨</div>
-    </div>
-    <input type="text" id="query" placeholder="اكتب اسم المنتج...">
-    <button onclick="searchProduct()">🔍</button>
-    <button id="voiceBtn" onclick="startListening()">🎤</button>
-  </div>  <script>
-    const apiKey = "2e06c3f49a6eeee3a87880aab";
+<body>
+  <!-- START button only -->
+  <button class="start-button" id="startBtn" onclick="startSequence()">START</button>
 
-    function toggleChat() {
-      const chatBox = document.getElementById('chat-box');
-      chatBox.style.display = chatBox.style.display === 'none' ? 'block' : 'none';
+  <!-- Intro video overlay -->
+  <div id="overlay">
+    <video id="intro" src="intro.mp4" playsinline muted></video>
+  </div>
+
+  <script>
+    function startSequence() {
+      playIntro();
     }
 
-    function addMessage(content, sender = 'bot') {
-      const div = document.createElement('div');
-      div.className = 'message ' + sender;
-      div.innerHTML = content;
-      document.getElementById('chat').appendChild(div);
-      speakIfBot(content, sender);
-    }
+    function playIntro() {
+      const overlay = document.getElementById('overlay');
+      const intro = document.getElementById('intro');
+      overlay.style.display = 'flex';
+      intro.currentTime = 0;
+      intro.muted = false;
+      intro.play();
 
-    async function searchProduct(text = null) {
-      const input = document.getElementById('query');
-      const query = text || input.value.trim();
-      if (!query) return;
+      intro.onended = () => {
+        overlay.style.display = 'none';
+        document.body.style.background = "url('bakrawnd.png') no-repeat center center fixed";
+        document.body.style.backgroundSize = "cover";
+        document.getElementById('startBtn').style.display = 'none';
 
-      addMessage("انت: " + query, 'user');
-      addMessage("هلبر: لحظة بشوفلك أحسن العروض...", 'bot');
+        // تشغيل صوت المساعد الذكي
+        const message = "أهلا بك في عالم أصبح قرية صغيرة";
+        const utterance = new SpeechSynthesisUtterance(message);
+        utterance.lang = 'ar-SA';
+        utterance.rate = 0.95;
+        utterance.pitch = 1;
+        utterance.volume = 1;
+        const voices = speechSynthesis.getVoices();
+        const roboVoice = voices.find(v => v.name.toLowerCase().includes('zira')) || voices[0];
+        utterance.voice = roboVoice;
+        speechSynthesis.speak(utterance);
 
-      try {
-        const res = await fetch(`https://serpapi.com/search.json?engine=google_shopping&q=${encodeURIComponent(query)}&api_key=${apiKey}`);
-        const data = await res.json();
-
-        if (data.shopping_results && data.shopping_results.length > 0) {
-          const results = data.shopping_results.slice(0, 3);
-          results.forEach(item => {
-            const reply = `<strong>${item.title}</strong><br>السعر: ${item.price}<br><a href='${item.link}' target='_blank'>رابط المنتج</a><br><img src='${item.thumbnail}' width='80'>`;
-            addMessage(reply, 'bot');
-          });
-        } else {
-          addMessage("ما لقيت شي بهالاسم، جرّب غيره 🙏", 'bot');
-        }
-      } catch (e) {
-        addMessage("صار خطأ بالبحث، جرّب كمان شوي...", 'bot');
-      }
-      input.value = "";
-    }
-
-    function speakIfBot(text, sender) {
-      if (sender !== 'bot') return;
-      const clean = text.replace(/<[^>]*>?/gm, '');
-      const utter = new SpeechSynthesisUtterance(clean);
-      utter.lang = 'ar-SA';
-      utter.rate = 1;
-      utter.pitch = 1;
-      speechSynthesis.speak(utter);
-    }
-
-    function startListening() {
-      if (!('webkitSpeechRecognition' in window)) {
-        alert('المتصفح لا يدعم التعرف على الصوت');
-        return;
-      }
-      const recognition = new webkitSpeechRecognition();
-      recognition.lang = 'ar-SA';
-      recognition.interimResults = false;
-      recognition.maxAlternatives = 1;
-
-      recognition.onresult = function(event) {
-        const transcript = event.results[0][0].transcript;
-        document.getElementById('query').value = transcript;
-        searchProduct(transcript);
+        // إظهار صورة الروبوت
+        const img = document.createElement("img");
+        img.src = "robot.png";
+        img.alt = "Assistant";
+        img.style.position = "fixed";
+        img.style.bottom = "20px";
+        img.style.right = "20px";
+        img.style.width = "120px";
+        img.style.zIndex = "1000";
+        document.body.appendChild(img);
       };
-      recognition.onerror = function(event) {
-        console.error('Voice error:', event.error);
-        addMessage("ما قدرت اسمعك، جرّب تكتب ✍️", 'bot');
-      };
-
-      recognition.start();
     }
-  </script></body>
+  </script>
+</body>
 </html>
