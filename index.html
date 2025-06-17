@@ -12,14 +12,33 @@
       background: url('22.jpg') no-repeat center center fixed;
       background-size: cover;
       font-family: 'Segoe UI', Arial, sans-serif;
-      display: flex; align-items: center; justify-content: center;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+    }
+
+    .select-group {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 40px;
+      z-index: 2;
+    }
+
+    select {
+      padding: 10px 16px;
+      font-size: 18px;
+      border-radius: 12px;
+      border: 2px solid #00ccff;
+      background: #000;
+      color: #00ccff;
+      width: 200px;
+      text-align: center;
+      box-shadow: 0 0 10px #00ccff;
     }
 
     .start-button {
-      position: absolute;
-      bottom: 12vh;
       padding: 14px 44px;
-      font-size: 3.4vw;
+      font-size: 20px;
       font-weight: bold;
       color: #00ccff;
       background: #000;
@@ -31,41 +50,26 @@
       z-index: 2;
     }
 
-    .start-button:active { transform: scale(0.95); }
-
-    #popup {
-      display: none;
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0,0,0,0.9);
-      padding: 30px;
-      border-radius: 20px;
-      border: 2px solid #00ccff;
-      z-index: 10;
-      text-align: center;
+    .start-button:active {
+      transform: scale(0.95);
     }
+  </style>
+</head>
+<body>
+  <div class="select-group">
+    <select id="language">
+      <option>English</option>
+      <option>Arabic</option>
+      <option>French</option>
+      <option>Spanish</option>
+    </select>
+    <select id="avatar">
+      <option>Avatar 1</option>
+      <option>Avatar 2</option>
+      <option>Avatar 3</option>
+    </select>
+  </div>
 
-    #popup select, #popup button {
-      margin: 10px 0;
-      padding: 10px 16px;
-      font-size: 16px;
-      border-radius: 10px;
-      border: 2px solid #00ccff;
-      background: #000;
-      color: #00ccff;
-      width: 200px;
-    }
-
-    #overlay {
-      display: none;
-      position: fixed; inset: 0;
-      background: rgba(0, 0, 0, 0.9);
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-    }
-
-    #intro {
-      width: 360px; height: 640px;
-      object-fit:
+  <button class="start-button">START</button>
+</body>
+</html>
