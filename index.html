@@ -19,34 +19,37 @@
   width: 300px;
   height: 300px;
   perspective: 1000px;
+  cursor: grab;
 }
 
 .cube {
-  width: 100%;
-  height: 100%;
+  width: 300px;
+  height: 300px;
   position: relative;
   transform-style: preserve-3d;
-  animation: rotateY 15s infinite linear;
+  transform: rotateY(0deg);
+  transition: transform 0.3s ease;
 }
 
 .face {
   position: absolute;
   width: 300px;
   height: 300px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(0, 204, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(0, 204, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(6px);
-  box-shadow: inset 0 0 20px rgba(0,204,255,0.2);
+  backdrop-filter: blur(10px);
+  box-shadow: inset 0 0 10px rgba(0,204,255,0.1);
+  border-radius: 10px;
 }
 
 .face img {
-  width: 90%;
-  height: 90%;
+  width: 95%;
+  height: 95%;
   object-fit: contain;
-  border-radius: 12px;
+  border-radius: 10px;
 }
 
 .face.front  { transform: rotateY(  0deg) translateZ(150px); }
@@ -54,30 +57,49 @@
 .face.right  { transform: rotateY( 90deg) translateZ(150px); }
 .face.left   { transform: rotateY(-90deg) translateZ(150px); }
 
-@keyframes rotateY {
-  from { transform: rotateY(0deg); }
-  to   { transform: rotateY(360deg); }
-}
-
-.label {
-  position: absolute;
-  bottom: 20px;
-  font-size: 20px;
-  font-weight: bold;
-  color: #00ccff;
-  text-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff;
-}
-
   </style>
 </head>
 <body>
-  <div class="scene">
+  <div class="scene" id="scene">
     <div class="cube" id="cube">
       <div class="face front"><img src="product1.jpg" alt="Product 1"></div>
       <div class="face back"><img src="product2.jpg" alt="Product 2"></div>
       <div class="face right"><img src="product3.jpg" alt="Product 3"></div>
       <div class="face left"><img src="product4.jpg" alt="Product 4"></div>
     </div>
-  </div>
-</body>
+  </div>  <script>
+    let cube = document.getElementById('cube');
+    let scene = document.getElementById('scene');
+    let isDragging = false;
+    let startX;
+    let currentRotation = 0;
+
+    // دوران تلقائي
+    let autoRotate = setInterval(() => {
+      currentRotation += 1;
+      cube.style.transform = `rotateY(${currentRotation}deg)`;
+    }, 50);
+
+    scene.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startX = e.clientX;
+      clearInterval(autoRotate);
+    });
+
+    scene.addEventListener('mouseup', () => {
+      isDragging = false;
+      autoRotate = setInterval(() => {
+        currentRotation += 1;
+        cube.style.transform = `rotateY(${currentRotation}deg)`;
+      }, 50);
+    });
+
+    scene.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const deltaX = e.clientX - startX;
+      currentRotation += deltaX * 0.3;
+      cube.style.transform = `rotateY(${currentRotation}deg)`;
+      startX = e.clientX;
+    });
+  </script></body>
 </html>
