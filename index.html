@@ -3,27 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rotating Cube</title>
+  <title>Touch Controlled Cube</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
-      background: #111;
+      background: #000;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
       overflow: hidden;
-      touch-action: manipulation;
+      touch-action: none;
     }
 
     .scene {
       width: 200px;
       height: 200px;
       perspective: 800px;
-      margin-bottom: 20px;
-      touch-action: pan-y;
     }
 
     .cube {
@@ -32,7 +29,7 @@
       position: relative;
       transform-style: preserve-3d;
       transform: rotateY(0deg);
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease-out;
     }
 
     .face {
@@ -46,6 +43,7 @@
       justify-content: center;
       font-size: 24px;
       color: #fff;
+      backface-visibility: hidden;
     }
 
     .front  { transform: rotateY(0deg) translateZ(100px); }
@@ -54,23 +52,6 @@
     .left   { transform: rotateY(-90deg) translateZ(100px); }
     .top    { transform: rotateX(90deg) translateZ(100px); }
     .bottom { transform: rotateX(-90deg) translateZ(100px); }
-
-    .controls button {
-      margin: 5px;
-      padding: 10px 20px;
-      font-size: 16px;
-      background: #00ccff;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      color: #fff;
-      font-weight: bold;
-      transition: background 0.3s;
-    }
-
-    .controls button:hover {
-      background: #0099cc;
-    }
   </style>
 </head>
 <body>
@@ -86,61 +67,38 @@
   </div>
 </div>
 
-<div class="controls">
-  <button onclick="rotateLeft()">⟲ Left</button>
-  <button onclick="toggleRotation()">⏯ Pause/Play</button>
-  <button onclick="rotateRight()">Right ⟳</button>
-</div>
-
 <script>
-  let cube = document.getElementById("cube");
+  const cube = document.getElementById("cube");
+  const touchArea = document.getElementById("touchArea");
   let angle = 0;
-  let autoRotate = true;
+  let startX = 0;
+  let rotating = true;
 
-  // Auto rotation loop
-  function rotateCube() {
-    if (autoRotate) {
+  // Auto-rotate
+  function autoRotate() {
+    if (rotating) {
       angle += 1;
       cube.style.transform = `rotateY(${angle}deg)`;
     }
-    requestAnimationFrame(rotateCube);
+    requestAnimationFrame(autoRotate);
   }
-  rotateCube();
+  autoRotate();
 
-  // Button controls
-  function toggleRotation() {
-    autoRotate = !autoRotate;
-  }
-
-  function rotateLeft() {
-    angle -= 45;
-    cube.style.transform = `rotateY(${angle}deg)`;
-  }
-
-  function rotateRight() {
-    angle += 45;
-    cube.style.transform = `rotateY(${angle}deg)`;
-  }
-
-  // Touch controls
-  let startX = 0;
-  let touchArea = document.getElementById("touchArea");
-
+  // Touch handling
   touchArea.addEventListener("touchstart", (e) => {
+    rotating = false;
     startX = e.touches[0].clientX;
   });
 
-  touchArea.addEventListener("touchend", (e) => {
-    let endX = e.changedTouches[0].clientX;
-    let deltaX = endX - startX;
+  touchArea.addEventListener("touchmove", (e) => {
+    const deltaX = e.touches[0].clientX - startX;
+    angle += deltaX * 0.3;
+    cube.style.transform = `rotateY(${angle}deg)`;
+    startX = e.touches[0].clientX;
+  });
 
-    if (Math.abs(deltaX) > 30) { // Sensitivity
-      if (deltaX > 0) {
-        rotateRight();
-      } else {
-        rotateLeft();
-      }
-    }
+  touchArea.addEventListener("touchend", () => {
+    rotating = true;
   });
 </script>
 
