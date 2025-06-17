@@ -6,19 +6,20 @@
   <title>Helpar</title>
   <style>
     html, body {
-      margin: 0; padding: 0;
-      width: 100vw; height: 100vh;
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
       overflow: hidden;
       background: url('22.jpg') no-repeat center center fixed;
       background-size: cover;
       font-family: 'Segoe UI', Arial, sans-serif;
-      display: flex; align-items: center; justify-content: center;
     }
 
     .start-button {
       position: absolute;
       left: 50%;
-      bottom: 4vh; /* تم تعديل المسافة هنا */
+      bottom: 6vh; /* مرفوع شوي عن الحافة */
       transform: translateX(-50%);
       padding: 14px 44px;
       font-size: 3.4vw;
@@ -39,6 +40,6 @@
   </style>
 </head>
 <body>
-  <button class="start-button">START</button>
+  <button class="start-button" onclick="alert('Starting...')">START</button>
 </body>
 </html>
