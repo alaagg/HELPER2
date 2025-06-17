@@ -1,171 +1,125 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Helpar</title>
   <style>
-    html, body {
-      margin: 0; padding: 0;
-      width: 100vw; height: 100vh;
-      overflow: hidden;
-      font-family: 'Segoe UI', Arial, sans-serif;
+    .glow-pulse {
+      animation: glowPulse 1s ease-in-out infinite;
+      box-shadow:
+        0 0 20px #00e7ff,
+        0 0 40px #00e7ff,
+        0 0 80px #00e7ff,
+        0 0 120px #00e7ff;
+      border-color: #00e7ff;
     }
-    #main {
-      width: 100vw;
-      height: 100vh;
-      background: url('22.jpg') no-repeat center center fixed;
-      background-size: cover;
-      position: relative;
-      display: none;
-    }
-    .avatar {
-      position: absolute;
-      top: 10%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 140px;
-      height: 140px;
-      background-color: #111;
-      border-radius: 50%;
-      overflow: hidden;
-      box-shadow: 0 0 20px #00ccff, 0 0 40px #00ccff;
-    }
-    .avatar video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .chat-box {
-      position: absolute;
-      bottom: 45vh;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 600px;
-      background: rgba(0, 0, 0, 0.85);
-      border: 2px solid #00ccff;
-      border-radius: 30px;
-      display: flex;
-      align-items: center;
-      padding: 10px 20px;
-      box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff;
-      z-index: 99;
-    }
-    .chat-input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      outline: none;
-      color: #00ccff;
-      font-size: 18px;
-    }
-    .mic-btn {
-      background: transparent;
-      border: none;
-      color: #00ccff;
-      font-size: 24px;
-      cursor: pointer;
-    }
-    .start-button {
-      position: absolute;
-      left: 50%; bottom: 11vh;
-      transform: translate(-50%, 0);
-      padding: 14px 44px;
-      font-size: 3.4vw;
-      font-weight: bold;
-      color: #00ccff;
-      background: #000;
-      border: 3px solid #fff;
-      border-radius: 30px;
-      cursor: pointer;
-      z-index: 3;
-      box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff, 0 0 40px #00ccff, 0 0 60px #00ccff;
-      text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
-    }
-    .bottom-actions {
-      position: absolute;
-      bottom: 5vh;
-      width: 100vw;
-      display: flex; justify-content: center; align-items: center;
-      gap: 55vw;
-      z-index: 2;
-    }
-    .icon-btn {
-      position: relative;
-      width: 55px; height: 55px;
-      border-radius: 50%; background: rgba(0,0,0,0.65);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      color: #00e7ff; font-size: 0.8rem;
-      cursor: pointer; transition: 0.2s;
-      border: 2px solid #00e7ff;
-      box-shadow: 0 0 18px #00e7ff80;
-    }
-    .icon-btn:hover {
-      background: #00e7ff33; color: #fff;
-      box-shadow: 0 0 30px #00e7ff;
-    }
-    #avatarBtn > img#avatarIcon {
-      width: 30px !important;
-      height: 30px !important;
-      border-radius: 50%; object-fit: cover;
-      border: none !important; box-shadow: none !important;
-    }
-    .icon-btn > span { font-size: 1.5rem; }
-    .icon-btn > div:not(.dropdown) { margin-top: 7px; font-size: 1rem; }
-    .dropdown {
-      display: none; position: absolute;
-      bottom: 70px; left: 50%; transform: translateX(-50%);
-      background: #000d18f2; border: 2px solid #00e7ff;
-      border-radius: 12px; box-shadow: 0 0 20px #00e7ff55;
-      z-index: 4; min-width: 100px; max-width: 120px;
-      text-align: center; font-size: 1rem;
-      overflow: hidden;
-    }
-    .dropdown.active { display: block; }
-    .dropdown div {
-      display: flex; align-items: center; gap: 8px;
-      padding: 10px; color: #00e7ff;
-      cursor: pointer; border-bottom: 1px solid #00e7ff22;
-      transition: background 0.15s;
-    }
-    .dropdown div:last-child { border-bottom: none; }
-    .dropdown div:hover { background: #00e7ff33; color: #fff; }
-    .dropdown img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; }
-    #overlay {
-      display: none; position: fixed; inset: 0;
-      background: #000; z-index: 999;
-      align-items: center; justify-content: center;
-    }
-    #intro {
-      width: 360px; height: 640px;
-      object-fit: contain; background: #000;
-    }
-    .back-arrow {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      z-index: 100;
-      font-size: 28px;
-      color: #00ccff;
-      background: rgba(0, 0, 0, 0.6);
-      padding: 10px 14px;
-      border-radius: 50%;
-      border: 2px solid #00ccff;
-      cursor: pointer;
-      box-shadow: 0 0 10px #00ccff88;
-      transition: 0.2s;
-    }
-    .back-arrow:hover {
-      background: #00ccff33;
-      color: white;
-      box-shadow: 0 0 20px #00ccff;
-    }
+    @keyframes glowPulse {
+      0%, 100% {
+        box-shadow: 0 0 10px #00e7ff, 0 0 20px #00e7ff, 0 0 40px #00e7ff;
+      }
+      50% {
+        box-shadow: 0 0 30px #00e7ff, 0 0 60px #00e7ff, 0 0 120px #00e7ff, 0 0 160px #00e7ff;
+      }
+    }html, body {
+  margin: 0; padding: 0;
+  width: 100vw; height: 100vh;
+  overflow: hidden;
+  background: url('22.jpg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.start-button {
+  position: absolute;
+  left: 50%; bottom: 11vh;
+  transform: translate(-50%, 0);
+  padding: 14px 44px;
+  font-size: 3.4vw;
+  font-weight: bold;
+  color: #00ccff;
+  background: #000;
+  border: 3px solid #fff;
+  border-radius: 30px;
+  cursor: pointer;
+  z-index: 3;
+  box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff, 0 0 40px #00ccff, 0 0 60px #00ccff;
+  text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
+  animation: pulse 1.5s infinite alternate;
+  transition: all 0.3s ease;
+}
+@keyframes pulse {
+  from { transform: translate(-50%, 0) scale(1); }
+  to   { transform: translate(-50%, 0) scale(1.05); }
+}
+
+.bottom-actions {
+  position: absolute;
+  bottom: 5vh;
+  width: 100vw;
+  display: flex; justify-content: center; align-items: center;
+  gap: 55vw;
+  z-index: 2;
+}
+
+.icon-btn {
+  position: relative;
+  width: 55px; height: 55px;
+  border-radius: 50%; background: rgba(0,0,0,0.65);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: #00e7ff; font-size: 0.8rem;
+  cursor: pointer; transition: 0.2s;
+  border: 2px solid #00e7ff;
+  box-shadow: 0 0 18px #00e7ff80;
+}
+.icon-btn:hover {
+  background: #00e7ff33; color: #fff;
+  box-shadow: 0 0 30px #00e7ff;
+}
+
+#avatarBtn > img#avatarIcon {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 50%; object-fit: cover;
+  border: none !important; box-shadow: none !important;
+}
+
+.icon-btn > span { font-size: 1.5rem; }
+.icon-btn > div:not(.dropdown) { margin-top: 7px; font-size: 1rem; }
+
+.dropdown {
+  display: none; position: absolute;
+  bottom: 70px; left: 50%; transform: translateX(-50%);
+  background: #000d18f2; border: 2px solid #00e7ff;
+  border-radius: 12px; box-shadow: 0 0 20px #00e7ff55;
+  z-index: 4; min-width: 100px; max-width: 120px;
+  text-align: center; font-size: 1rem;
+  overflow: hidden;
+}
+.dropdown.active { display: block; }
+.dropdown div {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px; color: #00e7ff;
+  cursor: pointer; border-bottom: 1px solid #00e7ff22;
+  transition: background 0.15s;
+}
+.dropdown div:last-child { border-bottom: none; }
+.dropdown div:hover { background: #00e7ff33; color: #fff; }
+.dropdown img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; }
+
+#overlay {
+  display: none; position: fixed; inset: 0;
+  background: #000; z-index: 999;
+  align-items: center; justify-content: center;
+}
+#intro {
+  width: 360px; height: 640px;
+  object-fit: contain; background: #000;
+}
+
   </style>
 </head>
 <body>
   <button class="start-button" id="startBtn" onclick="validateAndStart()">START</button>
-
   <div class="bottom-actions">
     <div class="icon-btn" id="langBtn">
       <span>🌐</span>
@@ -187,95 +141,75 @@
       </div>
     </div>
   </div>
-
-  <div class="back-arrow" onclick="history.back()">⟵</div>
-
   <div id="overlay">
     <video id="intro" src="intro.mp4" autoplay playsinline muted></video>
   </div>
-
-  <div id="main">
-    <div class="avatar">
-      <video src="https://cdn.pixabay.com/video/2023/03/14/157284-812396038_tiny.mp4" autoplay muted loop></video>
-    </div>
-    <div class="chat-box">
-      <input type="text" placeholder="اكتب هنا..." class="chat-input" />
-      <button class="mic-btn">🎤</button>
-    </div>
-  </div>
-
   <script>
     const i18n = {
-      en: { start: "START", lang: "Languages", avatar: "Avatar" },
-      ar: { start: "ابدأ", lang: "اللغات", avatar: "الشخصية" },
-      tr: { start: "Başla", lang: "Diller", avatar: "Avatar" }
-    };
-    let currentLang = 'en', langTouched = false, avatarSelected = false;
+      en: { welcome: "Welcome to Helpar", start: "START", lang: "Languages", avatar: "Avatar" },
+      ar: { welcome: "مرحبًا بك في هلبر", start: "ابدأ", lang: "اللغات", avatar: "الشخصية" },
+      tr: { welcome: "Helpar'a Hoşgeldin", start: "Başla", lang: "Diller", avatar: "Avatar" }
+    };let currentLang = 'en', langTouched = false, avatarSelected = false;
 
-    function setLang(lang) {
-      currentLang = lang;
-      langTouched = true;
-      document.documentElement.lang = lang;
-      document.getElementById('startBtn').innerText = i18n[lang].start;
-      document.querySelector('#langBtn div:not(.dropdown)').innerText = i18n[lang].lang;
-      document.querySelector('#avatarBtn div:not(.dropdown)').innerText = i18n[lang].avatar;
-      document.getElementById('langDropdown').classList.remove('active');
-      document.getElementById('avatarDropdown').classList.remove('active');
-    }
+function setLang(lang) {
+  currentLang = lang;
+  langTouched = true;
+  document.documentElement.lang = lang;
+  document.getElementById('startBtn').innerText = i18n[lang].start;
+  document.querySelector('#langBtn div:not(.dropdown)').innerText = i18n[lang].lang;
+  document.querySelector('#avatarBtn div:not(.dropdown)').innerText = i18n[lang].avatar;
+  document.getElementById('langDropdown').classList.remove('active');
+  document.getElementById('avatarDropdown').classList.remove('active');
+}
 
-    function setAvatar(id) {
-      avatarSelected = true;
-      document.getElementById('avatarIcon').src = `avatar${id}.png`;
-      document.getElementById('avatarDropdown').classList.remove('active');
-      document.getElementById('langDropdown').classList.remove('active');
-    }
+function setAvatar(id) {
+  avatarSelected = true;
+  document.getElementById('avatarIcon').src = `avatar${id}.png`;
+  document.getElementById('avatarDropdown').classList.remove('active');
+  document.getElementById('langDropdown').classList.remove('active');
+}
 
-    function validateAndStart() {
-      const langBtn = document.getElementById('langBtn');
-      const avatarBtn = document.getElementById('avatarBtn');
-      langBtn.classList.remove('glow-pulse');
-      avatarBtn.classList.remove('glow-pulse');
-      let valid = true;
-      if (!avatarSelected) { avatarBtn.classList.add('glow-pulse'); valid = false; }
-      if (!langTouched)  { langBtn.classList.add('glow-pulse'); }
-      if (valid) playIntro();
-    }
+function validateAndStart() {
+  const langBtn = document.getElementById('langBtn');
+  const avatarBtn = document.getElementById('avatarBtn');
+  langBtn.classList.remove('glow-pulse');
+  avatarBtn.classList.remove('glow-pulse');
+  let valid = true;
+  if (!avatarSelected) { avatarBtn.classList.add('glow-pulse'); valid = false; }
+  if (!langTouched)  { langBtn.classList.add('glow-pulse'); }
+  if (valid) playIntro();
+}
 
-    document.getElementById('langBtn').onclick = e => {
-      e.stopPropagation();
-      document.getElementById('langDropdown').classList.toggle('active');
-      document.getElementById('avatarDropdown').classList.remove('active');
-    };
+document.getElementById('langBtn').onclick = e => {
+  e.stopPropagation();
+  document.getElementById('langDropdown').classList.toggle('active');
+  document.getElementById('avatarDropdown').classList.remove('active');
+};
 
-    document.getElementById('avatarBtn').onclick = e => {
-      e.stopPropagation();
-      document.getElementById('avatarDropdown').classList.toggle('active');
-      document.getElementById('langDropdown').classList.remove('active');
-    };
+document.getElementById('avatarBtn').onclick = e => {
+  e.stopPropagation();
+  document.getElementById('avatarDropdown').classList.toggle('active');
+  document.getElementById('langDropdown').classList.remove('active');
+};
 
-    document.body.onclick = () => {
-      document.getElementById('langDropdown').classList.remove('active');
-      document.getElementById('avatarDropdown').classList.remove('active');
-    };
+document.body.onclick = () => {
+  document.getElementById('langDropdown').classList.remove('active');
+  document.getElementById('avatarDropdown').classList.remove('active');
+};
 
-    const overlay = document.getElementById('overlay');
-    const intro = document.getElementById('intro');
+const overlay = document.getElementById('overlay');
+const intro = document.getElementById('intro');
 
-    function playIntro() {
-      overlay.style.display = 'flex';
-      intro.currentTime = 0;
-      intro.muted = false;
-      intro.play();
-    }
+function playIntro() {
+  overlay.style.display = 'flex';
+  intro.currentTime = 0;
+  intro.muted = false;
+  intro.play();
+}
 
-    intro.addEventListener('ended', () => {
-      overlay.style.display = 'none';
-      document.querySelector('.start-button').style.display = 'none';
-      document.querySelector('.bottom-actions').style.display = 'none';
-      document.getElementById('main').style.display = 'block';
-    });
+intro.addEventListener('ended', () => overlay.style.display = 'none');
+setLang('en');
 
-    setLang('en');
   </script>
 </body>
 </html>
