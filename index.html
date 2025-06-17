@@ -32,28 +32,35 @@
       transition: transform .2s;
       z-index: 1;
     }
-    .start-button:active { transform: scale(.95); }#overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.9);
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-}
-#intro {
-  width: 360px;
-  height: 640px;
-  object-fit: contain;
-}
-
+    .start-button:active {
+      transform: scale(.95);
+    }
+    #overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+    #intro {
+      width: 360px;
+      height: 640px;
+      object-fit: contain;
+    }
   </style>
 </head>
 <body>
   <!-- START button only -->
-  <button class="start-button" id="startBtn" onclick="startSequence()">START</button>  <!-- Intro video overlay -->  <div id="overlay">
+  <button class="start-button" id="startBtn" onclick="startSequence()">START</button>
+
+  <!-- Intro video overlay -->
+  <div id="overlay">
     <video id="intro" src="intro.mp4" playsinline muted></video>
-  </div>  <script>
+  </div>
+
+  <script>
     function startSequence() {
       playIntro();
     }
@@ -65,12 +72,37 @@
       intro.currentTime = 0;
       intro.muted = false;
       intro.play();
+
       intro.onended = () => {
         overlay.style.display = 'none';
         document.body.style.background = "url('bakrawnd.png') no-repeat center center fixed";
         document.body.style.backgroundSize = "cover";
         document.getElementById('startBtn').style.display = 'none';
+
+        // تشغيل صوت المساعد الذكي
+        const message = "أهلا بك في عالم أصبح قرية صغيرة";
+        const utterance = new SpeechSynthesisUtterance(message);
+        utterance.lang = 'ar-SA';
+        utterance.rate = 0.95;
+        utterance.pitch = 1;
+        utterance.volume = 1;
+        const voices = speechSynthesis.getVoices();
+        const roboVoice = voices.find(v => v.name.toLowerCase().includes('zira')) || voices[0];
+        utterance.voice = roboVoice;
+        speechSynthesis.speak(utterance);
+
+        // إظهار صورة الروبوت
+        const img = document.createElement("img");
+        img.src = "robot.png";
+        img.alt = "Assistant";
+        img.style.position = "fixed";
+        img.style.bottom = "20px";
+        img.style.right = "20px";
+        img.style.width = "120px";
+        img.style.zIndex = "1000";
+        document.body.appendChild(img);
       };
     }
-  </script></body>
+  </script>
+</body>
 </html>
