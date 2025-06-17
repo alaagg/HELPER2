@@ -1,12 +1,134 @@
-.podium {
-  position: relative;
-  width: 240px;
-  height: 240px;
-  background: #0d0d0d; /* ← أسود مخملي */
-  border-radius: 20px;
-  box-shadow: 0 0 30px rgba(0,204,255,0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 40px;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HELPAR Smart Podium</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: url('https://images.unsplash.com/photo-1581291519195-ef11498d1cf5?auto=format&fit=crop&w=1000&q=80') no-repeat center center fixed;
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .podium {
+      position: relative;
+      width: 240px;
+      height: 240px;
+      background: #0d0d0d; /* أسود مخملي */
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(0,204,255,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    .product-image {
+      width: 160px;
+      height: 160px;
+      border-radius: 20px;
+      object-fit: cover;
+      box-shadow: 0 0 20px rgba(0,204,255,0.6);
+    }
+
+    .info-panel {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 160px;
+      padding: 10px;
+      background: rgba(0,0,0,0.5);
+      border-radius: 10px;
+      font-size: 14px;
+      line-height: 1.4;
+      color: #00ccff;
+      box-shadow: 0 0 10px rgba(0,204,255,0.5);
+    }
+
+    .info-left {
+      left: -180px;
+      text-align: right;
+    }
+
+    .info-right {
+      right: -180px;
+      text-align: left;
+    }
+
+    .helpar-logo {
+      margin-top: 30px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #00ccff;
+      text-shadow: 0 0 8px #00ccff, 0 0 16px #00ccff;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: none;
+      background: #00ccff;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 10px #00ccff;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="podium">
+    <img src="" class="product-image" alt="Product">
+    <div class="info-panel info-left">
+      <div><strong>المنتج:</strong> ComfortX</div>
+      <div><strong>السعر:</strong> $94</div>
+      <div><strong>الجودة:</strong> 4.7 ★</div>
+    </div>
+    <div class="info-panel info-right">
+      <div><strong>البديل:</strong> ZoomFlex</div>
+      <div><strong>السعر:</strong> $96</div>
+      <div><strong>الجودة:</strong> 4.5 ★</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="اكتب منتج للبحث">
+    <button onclick="searchProduct()">🔍 بحث</button>
+  </div>
+
+  <div class="helpar-logo">HELPAR</div>
+
+  <script>
+    function searchProduct() {
+      const keyword = document.getElementById("searchInput").value.trim();
+      if (!keyword) return;
+      const img = document.querySelector('.product-image');
+      img.src = `https://source.unsplash.com/160x160/?${encodeURIComponent(keyword)}`;
+    }
+  </script>
+
+</body>
+  </html>
