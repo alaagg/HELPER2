@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,12 +18,11 @@
       justify-content: center;
       color: white;
     }
-
     .podium {
       position: relative;
       width: 240px;
       height: 240px;
-      background: #0d0d0d; /* أسود مخملي */
+      background: rgba(255,255,255,0.04); /* الأصلية */
       border-radius: 20px;
       box-shadow: 0 0 30px rgba(0,204,255,0.4);
       display: flex;
@@ -99,9 +97,8 @@
   </style>
 </head>
 <body>
-
   <div class="podium">
-    <img src="" class="product-image" alt="Product">
+    <img src="https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg" class="product-image" alt="Product">
     <div class="info-panel info-left">
       <div><strong>المنتج:</strong> ComfortX</div>
       <div><strong>السعر:</strong> $94</div>
@@ -113,14 +110,11 @@
       <div><strong>الجودة:</strong> 4.5 ★</div>
     </div>
   </div>
-
   <div class="controls">
     <input type="text" id="searchInput" placeholder="اكتب منتج للبحث">
     <button onclick="searchProduct()">🔍 بحث</button>
   </div>
-
   <div class="helpar-logo">HELPAR</div>
-
   <script>
     function searchProduct() {
       const keyword = document.getElementById("searchInput").value.trim();
@@ -129,6 +123,5 @@
       img.src = `https://source.unsplash.com/160x160/?${encodeURIComponent(keyword)}`;
     }
   </script>
-
 </body>
-  </html>
+</html>
