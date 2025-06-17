@@ -1,33 +1,71 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Helpar</title>
   <style>
-    .glow-pulse {
-      animation: glowPulse 1s ease-in-out infinite;
-      box-shadow:
-        0 0 20px #00e7ff,
-        0 0 40px #00e7ff,
-        0 0 80px #00e7ff,
-        0 0 120px #00e7ff;
-      border-color: #00e7ff;
-    }
-    @keyframes glowPulse {
-      0%, 100% {
-        box-shadow: 0 0 10px #00e7ff, 0 0 20px #00e7ff, 0 0 40px #00e7ff;
-      }
-      50% {
-        box-shadow: 0 0 30px #00e7ff, 0 0 60px #00e7ff, 0 0 120px #00e7ff, 0 0 160px #00e7ff;
-      }
-    }
     html, body {
       margin: 0; padding: 0;
       width: 100vw; height: 100vh;
       overflow: hidden;
-      background: url('22.jpg') no-repeat center center fixed;
-      background-size: cover;
       font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    #main {
+      width: 100vw;
+      height: 100vh;
+      background: url('bakrawnd.png') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+      display: none;
+    }
+    .avatar {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 140px;
+      height: 140px;
+      background-color: #111;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 0 20px #00ccff, 0 0 40px #00ccff;
+    }
+    .avatar video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .chat-box {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 600px;
+      background: rgba(0, 0, 0, 0.85);
+      border: 2px solid #00ccff;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff;
+      z-index: 99;
+    }
+    .chat-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #00ccff;
+      font-size: 18px;
+    }
+    .mic-btn {
+      background: transparent;
+      border: none;
+      color: #00ccff;
+      font-size: 24px;
+      cursor: pointer;
     }
     .start-button {
       position: absolute;
@@ -44,12 +82,6 @@
       z-index: 3;
       box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff, 0 0 40px #00ccff, 0 0 60px #00ccff;
       text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
-      animation: pulse 1.5s infinite alternate;
-      transition: all 0.3s ease;
-    }
-    @keyframes pulse {
-      from { transform: translate(-50%, 0) scale(1); }
-      to   { transform: translate(-50%, 0) scale(1.05); }
     }
     .bottom-actions {
       position: absolute;
@@ -112,6 +144,7 @@
   </style>
 </head>
 <body>
+  <!-- مرحلة البداية -->
   <button class="start-button" id="startBtn" onclick="validateAndStart()">START</button>
   <div class="bottom-actions">
     <div class="icon-btn" id="langBtn">
@@ -137,6 +170,18 @@
   <div id="overlay">
     <video id="intro" src="intro.mp4" autoplay playsinline muted></video>
   </div>
+
+  <!-- واجهة التفاعل الجديدة -->
+  <div id="main">
+    <div class="avatar">
+      <video src="https://cdn.pixabay.com/video/2023/03/14/157284-812396038_tiny.mp4" autoplay muted loop></video>
+    </div>
+    <div class="chat-box">
+      <input type="text" placeholder="اكتب هنا..." class="chat-input" />
+      <button class="mic-btn">🎤</button>
+    </div>
+  </div>
+
   <script>
     const i18n = {
       en: { start: "START", lang: "Languages", avatar: "Avatar" },
@@ -203,10 +248,9 @@
 
     intro.addEventListener('ended', () => {
       overlay.style.display = 'none';
-      document.body.style.background = "url('bakrawnd.png') no-repeat center center fixed";
-      document.body.style.backgroundSize = "cover";
       document.querySelector('.start-button').style.display = 'none';
       document.querySelector('.bottom-actions').style.display = 'none';
+      document.getElementById('main').style.display = 'block';
     });
 
     setLang('en');
