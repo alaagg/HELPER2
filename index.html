@@ -2,93 +2,163 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Helpar Bot</title>
+  <title>Helpar Embedded</title>
   <style>
     body {
+      margin: 0;
+      padding: 0;
       font-family: Arial, sans-serif;
-      padding: 20px;
-      background: #111;
-      color: #eee;
+      background: #000 url('22.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
     }
-    #chat-box {
-      border: 1px solid #444;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 600px;
-      margin: 0 auto;
-      background: #222;
+    .assistant {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 999;
     }
-    .message {
-      margin-bottom: 15px;
-    }
-    .bot {
-      color: #00eaff;
-    }
-    .user {
-      color: #afff95;
-    }
-    input[type="text"] {
-      width: 80%;
-      padding: 10px;
-      margin-top: 10px;
-      font-size: 16px;
-    }
-    button {
-      padding: 10px 15px;
-      font-size: 16px;
-      background: #00eaff;
-      border: none;
-      color: #000;
+    #robot-face {
+      width: 100px;
       cursor: pointer;
     }
-    img {
-      max-width: 100px;
-      display: block;
-      margin-top: 5px;
+    #chat-box {
+      display: none;
+      position: fixed;
+      bottom: 130px;
+      right: 20px;
+      width: 320px;
+      max-height: 400px;
+      background: rgba(34, 34, 34, 0.95);
+      border: 2px solid #00eaff;
+      border-radius: 10px;
+      padding: 15px;
+      z-index: 1000;
+      overflow-y: auto;
+      box-shadow: 0 0 15px #00eaff;
+    }
+    #chat {
+      max-height: 250px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+    }
+    .message {
+      margin-bottom: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      line-height: 1.4em;
+    }
+    .bot {
+      background-color: #003a4d;
+      color: #00eaff;
+      text-align: left;
+    }
+    .user {
+      background-color: #1e3b1e;
+      color: #afff95;
+      text-align: right;
+    }
+    input[type="text"] {
+      width: 72%;
+      padding: 5px;
+    }
+    button {
+      padding: 6px 8px;
+      background: #00eaff;
+      border: none;
+      cursor: pointer;
+    }
+    #voiceBtn {
+      background: #222;
+      border: 1px solid #00eaff;
+      color: #00eaff;
+      margin-left: 5px;
     }
   </style>
 </head>
-<body>
-  <div id="chat-box">
-    <div class="message bot">هلبر: أهلين! شو حابب أدوّرلك اليوم؟ ✨</div>
-    <div id="chat"></div>
+<body>  <div class="assistant">
+    <img id="robot-face" src="robot.png" alt="Helpar" onclick="toggleChat()">
+  </div>  <div id="chat-box">
+    <div id="chat">
+      <div class="message bot">هلبر: أهلين! شو حابب أدوّرلك اليوم؟ ✨</div>
+    </div>
     <input type="text" id="query" placeholder="اكتب اسم المنتج...">
-    <button onclick="searchProduct()">دَوِّر 🔍</button>
+    <button onclick="searchProduct()">🔍</button>
+    <button id="voiceBtn" onclick="startListening()">🎤</button>
   </div>  <script>
-    const apiKey = "2e06c3f49a6eeee3a87880aab"; // استبدل بمفتاحك الخاص لو تغير
+    const apiKey = "2e06c3f49a6eeee3a87880aab";
+
+    function toggleChat() {
+      const chatBox = document.getElementById('chat-box');
+      chatBox.style.display = chatBox.style.display === 'none' ? 'block' : 'none';
+    }
 
     function addMessage(content, sender = 'bot') {
       const div = document.createElement('div');
       div.className = 'message ' + sender;
       div.innerHTML = content;
       document.getElementById('chat').appendChild(div);
+      speakIfBot(content, sender);
     }
 
-    async function searchProduct() {
+    async function searchProduct(text = null) {
       const input = document.getElementById('query');
-      const query = input.value.trim();
+      const query = text || input.value.trim();
       if (!query) return;
 
       addMessage("انت: " + query, 'user');
       addMessage("هلبر: لحظة بشوفلك أحسن العروض...", 'bot');
 
       try {
-        const response = await fetch(`https://serpapi.com/search.json?engine=google_shopping&q=${encodeURIComponent(query)}&api_key=${apiKey}`);
-        const data = await response.json();
+        const res = await fetch(`https://serpapi.com/search.json?engine=google_shopping&q=${encodeURIComponent(query)}&api_key=${apiKey}`);
+        const data = await res.json();
 
         if (data.shopping_results && data.shopping_results.length > 0) {
-          const result = data.shopping_results[0];
-          const reply = `لقيتلك هالمنتج: <br><strong>${result.title}</strong><br>السعر: ${result.price}<br><a href="${result.link}" target="_blank">رابط المنتج</a><br><img src="${result.thumbnail}" />`;
-          addMessage(reply, 'bot');
+          const results = data.shopping_results.slice(0, 3);
+          results.forEach(item => {
+            const reply = `<strong>${item.title}</strong><br>السعر: ${item.price}<br><a href='${item.link}' target='_blank'>رابط المنتج</a><br><img src='${item.thumbnail}' width='80'>`;
+            addMessage(reply, 'bot');
+          });
         } else {
           addMessage("ما لقيت شي بهالاسم، جرّب غيره 🙏", 'bot');
         }
-      } catch (error) {
-        console.error(error);
+      } catch (e) {
         addMessage("صار خطأ بالبحث، جرّب كمان شوي...", 'bot');
       }
-
       input.value = "";
+    }
+
+    function speakIfBot(text, sender) {
+      if (sender !== 'bot') return;
+      const clean = text.replace(/<[^>]*>?/gm, '');
+      const utter = new SpeechSynthesisUtterance(clean);
+      utter.lang = 'ar-SA';
+      utter.rate = 1;
+      utter.pitch = 1;
+      speechSynthesis.speak(utter);
+    }
+
+    function startListening() {
+      if (!('webkitSpeechRecognition' in window)) {
+        alert('المتصفح لا يدعم التعرف على الصوت');
+        return;
+      }
+      const recognition = new webkitSpeechRecognition();
+      recognition.lang = 'ar-SA';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById('query').value = transcript;
+        searchProduct(transcript);
+      };
+      recognition.onerror = function(event) {
+        console.error('Voice error:', event.error);
+        addMessage("ما قدرت اسمعك، جرّب تكتب ✍️", 'bot');
+      };
+
+      recognition.start();
     }
   </script></body>
 </html>
