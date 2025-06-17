@@ -1,127 +1,148 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HELPAR Smart Podium</title>
+  <title>Rotating Cube</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
-      overflow: hidden;
-      background: url('https://images.unsplash.com/photo-1581291519195-ef11498d1cf5?auto=format&fit=crop&w=1000&q=80') no-repeat center center fixed;
-      background-size: cover;
-      font-family: Arial, sans-serif;
+      background: #111;
       display: flex;
+      align-items: center;
+      justify-content: center;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: white;
+      overflow: hidden;
+      touch-action: manipulation;
     }
-    .podium {
+
+    .scene {
+      width: 200px;
+      height: 200px;
+      perspective: 800px;
+      margin-bottom: 20px;
+      touch-action: pan-y;
+    }
+
+    .cube {
+      width: 200px;
+      height: 200px;
       position: relative;
-      width: 240px;
-      height: 240px;
-      background: rgba(255,255,255,0.04); /* الأصلية */
-      border-radius: 20px;
-      box-shadow: 0 0 30px rgba(0,204,255,0.4);
+      transform-style: preserve-3d;
+      transform: rotateY(0deg);
+      transition: transform 0.3s ease;
+    }
+
+    .face {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: rgba(0, 200, 255, 0.7);
+      border: 2px solid white;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 40px;
+      font-size: 24px;
+      color: #fff;
     }
 
-    .product-image {
-      width: 160px;
-      height: 160px;
-      border-radius: 20px;
-      object-fit: cover;
-      box-shadow: 0 0 20px rgba(0,204,255,0.6);
-    }
+    .front  { transform: rotateY(0deg) translateZ(100px); }
+    .back   { transform: rotateY(180deg) translateZ(100px); }
+    .right  { transform: rotateY(90deg) translateZ(100px); }
+    .left   { transform: rotateY(-90deg) translateZ(100px); }
+    .top    { transform: rotateX(90deg) translateZ(100px); }
+    .bottom { transform: rotateX(-90deg) translateZ(100px); }
 
-    .info-panel {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 160px;
-      padding: 10px;
-      background: rgba(0,0,0,0.5);
-      border-radius: 10px;
-      font-size: 14px;
-      line-height: 1.4;
-      color: #00ccff;
-      box-shadow: 0 0 10px rgba(0,204,255,0.5);
-    }
-
-    .info-left {
-      left: -180px;
-      text-align: right;
-    }
-
-    .info-right {
-      right: -180px;
-      text-align: left;
-    }
-
-    .helpar-logo {
-      margin-top: 30px;
-      font-size: 28px;
-      font-weight: bold;
-      color: #00ccff;
-      text-shadow: 0 0 8px #00ccff, 0 0 16px #00ccff;
-    }
-
-    .controls {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    input[type="text"] {
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
+    .controls button {
+      margin: 5px;
+      padding: 10px 20px;
       font-size: 16px;
+      background: #00ccff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      color: #fff;
+      font-weight: bold;
+      transition: background 0.3s;
     }
 
-    button {
-      padding: 10px 16px;
-      border-radius: 8px;
-      border: none;
-      background: #00ccff;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 0 10px #00ccff;
+    .controls button:hover {
+      background: #0099cc;
     }
   </style>
 </head>
 <body>
-  <div class="podium">
-    <img src="https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg" class="product-image" alt="Product">
-    <div class="info-panel info-left">
-      <div><strong>المنتج:</strong> ComfortX</div>
-      <div><strong>السعر:</strong> $94</div>
-      <div><strong>الجودة:</strong> 4.7 ★</div>
-    </div>
-    <div class="info-panel info-right">
-      <div><strong>البديل:</strong> ZoomFlex</div>
-      <div><strong>السعر:</strong> $96</div>
-      <div><strong>الجودة:</strong> 4.5 ★</div>
-    </div>
+
+<div class="scene" id="touchArea">
+  <div class="cube" id="cube">
+    <div class="face front">Front</div>
+    <div class="face back">Back</div>
+    <div class="face right">Right</div>
+    <div class="face left">Left</div>
+    <div class="face top">Top</div>
+    <div class="face bottom">Bottom</div>
   </div>
-  <div class="controls">
-    <input type="text" id="searchInput" placeholder="اكتب منتج للبحث">
-    <button onclick="searchProduct()">🔍 بحث</button>
-  </div>
-  <div class="helpar-logo">HELPAR</div>
-  <script>
-    function searchProduct() {
-      const keyword = document.getElementById("searchInput").value.trim();
-      if (!keyword) return;
-      const img = document.querySelector('.product-image');
-      img.src = `https://source.unsplash.com/160x160/?${encodeURIComponent(keyword)}`;
+</div>
+
+<div class="controls">
+  <button onclick="rotateLeft()">⟲ Left</button>
+  <button onclick="toggleRotation()">⏯ Pause/Play</button>
+  <button onclick="rotateRight()">Right ⟳</button>
+</div>
+
+<script>
+  let cube = document.getElementById("cube");
+  let angle = 0;
+  let autoRotate = true;
+
+  // Auto rotation loop
+  function rotateCube() {
+    if (autoRotate) {
+      angle += 1;
+      cube.style.transform = `rotateY(${angle}deg)`;
     }
-  </script>
+    requestAnimationFrame(rotateCube);
+  }
+  rotateCube();
+
+  // Button controls
+  function toggleRotation() {
+    autoRotate = !autoRotate;
+  }
+
+  function rotateLeft() {
+    angle -= 45;
+    cube.style.transform = `rotateY(${angle}deg)`;
+  }
+
+  function rotateRight() {
+    angle += 45;
+    cube.style.transform = `rotateY(${angle}deg)`;
+  }
+
+  // Touch controls
+  let startX = 0;
+  let touchArea = document.getElementById("touchArea");
+
+  touchArea.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+  });
+
+  touchArea.addEventListener("touchend", (e) => {
+    let endX = e.changedTouches[0].clientX;
+    let deltaX = endX - startX;
+
+    if (Math.abs(deltaX) > 30) { // Sensitivity
+      if (deltaX > 0) {
+        rotateRight();
+      } else {
+        rotateLeft();
+      }
+    }
+  });
+</script>
+
 </body>
 </html>
