@@ -4,23 +4,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Helpar</title>
   <style>
-    .glow-pulse {
-      animation: glowPulse 1s ease-in-out infinite;
-      box-shadow:
-        0 0 20px #00e7ff,
-        0 0 40px #00e7ff,
-        0 0 80px #00e7ff,
-        0 0 120px #00e7ff;
-      border-color: #00e7ff;
-    }
-    @keyframes glowPulse {
-      0%, 100% {
-        box-shadow: 0 0 10px #00e7ff, 0 0 20px #00e7ff, 0 0 40px #00e7ff;
-      }
-      50% {
-        box-shadow: 0 0 30px #00e7ff, 0 0 60px #00e7ff, 0 0 120px #00e7ff, 0 0 160px #00e7ff;
-      }
-    }
     html, body {
       margin: 0; padding: 0;
       width: 100vw; height: 100vh;
@@ -51,55 +34,6 @@
       from { transform: translate(-50%, 0) scale(1); }
       to   { transform: translate(-50%, 0) scale(1.05); }
     }
-    .bottom-actions {
-      position: absolute;
-      bottom: 5vh;
-      width: 100vw;
-      display: flex; justify-content: center; align-items: center;
-      gap: 55vw;
-      z-index: 2;
-    }
-    .icon-btn {
-      position: relative;
-      width: 55px; height: 55px;
-      border-radius: 50%; background: rgba(0,0,0,0.65);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      color: #00e7ff; font-size: 0.8rem;
-      cursor: pointer; transition: 0.2s;
-      border: 2px solid #00e7ff;
-      box-shadow: 0 0 18px #00e7ff80;
-    }
-    .icon-btn:hover {
-      background: #00e7ff33; color: #fff;
-      box-shadow: 0 0 30px #00e7ff;
-    }
-    #avatarBtn > img#avatarIcon {
-      width: 30px !important;
-      height: 30px !important;
-      border-radius: 50%; object-fit: cover;
-      border: none !important; box-shadow: none !important;
-    }
-    .icon-btn > span { font-size: 1.5rem; }
-    .icon-btn > div:not(.dropdown) { margin-top: 7px; font-size: 1rem; }
-    .dropdown {
-      display: none; position: absolute;
-      bottom: 70px; left: 50%; transform: translateX(-50%);
-      background: #000d18f2; border: 2px solid #00e7ff;
-      border-radius: 12px; box-shadow: 0 0 20px #00e7ff55;
-      z-index: 4; min-width: 100px; max-width: 120px;
-      text-align: center; font-size: 1rem;
-      overflow: hidden;
-    }
-    .dropdown.active { display: block; }
-    .dropdown div {
-      display: flex; align-items: center; gap: 8px;
-      padding: 10px; color: #00e7ff;
-      cursor: pointer; border-bottom: 1px solid #00e7ff22;
-      transition: background 0.15s;
-    }
-    .dropdown div:last-child { border-bottom: none; }
-    .dropdown div:hover { background: #00e7ff33; color: #fff; }
-    .dropdown img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; }
     #overlay {
       display: none; position: fixed; inset: 0;
       background: #000; z-index: 999;
@@ -109,87 +43,88 @@
       width: 360px; height: 640px;
       object-fit: contain; background: #000;
     }
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      color: #00e7ff;
+      font-size: 1.2rem;
+    }
+    .modal.active { display: flex; }
+    .modal button {
+      margin-top: 20px;
+      padding: 10px 30px;
+      background: #000;
+      border: 2px solid #00e7ff;
+      color: #00e7ff;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .modal button:hover {
+      background: #00e7ff;
+      color: #000;
+    }
+    .avatar-option, .lang-option {
+      margin: 8px 0;
+      cursor: pointer;
+    }
+    .avatar-option:hover, .lang-option:hover {
+      color: #fff;
+    }
   </style>
 </head>
 <body>
-  <button class="start-button" id="startBtn" onclick="validateAndStart()">START</button>
-  <div class="bottom-actions">
-    <div class="icon-btn" id="langBtn">
-      <span>🌐</span>
-      <div>Languages</div>
-      <div class="dropdown" id="langDropdown">
-        <div onclick="setLang('en')">English</div>
-        <div onclick="setLang('ar')">Arabic</div>
-        <div onclick="setLang('tr')">Turkish</div>
-      </div>
-    </div>
-    <div class="icon-btn" id="avatarBtn">
-      <img id="avatarIcon" src="avatar1.png" alt="Avatar" />
-      <div>Avatar</div>
-      <div class="dropdown" id="avatarDropdown">
-        <div onclick="setAvatar(1)"><img src="avatar1.png" alt="Avatar 1"/>Avatar 1</div>
-        <div onclick="setAvatar(2)"><img src="avatar2.png" alt="Avatar 2"/>Avatar 2</div>
-        <div onclick="setAvatar(3)"><img src="avatar3.png" alt="Avatar 3"/>Avatar 3</div>
-        <div onclick="setAvatar(4)"><img src="avatar4.png" alt="Avatar 4"/>Avatar 4</div>
-      </div>
-    </div>
+  <button class="start-button" id="startBtn" onclick="startSequence()">START</button>
+
+  <div class="modal" id="langModal">
+    <div>Select Language</div>
+    <div class="lang-option" onclick="setLang('en')">English</div>
+    <div class="lang-option" onclick="setLang('ar')">العربية</div>
+    <div class="lang-option" onclick="setLang('tr')">Türkçe</div>
   </div>
+
+  <div class="modal" id="avatarModal">
+    <div>Select Avatar</div>
+    <div class="avatar-option" onclick="setAvatar(1)">Avatar 1</div>
+    <div class="avatar-option" onclick="setAvatar(2)">Avatar 2</div>
+    <div class="avatar-option" onclick="setAvatar(3)">Avatar 3</div>
+  </div>
+
   <div id="overlay">
     <video id="intro" src="intro.mp4" autoplay playsinline muted></video>
   </div>
+
   <script>
     const i18n = {
-      en: { start: "START", lang: "Languages", avatar: "Avatar" },
-      ar: { start: "ابدأ", lang: "اللغات", avatar: "الشخصية" },
-      tr: { start: "Başla", lang: "Diller", avatar: "Avatar" }
+      en: { start: "START" },
+      ar: { start: "ابدأ" },
+      tr: { start: "Başla" }
     };
-    let currentLang = 'en', langTouched = false, avatarSelected = false;
+    let currentLang = 'en';
+    let avatarSelected = false;
+
+    function startSequence() {
+      document.getElementById('langModal').classList.add('active');
+    }
 
     function setLang(lang) {
       currentLang = lang;
-      langTouched = true;
       document.documentElement.lang = lang;
       document.getElementById('startBtn').innerText = i18n[lang].start;
-      document.querySelector('#langBtn div:not(.dropdown)').innerText = i18n[lang].lang;
-      document.querySelector('#avatarBtn div:not(.dropdown)').innerText = i18n[lang].avatar;
-      document.getElementById('langDropdown').classList.remove('active');
-      document.getElementById('avatarDropdown').classList.remove('active');
+      document.getElementById('langModal').classList.remove('active');
+      document.getElementById('avatarModal').classList.add('active');
     }
 
     function setAvatar(id) {
       avatarSelected = true;
-      document.getElementById('avatarIcon').src = `avatar${id}.png`;
-      document.getElementById('avatarDropdown').classList.remove('active');
-      document.getElementById('langDropdown').classList.remove('active');
+      document.getElementById('avatarModal').classList.remove('active');
+      playIntro();
     }
-
-    function validateAndStart() {
-      const langBtn = document.getElementById('langBtn');
-      const avatarBtn = document.getElementById('avatarBtn');
-      langBtn.classList.remove('glow-pulse');
-      avatarBtn.classList.remove('glow-pulse');
-      let valid = true;
-      if (!avatarSelected) { avatarBtn.classList.add('glow-pulse'); valid = false; }
-      if (!langTouched)  { langBtn.classList.add('glow-pulse'); }
-      if (valid) playIntro();
-    }
-
-    document.getElementById('langBtn').onclick = e => {
-      e.stopPropagation();
-      document.getElementById('langDropdown').classList.toggle('active');
-      document.getElementById('avatarDropdown').classList.remove('active');
-    };
-
-    document.getElementById('avatarBtn').onclick = e => {
-      e.stopPropagation();
-      document.getElementById('avatarDropdown').classList.toggle('active');
-      document.getElementById('langDropdown').classList.remove('active');
-    };
-
-    document.body.onclick = () => {
-      document.getElementById('langDropdown').classList.remove('active');
-      document.getElementById('avatarDropdown').classList.remove('active');
-    };
 
     const overlay = document.getElementById('overlay');
     const intro = document.getElementById('intro');
@@ -206,7 +141,6 @@
       document.body.style.background = "url('bakrawnd.png') no-repeat center center fixed";
       document.body.style.backgroundSize = "cover";
       document.querySelector('.start-button').style.display = 'none';
-      document.querySelector('.bottom-actions').style.display = 'none';
     });
 
     setLang('en');
