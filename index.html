@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Helpar</title>
@@ -49,18 +48,67 @@
       height: 640px;
       object-fit: contain;
     }
+    .slider-container {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 280px;
+      height: 280px;
+      background: #222;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 0 10px #00eaff66;
+    }
+    .slider-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+    .slider-container img.active {
+      display: block;
+    }
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 6px 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      user-select: none;
+    }
+    .arrow.left {
+      left: 10px;
+    }
+    .arrow.right {
+      right: 10px;
+    }
   </style>
 </head>
 <body>
-  <!-- START button only -->
-  <button class="start-button" id="startBtn" onclick="startSequence()">START</button>
+  <div class="slider-container">
+    <span class="arrow left" onclick="changeSlide(-1)">&#10094;</span>
+    <span class="arrow right" onclick="changeSlide(1)">&#10095;</span>
+    <img src="img1.jpg" class="active" alt="صورة 1">
+    <img src="img2.jpg" alt="صورة 2">
+    <img src="img3.jpg" alt="صورة 3">
+  </div><button class="start-button" id="startBtn" onclick="startSequence()">START</button>
 
-  <!-- Intro video overlay -->
   <div id="overlay">
     <video id="intro" src="intro.mp4" playsinline muted></video>
-  </div>
+  </div>  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slider-container img');
+    function changeSlide(dir) {
+      slides[currentSlide].classList.remove('active');
+      currentSlide = (currentSlide + dir + slides.length) % slides.length;
+      slides[currentSlide].classList.add('active');
+    }
 
-  <script>
     function startSequence() {
       playIntro();
     }
@@ -79,7 +127,6 @@
         document.body.style.backgroundSize = "cover";
         document.getElementById('startBtn').style.display = 'none';
 
-        // تشغيل صوت المساعد الذكي
         const message = "أهلا بك في عالم أصبح قرية صغيرة";
         const utterance = new SpeechSynthesisUtterance(message);
         utterance.lang = 'ar-SA';
@@ -91,7 +138,6 @@
         utterance.voice = roboVoice;
         speechSynthesis.speak(utterance);
 
-        // إظهار صورة الروبوت
         const img = document.createElement("img");
         img.src = "robot.png";
         img.alt = "Assistant";
@@ -103,6 +149,5 @@
         document.body.appendChild(img);
       };
     }
-  </script>
-</body>
-</html>
+  </script></body>
+  </html>
