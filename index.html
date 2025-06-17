@@ -38,7 +38,7 @@
     }
     .chat-box {
       position: absolute;
-      bottom: 20px;
+      bottom: 45vh;
       left: 50%;
       transform: translateX(-50%);
       width: 90%;
@@ -141,10 +141,31 @@
       width: 360px; height: 640px;
       object-fit: contain; background: #000;
     }
+    .back-arrow {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 100;
+      font-size: 28px;
+      color: #00ccff;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 10px 14px;
+      border-radius: 50%;
+      border: 2px solid #00ccff;
+      cursor: pointer;
+      box-shadow: 0 0 10px #00ccff88;
+      transition: 0.2s;
+    }
+    .back-arrow:hover {
+      background: #00ccff33;
+      color: white;
+      box-shadow: 0 0 20px #00ccff;
+    }
   </style>
 </head>
 <body>
   <button class="start-button" id="startBtn" onclick="validateAndStart()">START</button>
+
   <div class="bottom-actions">
     <div class="icon-btn" id="langBtn">
       <span>🌐</span>
@@ -166,9 +187,13 @@
       </div>
     </div>
   </div>
+
+  <div class="back-arrow" onclick="history.back()">⟵</div>
+
   <div id="overlay">
     <video id="intro" src="intro.mp4" autoplay playsinline muted></video>
   </div>
+
   <div id="main">
     <div class="avatar">
       <video src="https://cdn.pixabay.com/video/2023/03/14/157284-812396038_tiny.mp4" autoplay muted loop></video>
