@@ -12,16 +12,23 @@
       background: url('22.jpg') no-repeat center center fixed;
       background-size: cover;
       font-family: 'Segoe UI', Arial, sans-serif;
-      display: flex; align-items: center; justify-content: center;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-end;
     }
+
     .start-button {
-      padding:14px 44px;
-      font-size:3.4vw; font-weight:bold;
-      color:#00ccff;
-      background:#000; border:3px solid #fff; border-radius:30px;
-      box-shadow:0 0 10px #00ccff,0 0 20px #00ccff;
-      cursor:pointer; transition:transform .2s;
+      margin-bottom: 20vh;
+      padding: 14px 44px;
+      font-size: 3.4vw; font-weight: bold;
+      color: #00ccff;
+      background: #000;
+      border: 3px solid #fff;
+      border-radius: 30px;
+      box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff;
+      cursor: pointer;
+      transition: transform .2s;
     }
+
     .start-button:active { transform: scale(.95); }
 
     #overlay {
@@ -31,13 +38,47 @@
       align-items: center; justify-content: center;
       z-index: 999;
     }
+
     #intro {
-      width:360px; height:640px;
+      width: 360px; height: 640px;
       object-fit: contain;
+    }
+
+    .selector-box {
+      position: absolute;
+      top: 10vh;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+      z-index: 10;
+    }
+
+    select {
+      padding: 8px 12px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 2px solid #00ccff;
+      background: #000;
+      color: #00ccff;
     }
   </style>
 </head>
 <body>
+
+  <div class="selector-box">
+    <select id="langSelect">
+      <option value="en">English</option>
+      <option value="ar">العربية</option>
+      <option value="tr">Türkçe</option>
+    </select>
+    <select id="avatarSelect">
+      <option value="1">Avatar 1</option>
+      <option value="2">Avatar 2</option>
+      <option value="3">Avatar 3</option>
+    </select>
+  </div>
+
   <button class="start-button" id="startBtn" onclick="startSequence()">START</button>
 
   <div id="overlay">
@@ -50,28 +91,19 @@
       ar: { start: "ابدأ" },
       tr: { start: "Başla" }
     };
+
     let currentLang = 'en';
 
     function startSequence() {
-      // 1) اختيار اللغة
-      const lang = prompt(
-        "Select language:\n'en' = English\n'ar' = العربية\n'tr' = Türkçe",
-        currentLang
-      );
-      if (!i18n[lang]) return; // إلغاء إذا إدخال غير صحيح
+      const lang = document.getElementById("langSelect").value;
+      const avatar = document.getElementById("avatarSelect").value;
 
       currentLang = lang;
       document.documentElement.lang = lang;
       document.getElementById('startBtn').innerText = i18n[lang].start;
 
-      // 2) اختيار الأفاتار
-      const avatar = prompt(
-        "Select avatar number (1, 2 or 3):",
-        "1"
-      );
-      if (!["1","2","3"].includes(avatar)) return;
+      if (!["1", "2", "3"].includes(avatar)) return;
 
-      // 3) تشغيل الفيديو
       playIntro();
     }
 
@@ -87,6 +119,7 @@
         document.body.style.background = "url('bakrawnd.png') no-repeat center center fixed";
         document.body.style.backgroundSize = "cover";
         document.getElementById('startBtn').style.display = 'none';
+        document.querySelector('.selector-box').style.display = 'none';
       };
     }
   </script>
