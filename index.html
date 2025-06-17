@@ -1,105 +1,130 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HELPAR Store</title>
+  <title>3D Cube</title>
   <style>
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
+      background: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .scene {
+      width: 300px;
+      height: 300px;
+      perspective: 1000px;
+      touch-action: none;
+    }
+
+    .cube {
+      width: 100%;
       height: 100%;
-      overflow: hidden;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      font-family: Arial, sans-serif;
+      position: relative;
+      transform-style: preserve-3d;
+      transform: rotateY(0deg);
+      transition: transform 0.1s ease;
+    }
+
+    .face {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid #00ccff;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
-    }.scene {
-  width: 300px;
-  height: 300px;
-  perspective: 1000px;
-  cursor: grab;
-}
+      font-size: 20px;
+      color: white;
+    }
 
-.cube {
-  width: 300px;
-  height: 300px;
-  position: relative;
-  transform-style: preserve-3d;
-  transform: rotateY(0deg);
-  transition: transform 0.3s ease;
-}
-
-.face {
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(0, 204, 255, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(10px);
-  box-shadow: inset 0 0 10px rgba(0,204,255,0.1);
-  border-radius: 10px;
-}
-
-.face img {
-  width: 95%;
-  height: 95%;
-  object-fit: contain;
-  border-radius: 10px;
-}
-
-.face.front  { transform: rotateY(  0deg) translateZ(150px); }
-.face.back   { transform: rotateY(180deg) translateZ(150px); }
-.face.right  { transform: rotateY( 90deg) translateZ(150px); }
-.face.left   { transform: rotateY(-90deg) translateZ(150px); }
+    .face.front  { transform: rotateY(  0deg) translateZ(150px); }
+    .face.back   { transform: rotateY(180deg) translateZ(150px); }
+    .face.right  { transform: rotateY( 90deg) translateZ(150px); }
+    .face.left   { transform: rotateY(-90deg) translateZ(150px); }
 
   </style>
 </head>
 <body>
-  <div class="scene" id="scene">
-    <div class="cube" id="cube">
-      <div class="face front"><img src="product1.jpg" alt="Product 1"></div>
-      <div class="face back"><img src="product2.jpg" alt="Product 2"></div>
-      <div class="face right"><img src="product3.jpg" alt="Product 3"></div>
-      <div class="face left"><img src="product4.jpg" alt="Product 4"></div>
-    </div>
-  </div>  <script>
-    let cube = document.getElementById('cube');
-    let scene = document.getElementById('scene');
-    let isDragging = false;
-    let startX;
-    let currentRotation = 0;
 
-    // دوران تلقائي
-    let autoRotate = setInterval(() => {
+<div class="scene" id="scene">
+  <div class="cube" id="cube">
+    <div class="face front">Product 1</div>
+    <div class="face back">Product 2</div>
+    <div class="face right">Product 3</div>
+    <div class="face left">Product 4</div>
+  </div>
+</div>
+
+<script>
+  let cube = document.getElementById('cube');
+  let scene = document.getElementById('scene');
+  let isDragging = false;
+  let startX;
+  let currentRotation = 0;
+
+  // Auto-rotation
+  let autoRotate = setInterval(() => {
+    currentRotation += 1;
+    cube.style.transform = `rotateY(${currentRotation}deg)`;
+  }, 50);
+
+  function stopAutoRotate() {
+    clearInterval(autoRotate);
+  }
+
+  function startAutoRotate() {
+    autoRotate = setInterval(() => {
       currentRotation += 1;
       cube.style.transform = `rotateY(${currentRotation}deg)`;
     }, 50);
+  }
 
-    scene.addEventListener('mousedown', (e) => {
-      isDragging = true;
-      startX = e.clientX;
-      clearInterval(autoRotate);
-    });
+  // Mouse events
+  scene.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.clientX;
+    stopAutoRotate();
+  });
 
-    scene.addEventListener('mouseup', () => {
-      isDragging = false;
-      autoRotate = setInterval(() => {
-        currentRotation += 1;
-        cube.style.transform = `rotateY(${currentRotation}deg)`;
-      }, 50);
-    });
+  scene.addEventListener('mouseup', () => {
+    isDragging = false;
+    startAutoRotate();
+  });
 
-    scene.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
-      const deltaX = e.clientX - startX;
-      currentRotation += deltaX * 0.3;
-      cube.style.transform = `rotateY(${currentRotation}deg)`;
-      startX = e.clientX;
-    });
-  </script></body>
+  scene.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const deltaX = e.clientX - startX;
+    currentRotation += deltaX * 0.3;
+    cube.style.transform = `rotateY(${currentRotation}deg)`;
+    startX = e.clientX;
+  });
+
+  // Touch events for mobile
+  scene.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    startX = e.touches[0].clientX;
+    stopAutoRotate();
+  });
+
+  scene.addEventListener('touchend', () => {
+    isDragging = false;
+    startAutoRotate();
+  });
+
+  scene.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    const deltaX = e.touches[0].clientX - startX;
+    currentRotation += deltaX * 0.3;
+    cube.style.transform = `rotateY(${currentRotation}deg)`;
+    startX = e.touches[0].clientX;
+  });
+</script>
+
+</body>
 </html>
