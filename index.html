@@ -2,133 +2,87 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HELPAR Store</title>
+  <title>HELPAR Smart Podium</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       overflow: hidden;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      background: url('podium-background.jpg') no-repeat center center fixed;
+      background-size: cover;
       font-family: Arial, sans-serif;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
-    }.scene {
-  width: 200px;
-  height: 200px;
-  perspective: 1000px;
-  cursor: grab;
-  touch-action: none;
-}
-
-.cube {
-  width: 200px;
-  height: 200px;
+      color: white;
+    }.podium {
   position: relative;
-  transform-style: preserve-3d;
-  transform: rotateY(0deg);
-  transition: transform 0.3s ease;
-}
-
-.face {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(0, 204, 255, 0.2);
+  width: 240px;
+  height: 240px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 20px;
+  box-shadow: 0 0 30px rgba(0,204,255,0.4);
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(10px);
-  box-shadow: inset 0 0 10px rgba(0,204,255,0.1);
-  border-radius: 10px;
+  margin-bottom: 40px;
 }
 
-.face img {
-  width: 95%;
-  height: 95%;
-  object-fit: contain;
-  border-radius: 10px;
+.product-image {
+  width: 160px;
+  height: 160px;
+  border-radius: 20px;
+  object-fit: cover;
+  box-shadow: 0 0 20px rgba(0,204,255,0.6);
 }
 
-.face.front  { transform: rotateY(  0deg) translateZ(100px); }
-.face.back   { transform: rotateY(180deg) translateZ(100px); }
-.face.right  { transform: rotateY( 90deg) translateZ(100px); }
-.face.left   { transform: rotateY(-90deg) translateZ(100px); }
+.info-panel {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 160px;
+  padding: 10px;
+  background: rgba(0,0,0,0.5);
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #00ccff;
+  box-shadow: 0 0 10px rgba(0,204,255,0.5);
+}
+
+.info-left {
+  left: -180px;
+  text-align: right;
+}
+
+.info-right {
+  right: -180px;
+  text-align: left;
+}
+
+.helpar-logo {
+  margin-top: 30px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #00ccff;
+  text-shadow: 0 0 8px #00ccff, 0 0 16px #00ccff;
+}
 
   </style>
 </head>
-<body>
-  <div class="scene" id="scene">
-    <div class="cube" id="cube">
-      <div class="face front"><img src="product1.jpg" alt="Product 1"></div>
-      <div class="face back"><img src="product2.jpg" alt="Product 2"></div>
-      <div class="face right"><img src="product3.jpg" alt="Product 3"></div>
-      <div class="face left"><img src="product4.jpg" alt="Product 4"></div>
+<body>  <div class="podium">
+    <img src="product1.jpg" class="product-image" alt="Product">
+    <div class="info-panel info-left">
+      <div><strong>المنتج:</strong> ComfortX</div>
+      <div><strong>السعر:</strong> $94</div>
+      <div><strong>الجودة:</strong> 4.7 ★</div>
     </div>
-  </div>  <script>
-    let cube = document.getElementById('cube');
-    let scene = document.getElementById('scene');
-    let isDragging = false;
-    let startX;
-    let currentRotation = 0;
-
-    let autoRotate = setInterval(() => {
-      currentRotation += 1;
-      cube.style.transform = `rotateY(${currentRotation}deg)`;
-    }, 50);
-
-    function stopAutoRotate() {
-      clearInterval(autoRotate);
-    }
-
-    function startAutoRotate() {
-      autoRotate = setInterval(() => {
-        currentRotation += 1;
-        cube.style.transform = `rotateY(${currentRotation}deg)`;
-      }, 50);
-    }
-
-    // Desktop
-    scene.addEventListener('mousedown', (e) => {
-      isDragging = true;
-      startX = e.clientX;
-      stopAutoRotate();
-    });
-
-    scene.addEventListener('mouseup', () => {
-      isDragging = false;
-      startAutoRotate();
-    });
-
-    scene.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
-      const deltaX = e.clientX - startX;
-      currentRotation += deltaX * 0.3;
-      cube.style.transform = `rotateY(${currentRotation}deg)`;
-      startX = e.clientX;
-    });
-
-    // Mobile
-    scene.addEventListener('touchstart', (e) => {
-      isDragging = true;
-      startX = e.touches[0].clientX;
-      stopAutoRotate();
-    });
-
-    scene.addEventListener('touchend', () => {
-      isDragging = false;
-      startAutoRotate();
-    });
-
-    scene.addEventListener('touchmove', (e) => {
-      if (!isDragging) return;
-      const deltaX = e.touches[0].clientX - startX;
-      currentRotation += deltaX * 0.3;
-      cube.style.transform = `rotateY(${currentRotation}deg)`;
-      startX = e.touches[0].clientX;
-    });
-  </script></body>
+    <div class="info-panel info-right">
+      <div><strong>البديل:</strong> ZoomFlex</div>
+      <div><strong>السعر:</strong> $96</div>
+      <div><strong>الجودة:</strong> 4.5 ★</div>
+    </div>
+  </div>  <div class="helpar-logo">HELPAR</div></body>
 </html>
