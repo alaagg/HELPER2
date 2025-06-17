@@ -16,60 +16,81 @@
       align-items: center; justify-content: center;
     }
 
-    .select-group {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin-bottom: 40px;
+    .step {
+      margin: 15px 0;
+      display: none;
       z-index: 2;
     }
 
-    select {
-      padding: 10px 16px;
+    select, .start-button {
+      padding: 12px 20px;
       font-size: 18px;
       border-radius: 12px;
       border: 2px solid #00ccff;
       background: #000;
       color: #00ccff;
-      width: 200px;
+      width: 220px;
       text-align: center;
       box-shadow: 0 0 10px #00ccff;
+      cursor: pointer;
     }
 
     .start-button {
-      padding: 14px 44px;
-      font-size: 20px;
       font-weight: bold;
-      color: #00ccff;
-      background: #000;
       border: 3px solid #fff;
-      border-radius: 30px;
       box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff;
-      cursor: pointer;
-      transition: transform 0.2s;
-      z-index: 2;
     }
 
     .start-button:active {
       transform: scale(0.95);
     }
+
+    .visible {
+      display: block !important;
+    }
   </style>
 </head>
 <body>
-  <div class="select-group">
-    <select id="language">
+
+  <!-- اختيار اللغة -->
+  <div class="step visible">
+    <select id="language" onchange="showAvatar()">
+      <option selected disabled>Select Language</option>
       <option>English</option>
       <option>Arabic</option>
       <option>French</option>
       <option>Spanish</option>
     </select>
-    <select id="avatar">
+  </div>
+
+  <!-- اختيار الأفاتار -->
+  <div class="step">
+    <select id="avatar" onchange="showStart()">
+      <option selected disabled>Select Avatar</option>
       <option>Avatar 1</option>
       <option>Avatar 2</option>
       <option>Avatar 3</option>
     </select>
   </div>
 
-  <button class="start-button">START</button>
+  <!-- زر Start -->
+  <div class="step">
+    <button class="start-button" onclick="startApp()">START</button>
+  </div>
+
+  <script>
+    function showAvatar() {
+      document.querySelectorAll('.step')[1].classList.add('visible');
+    }
+
+    function showStart() {
+      document.querySelectorAll('.step')[2].classList.add('visible');
+    }
+
+    function startApp() {
+      window.location.href = "intro.html";
+    }
+  </script>
+
 </body>
 </html>
