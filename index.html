@@ -1,106 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Touch Controlled Cube</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rotating Cube with Touch</title>
   <style>
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
-      height: 100%;
       background: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       overflow: hidden;
-      touch-action: none;
     }
-
-    .scene {
-      width: 200px;
-      height: 200px;
-      perspective: 800px;
+    canvas {
+      display: block;
     }
-
-    .cube {
-      width: 200px;
-      height: 200px;
-      position: relative;
-      transform-style: preserve-3d;
-      transform: rotateY(0deg);
-      transition: transform 0.3s ease-out;
-    }
-
-    .face {
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      background: rgba(0, 200, 255, 0.7);
-      border: 2px solid white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      color: #fff;
-      backface-visibility: hidden;
-    }
-
-    .front  { transform: rotateY(0deg) translateZ(100px); }
-    .back   { transform: rotateY(180deg) translateZ(100px); }
-    .right  { transform: rotateY(90deg) translateZ(100px); }
-    .left   { transform: rotateY(-90deg) translateZ(100px); }
-    .top    { transform: rotateX(90deg) translateZ(100px); }
-    .bottom { transform: rotateX(-90deg) translateZ(100px); }
   </style>
 </head>
 <body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script>
+    let scene = new THREE.Scene();
+    let camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);
+    let renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
 
-<div class="scene" id="touchArea">
-  <div class="cube" id="cube">
-    <div class="face front">Front</div>
-    <div class="face back">Back</div>
-    <div class="face right">Right</div>
-    <div class="face left">Left</div>
-    <div class="face top">Top</div>
-    <div class="face bottom">Bottom</div>
-  </div>
-</div>
+    // Cube
+    const geometry = new THREE.BoxGeometry(200, 200, 200);
+    const materials = [
+      new THREE.MeshBasicMaterial({ color: 0xff0000 }),
+      new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
+      new THREE.MeshBasicMaterial({ color: 0x0000ff }),
+      new THREE.MeshBasicMaterial({ color: 0xffff00 }),
+      new THREE.MeshBasicMaterial({ color: 0xff00ff }),
+      new THREE.MeshBasicMaterial({ color: 0x00ffff })
+    ];
+    const cube = new THREE.Mesh(geometry, materials);
+    scene.add(cube);
 
-<script>
-  const cube = document.getElementById("cube");
-  const touchArea = document.getElementById("touchArea");
-  let angle = 0;
-  let startX = 0;
-  let rotating = true;
+    camera.position.z = 600;
 
-  // Auto-rotate
-  function autoRotate() {
-    if (rotating) {
-      angle += 1;
-      cube.style.transform = `rotateY(${angle}deg)`;
+    // Rotation control
+    let autoRotate = true;
+    let startX = 0;
+
+    // Touch events
+    document.addEventListener('touchstart', (e) => {
+      autoRotate = false;
+      startX = e.touches[0].clientX;
+    });
+
+    document.addEventListener('touchmove', (e) => {
+      let deltaX = e.touches[0].clientX - startX;
+      cube.rotation.y += deltaX * 0.005;
+      startX = e.touches[0].clientX;
+    });
+
+    document.addEventListener('touchend', () => {
+      autoRotate = true;
+    });
+
+    function animate() {
+      requestAnimationFrame(animate);
+      if (autoRotate) {
+        cube.rotation.y += 0.01;
+      }
+      renderer.render(scene, camera);
     }
-    requestAnimationFrame(autoRotate);
-  }
-  autoRotate();
+    animate();
 
-  // Touch handling
-  touchArea.addEventListener("touchstart", (e) => {
-    rotating = false;
-    startX = e.touches[0].clientX;
-  });
-
-  touchArea.addEventListener("touchmove", (e) => {
-    const deltaX = e.touches[0].clientX - startX;
-    angle += deltaX * 0.3;
-    cube.style.transform = `rotateY(${angle}deg)`;
-    startX = e.touches[0].clientX;
-  });
-
-  touchArea.addEventListener("touchend", () => {
-    rotating = true;
-  });
-</script>
-
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth/window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
 </body>
 </html>
