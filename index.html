@@ -9,7 +9,7 @@
       padding: 0;
       height: 100%;
       overflow: hidden;
-      background: url('podium-background.jpg') no-repeat center center fixed;
+      background: url('https://images.unsplash.com/photo-1581291519195-ef11498d1cf5?auto=format&fit=crop&w=1000&q=80') no-repeat center center fixed;
       background-size: cover;
       font-family: Arial, sans-serif;
       display: flex;
@@ -70,10 +70,35 @@
   text-shadow: 0 0 8px #00ccff, 0 0 16px #00ccff;
 }
 
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+input[type="text"] {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+}
+
+button {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  background: #00ccff;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 10px #00ccff;
+}
+
   </style>
 </head>
-<body>  <div class="podium">
-    <img src="product1.jpg" class="product-image" alt="Product">
+<body>
+  <div class="podium">
+    <img src="https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg" class="product-image" alt="Product">
     <div class="info-panel info-left">
       <div><strong>المنتج:</strong> ComfortX</div>
       <div><strong>السعر:</strong> $94</div>
@@ -84,5 +109,15 @@
       <div><strong>السعر:</strong> $96</div>
       <div><strong>الجودة:</strong> 4.5 ★</div>
     </div>
-  </div>  <div class="helpar-logo">HELPAR</div></body>
+  </div>  <div class="controls">
+    <input type="text" id="searchInput" placeholder="اكتب منتج للبحث">
+    <button onclick="searchProduct()">🔍 بحث</button>
+  </div>  <div class="helpar-logo">HELPAR</div>  <script>
+    function searchProduct() {
+      const keyword = document.getElementById("searchInput").value.trim();
+      if (!keyword) return;
+      const img = document.querySelector('.product-image');
+      img.src = `https://source.unsplash.com/160x160/?${encodeURIComponent(keyword)}`;
+    }
+  </script></body>
 </html>
