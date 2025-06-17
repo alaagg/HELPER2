@@ -1,108 +1,94 @@
 <!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Helpar</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Helpar Bot</title>
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-      background: url('22.jpg') no-repeat center center fixed;
-      background-size: cover;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      position: relative;
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #111;
+      color: #eee;
     }
-    .start-button {
-      position: absolute;
-      bottom: 12%;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 14px 44px;
-      font-size: 3.4vw;
-      font-weight: bold;
-      color: #00ccff;
-      background: #000;
-      border: 3px solid #fff;
-      border-radius: 30px;
-      box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff;
+    #chat-box {
+      border: 1px solid #444;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: 0 auto;
+      background: #222;
+    }
+    .message {
+      margin-bottom: 15px;
+    }
+    .bot {
+      color: #00eaff;
+    }
+    .user {
+      color: #afff95;
+    }
+    input[type="text"] {
+      width: 80%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 15px;
+      font-size: 16px;
+      background: #00eaff;
+      border: none;
+      color: #000;
       cursor: pointer;
-      transition: transform .2s;
-      z-index: 1;
     }
-    .start-button:active {
-      transform: scale(.95);
-    }
-    #overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.9);
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-    }
-    #intro {
-      width: 360px;
-      height: 640px;
-      object-fit: contain;
+    img {
+      max-width: 100px;
+      display: block;
+      margin-top: 5px;
     }
   </style>
 </head>
 <body>
-  <!-- START button only -->
-  <button class="start-button" id="startBtn" onclick="startSequence()">START</button>
+  <div id="chat-box">
+    <div class="message bot">هلبر: أهلين! شو حابب أدوّرلك اليوم؟ ✨</div>
+    <div id="chat"></div>
+    <input type="text" id="query" placeholder="اكتب اسم المنتج...">
+    <button onclick="searchProduct()">دَوِّر 🔍</button>
+  </div>  <script>
+    const apiKey = "2e06c3f49a6eeee3a87880aab"; // استبدل بمفتاحك الخاص لو تغير
 
-  <!-- Intro video overlay -->
-  <div id="overlay">
-    <video id="intro" src="intro.mp4" playsinline muted></video>
-  </div>
-
-  <script>
-    function startSequence() {
-      playIntro();
+    function addMessage(content, sender = 'bot') {
+      const div = document.createElement('div');
+      div.className = 'message ' + sender;
+      div.innerHTML = content;
+      document.getElementById('chat').appendChild(div);
     }
 
-    function playIntro() {
-      const overlay = document.getElementById('overlay');
-      const intro = document.getElementById('intro');
-      overlay.style.display = 'flex';
-      intro.currentTime = 0;
-      intro.muted = false;
-      intro.play();
+    async function searchProduct() {
+      const input = document.getElementById('query');
+      const query = input.value.trim();
+      if (!query) return;
 
-      intro.onended = () => {
-        overlay.style.display = 'none';
-        document.body.style.background = "url('bakrawnd.png') no-repeat center center fixed";
-        document.body.style.backgroundSize = "cover";
-        document.getElementById('startBtn').style.display = 'none';
+      addMessage("انت: " + query, 'user');
+      addMessage("هلبر: لحظة بشوفلك أحسن العروض...", 'bot');
 
-        // تشغيل صوت المساعد الذكي
-        const message = "هلا شو الأخبار كيف بتحب ساعدك اليوم  ";
-        const utterance = new SpeechSynthesisUtterance(message);
-        utterance.lang = 'ar-SA';
-        utterance.rate = 0.95;
-        utterance.pitch = 1;
-        utterance.volume = 1;
-        const voices = speechSynthesis.getVoices();
-        const roboVoice = voices.find(v => v.name.toLowerCase().includes('zira')) || voices[0];
-        utterance.voice = roboVoice;
-        speechSynthesis.speak(utterance);
+      try {
+        const response = await fetch(`https://serpapi.com/search.json?engine=google_shopping&q=${encodeURIComponent(query)}&api_key=${apiKey}`);
+        const data = await response.json();
 
-        // إظهار صورة الروبوت
-        const img = document.createElement("img");
-        img.src = "robot.png";
-        img.alt = "Assistant";
-        img.style.position = "fixed";
-        img.style.bottom = "20px";
-        img.style.right = "20px";
-        img.style.width = "120px";
-        img.style.zIndex = "1000";
-        document.body.appendChild(img);
-      };
+        if (data.shopping_results && data.shopping_results.length > 0) {
+          const result = data.shopping_results[0];
+          const reply = `لقيتلك هالمنتج: <br><strong>${result.title}</strong><br>السعر: ${result.price}<br><a href="${result.link}" target="_blank">رابط المنتج</a><br><img src="${result.thumbnail}" />`;
+          addMessage(reply, 'bot');
+        } else {
+          addMessage("ما لقيت شي بهالاسم، جرّب غيره 🙏", 'bot');
+        }
+      } catch (error) {
+        console.error(error);
+        addMessage("صار خطأ بالبحث، جرّب كمان شوي...", 'bot');
+      }
+
+      input.value = "";
     }
-  </script>
-</body>
+  </script></body>
 </html>
