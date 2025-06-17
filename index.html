@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Helpar</title>
   <style>
@@ -14,15 +14,14 @@
       background: url('22.jpg') no-repeat center center fixed;
       background-size: cover;
       font-family: 'Segoe UI', Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .start-button {
-      position: absolute;
-      left: 50%;
-      bottom: 6vh; /* مرفوع شوي عن الحافة */
-      transform: translateX(-50%);
-      padding: 14px 44px;
-      font-size: 3.4vw;
+      padding: 16px 48px;
+      font-size: 3vw;
       font-weight: bold;
       color: #00ccff;
       background: #000;
@@ -30,16 +29,49 @@
       border-radius: 30px;
       box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff;
       cursor: pointer;
-      transition: transform 0.2s;
-      z-index: 10;
+      z-index: 2;
     }
 
-    .start-button:active {
-      transform: translateX(-50%) scale(0.95);
+    #video-container {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: none;
+      z-index: 5;
+      background: #000;
+    }
+
+    #intro-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
   </style>
 </head>
 <body>
-  <button class="start-button" onclick="alert('Starting...')">START</button>
+
+  <button class="start-button" onclick="startExperience()">START</button>
+
+  <div id="video-container">
+    <video id="intro-video" src="Intro.mp4" type="video/mp4" autoplay muted></video>
+  </div>
+
+  <script>
+    function startExperience() {
+      document.querySelector('.start-button').style.display = 'none';
+      const videoContainer = document.getElementById('video-container');
+      const video = document.getElementById('intro-video');
+
+      videoContainer.style.display = 'block';
+      video.play();
+
+      // لما ينتهي الفيديو، انتقل لصفحة المتجر مثلًا
+      video.onended = function () {
+        window.location.href = "store.html"; // غير الاسم حسب صفحتك
+      };
+    }
+  </script>
+
 </body>
 </html>
