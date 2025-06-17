@@ -6,11 +6,7 @@
   <style>
     .glow-pulse {
       animation: glowPulse 1s ease-in-out infinite;
-      box-shadow:
-        0 0 20px #00e7ff,
-        0 0 40px #00e7ff,
-        0 0 80px #00e7ff,
-        0 0 120px #00e7ff;
+      box-shadow: 0 0 20px #00e7ff, 0 0 40px #00e7ff, 0 0 80px #00e7ff, 0 0 120px #00e7ff;
       border-color: #00e7ff;
     }
     @keyframes glowPulse {
@@ -20,102 +16,95 @@
       50% {
         box-shadow: 0 0 30px #00e7ff, 0 0 60px #00e7ff, 0 0 120px #00e7ff, 0 0 160px #00e7ff;
       }
-    }html, body {
-  margin: 0; padding: 0;
-  width: 100vw; height: 100vh;
-  overflow: hidden;
-  background: url('22.jpg') no-repeat center center fixed;
-  background-size: cover;
-  font-family: 'Segoe UI', Arial, sans-serif;
-}
-
-.start-button {
-  position: absolute;
-  left: 50%; bottom: 11vh;
-  transform: translate(-50%, 0);
-  padding: 14px 44px;
-  font-size: 3.4vw;
-  font-weight: bold;
-  color: #00ccff;
-  background: #000;
-  border: 3px solid #fff;
-  border-radius: 30px;
-  cursor: pointer;
-  z-index: 3;
-  box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff, 0 0 40px #00ccff, 0 0 60px #00ccff;
-  text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
-  animation: pulse 1.5s infinite alternate;
-  transition: all 0.3s ease;
-}
-@keyframes pulse {
-  from { transform: translate(-50%, 0) scale(1); }
-  to   { transform: translate(-50%, 0) scale(1.05); }
-}
-
-.bottom-actions {
-  position: absolute;
-  bottom: 5vh;
-  width: 100vw;
-  display: flex; justify-content: center; align-items: center;
-  gap: 55vw;
-  z-index: 2;
-}
-
-.icon-btn {
-  position: relative;
-  width: 55px; height: 55px;
-  border-radius: 50%; background: rgba(0,0,0,0.65);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  color: #00e7ff; font-size: 0.8rem;
-  cursor: pointer; transition: 0.2s;
-  border: 2px solid #00e7ff;
-  box-shadow: 0 0 18px #00e7ff80;
-}
-.icon-btn:hover {
-  background: #00e7ff33; color: #fff;
-  box-shadow: 0 0 30px #00e7ff;
-}
-
-#avatarBtn > img#avatarIcon {
-  width: 30px !important;
-  height: 30px !important;
-  border-radius: 50%; object-fit: cover;
-  border: none !important; box-shadow: none !important;
-}
-
-.icon-btn > span { font-size: 1.5rem; }
-.icon-btn > div:not(.dropdown) { margin-top: 7px; font-size: 1rem; }
-
-.dropdown {
-  display: none; position: absolute;
-  bottom: 70px; left: 50%; transform: translateX(-50%);
-  background: #000d18f2; border: 2px solid #00e7ff;
-  border-radius: 12px; box-shadow: 0 0 20px #00e7ff55;
-  z-index: 4; min-width: 100px; max-width: 120px;
-  text-align: center; font-size: 1rem;
-  overflow: hidden;
-}
-.dropdown.active { display: block; }
-.dropdown div {
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px; color: #00e7ff;
-  cursor: pointer; border-bottom: 1px solid #00e7ff22;
-  transition: background 0.15s;
-}
-.dropdown div:last-child { border-bottom: none; }
-.dropdown div:hover { background: #00e7ff33; color: #fff; }
-.dropdown img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; }
-
-#overlay {
-  display: none; position: fixed; inset: 0;
-  background: #000; z-index: 999;
-  align-items: center; justify-content: center;
-}
-#intro {
-  width: 360px; height: 640px;
-  object-fit: contain; background: #000;
-}
-
+    }
+    html, body {
+      margin: 0; padding: 0;
+      width: 100vw; height: 100vh;
+      overflow: hidden;
+      background: url('22.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .start-button {
+      position: absolute;
+      left: 50%; bottom: 11vh;
+      transform: translate(-50%, 0);
+      padding: 14px 44px;
+      font-size: 3.4vw;
+      font-weight: bold;
+      color: #00ccff;
+      background: #000;
+      border: 3px solid #fff;
+      border-radius: 30px;
+      cursor: pointer;
+      z-index: 3;
+      box-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff, 0 0 40px #00ccff, 0 0 60px #00ccff;
+      text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff;
+      animation: pulse 1.5s infinite alternate;
+      transition: all 0.3s ease;
+    }
+    @keyframes pulse {
+      from { transform: translate(-50%, 0) scale(1); }
+      to   { transform: translate(-50%, 0) scale(1.05); }
+    }
+    .bottom-actions {
+      position: absolute;
+      bottom: 5vh;
+      width: 100vw;
+      display: flex; justify-content: center; align-items: center;
+      gap: 55vw;
+      z-index: 2;
+    }
+    .icon-btn {
+      position: relative;
+      width: 55px; height: 55px;
+      border-radius: 50%; background: rgba(0,0,0,0.65);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: #00e7ff; font-size: 0.8rem;
+      cursor: pointer; transition: 0.2s;
+      border: 2px solid #00e7ff;
+      box-shadow: 0 0 18px #00e7ff80;
+    }
+    .icon-btn:hover {
+      background: #00e7ff33; color: #fff;
+      box-shadow: 0 0 30px #00e7ff;
+    }
+    #avatarBtn > img#avatarIcon {
+      width: 30px !important;
+      height: 30px !important;
+      border-radius: 50%; object-fit: cover;
+      border: none !important; box-shadow: none !important;
+    }
+    .icon-btn > span { font-size: 1.5rem; }
+    .icon-btn > div:not(.dropdown) { margin-top: 7px; font-size: 1rem; }
+    .dropdown {
+      display: none; position: absolute;
+      bottom: 70px; left: 50%; transform: translateX(-50%);
+      background: #000d18f2; border: 2px solid #00e7ff;
+      border-radius: 12px; box-shadow: 0 0 20px #00e7ff55;
+      z-index: 4; min-width: 100px; max-width: 120px;
+      text-align: center; font-size: 1rem;
+      overflow: hidden;
+    }
+    .dropdown.active { display: block; }
+    .dropdown div {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px; color: #00e7ff;
+      cursor: pointer; border-bottom: 1px solid #00e7ff22;
+      transition: background 0.15s;
+    }
+    .dropdown div:last-child { border-bottom: none; }
+    .dropdown div:hover { background: #00e7ff33; color: #fff; }
+    .dropdown img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; }
+    #overlay {
+      display: none; position: fixed; inset: 0;
+      background: #000; z-index: 999;
+      align-items: center; justify-content: center;
+    }
+    #intro {
+      width: 360px; height: 640px;
+      object-fit: contain; background: #000;
+    }
   </style>
 </head>
 <body>
@@ -146,12 +135,11 @@
   </div>
   <script>
     const i18n = {
-      en: { welcome: "Welcome to Helpar", start: "START", lang: "Languages", avatar: "Avatar" },
-      ar: { welcome: "مرحبًا بك في هلبر", start: "ابدأ", lang: "اللغات", avatar: "الشخصية" },
-      tr: { welcome: "Helpar'a Hoşgeldin", start: "Başla", lang: "Diller", avatar: "Avatar" }
-    };let currentLang = 'en', langTouched = false, avatarSelected = false;
-
-function setLang(lang) {
+      en: { start: "START", lang: "Languages", avatar: "Avatar" },
+      ar: { start: "ابدأ", lang: "اللغات", avatar: "الشخصية" },
+      tr: { start: "Başla", lang: "Diller", avatar: "Avatar" }
+    };
+    let currentLang = 'en', langTouched = false, avatarSelected = false;function setLang(lang) {
   currentLang = lang;
   langTouched = true;
   document.documentElement.lang = lang;
@@ -207,7 +195,14 @@ function playIntro() {
   intro.play();
 }
 
-intro.addEventListener('ended', () => overlay.style.display = 'none');
+intro.addEventListener('ended', () => {
+  overlay.style.display = 'none';
+  document.body.style.background = "url('bakrawnd.png') no-repeat center center fixed";
+  document.body.style.backgroundSize = "cover";
+  document.querySelector('.start-button').style.display = 'none';
+  document.querySelector('.bottom-actions').style.display = 'none';
+});
+
 setLang('en');
 
   </script>
