@@ -3,47 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rotating Cube with Touch</title>
+  <title>Cube with 4 Images</title>
   <style>
-    body {
-      margin: 0;
-      background: #000;
-      overflow: hidden;
-    }
-    canvas {
-      display: block;
-    }
+    body { margin: 0; background: #000; overflow: hidden; }
+    canvas { display: block; }
   </style>
 </head>
 <body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
   <script>
-    let scene = new THREE.Scene();
-    let camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);
-    let renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    // Cube
-    const geometry = new THREE.BoxGeometry(200, 200, 200);
+    const loader = new THREE.TextureLoader();
+
+    // الصور الجانبية (يمين - يسار - أمام - خلف)
     const materials = [
-      new THREE.MeshBasicMaterial({ color: 0xff0000 }),
-      new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
-      new THREE.MeshBasicMaterial({ color: 0x0000ff }),
-      new THREE.MeshBasicMaterial({ color: 0xffff00 }),
-      new THREE.MeshBasicMaterial({ color: 0xff00ff }),
-      new THREE.MeshBasicMaterial({ color: 0x00ffff })
+      new THREE.MeshBasicMaterial({ map: loader.load('right.jpg') }),   // right
+      new THREE.MeshBasicMaterial({ map: loader.load('left.jpg') }),    // left
+      new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0 }), // top
+      new THREE.MeshBasicMaterial({ map: loader.load('back.jpg') }),    // back
+      new THREE.MeshBasicMaterial({ map: loader.load('front.jpg') }),   // front
+      new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0 })  // bottom
     ];
+
+    const geometry = new THREE.BoxGeometry(200, 200, 200);
     const cube = new THREE.Mesh(geometry, materials);
     scene.add(cube);
 
     camera.position.z = 600;
 
-    // Rotation control
     let autoRotate = true;
     let startX = 0;
 
-    // Touch events
+    // لمس وتحكم
     document.addEventListener('touchstart', (e) => {
       autoRotate = false;
       startX = e.touches[0].clientX;
@@ -66,10 +62,11 @@
       }
       renderer.render(scene, camera);
     }
+
     animate();
 
     window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth/window.innerHeight;
+      camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     });
