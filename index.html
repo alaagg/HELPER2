@@ -18,8 +18,6 @@
       overflow: hidden;
       position: relative;
       user-select: none;
-      -webkit-user-select: none;
-      -ms-user-select: none;
       touch-action: none;
     }
 
@@ -46,22 +44,24 @@
       50%      { opacity: 0.5; }
     }
 
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: inherit;
-      z-index: -2;
-    }
-
     .logo-container {
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
       z-index: 2;
+    }
+
+    .helpar-icon {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 20px;
+      animation: glowRotate 10s linear infinite;
+    }
+
+    @keyframes glowRotate {
+      0% { transform: rotate(0deg); filter: drop-shadow(0 0 8px #00ccff); }
+      100% { transform: rotate(360deg); filter: drop-shadow(0 0 15px #00e7ff); }
     }
 
     .helpar-name {
@@ -107,9 +107,11 @@
 </head>
 <body>
   <div class="stars-layer"></div>
+
   <div class="logo-container">
-    <div class="helpar-name neon-pulse">HELPAR</div>
-    <div class="helpar-sub">Your Second Mind</div>
-  </div>
-</body>
-</html>
+    <!-- شعار العقل الثاني -->
+    <svg class="helpar-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="32" cy="32" r="30" stroke="#00ccff" stroke-width="2" opacity="0.3"/>
+      <path d="M20 30C18 18 40 16 44 28C45 31 42 40 38 42C32 45 26 40 26 36C24 32 20 34 20 30Z" fill="#00ccff" fill-opacity="0.2"/>
+      <path d="M28 28C26 22 38 22 36 30C35 32 34 34 32 34C30 34 28 32 28 28Z" stroke="#00ffff" stroke-width="1.5" fill="none"/>
+      <circle cx="32" cy="32"
