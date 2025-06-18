@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3D Cube</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Touch Controlled Cube</title>
   <style>
-    body, html {
+    html, body {
       margin: 0;
       padding: 0;
-      width: 100vw;
-      height: 100vh;
-      background: url('rem.png') no-repeat center center fixed;
-      background-size: cover;
-      overflow: hidden;
-    }
-
-    #scene {
-      width: 100%;
       height: 100%;
+      background: url('rem.jpg') no-repeat center center fixed;
+      background-size: cover;
       display: flex;
       align-items: center;
       justify-content: center;
-      perspective: 1200px;
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    .scene {
+      width: 200px;
+      height: 200px;
+      perspective: 800px;
     }
 
     .cube {
@@ -29,99 +29,74 @@
       height: 200px;
       position: relative;
       transform-style: preserve-3d;
-      animation: rotateCube 20s linear infinite;
-      margin-top: -300px;
-      transition: transform 0.5s ease;
+      transform: rotateY(0deg);
+      transition: transform 0.3s ease-out;
     }
 
     .face {
       position: absolute;
       width: 200px;
       height: 200px;
+      border: 2px solid white;
+      backface-visibility: hidden;
       background-size: cover;
       background-position: center;
-      border: 2px solid white;
-      box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
     }
 
-    .front  { transform: rotateY(0deg) translateZ(100px); background-image: url('face1.png'); }
-    .back   { transform: rotateY(180deg) translateZ(100px); background-image: url('face2.png'); }
-    .right  { transform: rotateY(90deg) translateZ(100px); background-image: url('face3.png'); }
-    .left   { transform: rotateY(-90deg) translateZ(100px); background-image: url('face4.png'); }
+    .front  { transform: rotateY(0deg) translateZ(100px); background-image: url('img1.jpg'); }
+    .back   { transform: rotateY(180deg) translateZ(100px); background-image: url('img2.jpg'); }
+    .right  { transform: rotateY(90deg) translateZ(100px); background-image: url('img3.jpg'); }
+    .left   { transform: rotateY(-90deg) translateZ(100px); background-image: url('img4.jpg'); }
 
-    @keyframes rotateCube {
-      from { transform: rotateY(0deg); }
-      to { transform: rotateY(360deg); }
-    }
+    .top    { transform: rotateX(90deg) translateZ(100px); background: rgba(255, 255, 255, 0.05); }
+    .bottom { transform: rotateX(-90deg) translateZ(100px); background: rgba(255, 255, 255, 0.05); }
   </style>
 </head>
 <body>
-  <div id="scene">
-    <div class="cube" id="cube">
-      <div class="face front"></div>
-      <div class="face back"></div>
-      <div class="face right"></div>
-      <div class="face left"></div>
-    </div>
+
+<div class="scene" id="touchArea">
+  <div class="cube" id="cube">
+    <div class="face front"></div>
+    <div class="face back"></div>
+    <div class="face right"></div>
+    <div class="face left"></div>
+    <div class="face top"></div>
+    <div class="face bottom"></div>
   </div>
+</div>
 
-  <script>
-    const cube = document.getElementById('cube');
-    let angle = 0;
-    let isTouching = false;
+<script>
+  const cube = document.getElementById("cube");
+  const touchArea = document.getElementById("touchArea");
+  let angle = 0;
+  let startX = 0;
+  let rotating = true;
 
-    // إيقاف الدوران مؤقتًا عند السحب
-    function stopRotation() {
-      cube.style.animationPlayState = 'paused';
+  function autoRotate() {
+    if (rotating) {
+      angle += 1;
+      cube.style.transform = `rotateY(${angle}deg)`;
     }
+    requestAnimationFrame(autoRotate);
+  }
+  autoRotate();
 
-    function resumeRotation() {
-      cube.style.animationPlayState = 'running';
-    }
+  touchArea.addEventListener("touchstart", (e) => {
+    rotating = false;
+    startX = e.touches[0].clientX;
+  });
 
-    // للمس
-    let startX = null;
-    document.addEventListener('touchstart', (e) => {
-      startX = e.touches[0].clientX;
-      stopRotation();
-    });
+  touchArea.addEventListener("touchmove", (e) => {
+    const deltaX = e.touches[0].clientX - startX;
+    angle += deltaX * 0.3;
+    cube.style.transform = `rotateY(${angle}deg)`;
+    startX = e.touches[0].clientX;
+  });
 
-    document.addEventListener('touchend', (e) => {
-      let diff = e.changedTouches[0].clientX - startX;
-      if (Math.abs(diff) > 30) {
-        angle += diff < 0 ? 90 : -90;
-        cube.style.animation = 'none';
-        cube.style.transform = `rotateY(${angle}deg)`;
-        setTimeout(() => {
-          cube.style.animation = 'rotateCube 20s linear infinite';
-        }, 300);
-      }
-      startX = null;
-    });
+  touchArea.addEventListener("touchend", () => {
+    rotating = true;
+  });
+</script>
 
-    // للماوس
-    let isDragging = false;
-    let mouseStart = 0;
-
-    document.addEventListener('mousedown', (e) => {
-      isDragging = true;
-      mouseStart = e.clientX;
-      stopRotation();
-    });
-
-    document.addEventListener('mouseup', (e) => {
-      if (!isDragging) return;
-      let diff = e.clientX - mouseStart;
-      if (Math.abs(diff) > 30) {
-        angle += diff < 0 ? 90 : -90;
-        cube.style.animation = 'none';
-        cube.style.transform = `rotateY(${angle}deg)`;
-        setTimeout(() => {
-          cube.style.animation = 'rotateCube 20s linear infinite';
-        }, 300);
-      }
-      isDragging = false;
-    });
-  </script>
 </body>
 </html>
