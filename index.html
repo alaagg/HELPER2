@@ -16,11 +16,11 @@
     @keyframes pulse {
       0%, 100% {
         transform: scale(1);
-        filter: drop-shadow(0 0 6px #00ccff) drop-shadow(0 0 12px #00ccff);
+        filter: drop-shadow(0 0 12px #00ccff) drop-shadow(0 0 24px #00e7ff);
       }
       50% {
         transform: scale(1.05);
-        filter: drop-shadow(0 0 10px #00e7ff) drop-shadow(0 0 16px #00ccff);
+        filter: drop-shadow(0 0 16px #00e7ff) drop-shadow(0 0 28px #00ccff);
       }
     }
 
@@ -40,16 +40,15 @@
       max-width: 120px;
       margin-bottom: 2vh;
       animation: pulse 3s infinite;
-      filter: drop-shadow(0 0 6px #00ccff) drop-shadow(0 0 12px #00ccff);
+      filter: drop-shadow(0 0 12px #00ccff) drop-shadow(0 0 24px #00e7ff);
     }
 
     .helpar-name {
       font-size: 8vw;
       font-weight: bold;
       letter-spacing: 0.2em;
-      text-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff;
+      text-shadow: 0 0 4px #00ccff, 0 0 8px #00ccff;
       margin: 0;
-      animation: pulse 3s infinite;
     }
 
     .helpar-sub {
@@ -140,6 +139,7 @@
     }
 
     #timer {
+      display: none;
       position: absolute;
       bottom: 30px;
       left: 50%;
@@ -222,6 +222,7 @@
       face.addEventListener("click", () => {
         document.getElementById("start-section").style.display = "none";
         document.getElementById("video-section").style.display = "flex";
+        document.getElementById("timer").style.display = "block";
         const vid = document.getElementById("introVideo");
         vid.play();
         playVideo();
@@ -232,6 +233,7 @@
       document.getElementById("video-section").style.display = "none";
       document.getElementById("store-img").style.display = "none";
       document.getElementById("start-section").style.display = "flex";
+      document.getElementById("timer").style.display = "none";
       const vid = document.getElementById("introVideo");
       vid.pause();
       vid.currentTime = 0;
@@ -261,4 +263,4 @@
     }
   </script>
 </body>
-      </html>
+</html>
