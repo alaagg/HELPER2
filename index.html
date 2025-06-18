@@ -31,7 +31,8 @@
       height: 200px;
       transform-style: preserve-3d;
       animation: spin 20s linear infinite;
-      margin-top: -400px; /* نزل المكعب شوي */
+      margin-top: -400px;
+      transition: transform 0.5s ease;
     }
 
     .face {
@@ -43,6 +44,7 @@
       border: 2px solid #fff;
       box-shadow: 0 0 20px #00ccff88;
       border-radius: 10px;
+      backface-visibility: hidden;
     }
 
     .front  { transform: rotateY(  0deg) translateZ(100px); background-image: url('face1.png'); }
@@ -70,7 +72,7 @@
     const cube = document.getElementById('cube');
     let angle = 0;
 
-    // تحكم باللمس
+    // لمس
     let startX = null;
     document.addEventListener('touchstart', e => {
       startX = e.touches[0].clientX;
@@ -81,7 +83,7 @@
       const diff = endX - startX;
 
       if (Math.abs(diff) > 50) {
-        angle += diff < 0 ? -90 : 90; // صحّح الاتجاه
+        angle += diff < 0 ? -90 : 90;
         cube.style.animation = 'none';
         cube.style.transform = `rotateY(${angle}deg)`;
         setTimeout(() => {
@@ -90,7 +92,7 @@
       }
     });
 
-    // تحكم بالماوس
+    // ماوس
     let dragging = false;
     let mouseStart = 0;
     document.addEventListener('mousedown', e => {
@@ -102,7 +104,7 @@
       if (!dragging) return;
       const diff = e.clientX - mouseStart;
       if (Math.abs(diff) > 50) {
-        angle += diff < 0 ? -90 : 90; // صحّح الاتجاه
+        angle += diff < 0 ? -90 : 90;
         cube.style.animation = 'none';
         cube.style.transform = `rotateY(${angle}deg)`;
         setTimeout(() => {
