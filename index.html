@@ -2,94 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HELPAR</title>
   <style>
     html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #010308, #050a14, #0a121c, #0f1a24);
+      margin: 0; padding: 0;
+      width: 100vw; height: 100vh;
+      background: #000;
       font-family: 'Segoe UI', Arial, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
-      position: relative;
-      user-select: none;
-      touch-action: none;
-    }
-
-    .stars-layer {
-      position: absolute;
-      width: 200%;
-      height: 200%;
-      top: -50%;
-      left: -50%;
-      background-image: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-      background-size: 80px 80px;
-      animation: moveStars 90s linear infinite, twinkle 2s ease-in-out infinite;
-      z-index: 0;
-      filter: blur(0.5px);
-    }
-
-    @keyframes moveStars {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(25%, 25%) scale(1.05); }
-    }
-
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.2; }
-      50% { opacity: 0.5; }
-    }
-
-    .logo-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      z-index: 2;
-    }
-
-    .helpar-logo {
-      width: 100px;
-      height: 100px;
-      margin-bottom: 20px;
-      animation: logoPulse 5s infinite ease-in-out;
-    }
-
-    @keyframes logoPulse {
-      0%, 100% {
-        filter: drop-shadow(0 0 6px #00ccff);
-        transform: scale(1);
-      }
-      50% {
-        filter: drop-shadow(0 0 12px #00e7ff);
-        transform: scale(1.05);
-      }
     }
 
     .helpar-name {
       font-size: 10vw;
       color: #00ccff;
-      text-shadow:
-        0 0 25px #00ccff,
-        0 0 50px #00ccff,
-        0 0 80px #00e7ff;
-      letter-spacing: 0.25em;
       font-weight: bold;
-      animation: pulse 2.5s infinite ease-in-out;
-    }
-
-    .helpar-sub {
-      margin-top: 16px;
-      font-size: 3.2vw;
-      color: #89a6b8;
-      opacity: 0.85;
+      letter-spacing: 0.2em;
       text-shadow:
-        0 0 10px #00bfff,
-        0 0 20px #00aacc;
+        0 0 20px #00ccff,
+        0 0 40px #00ccff,
+        0 0 80px #00e7ff;
+      animation: pulse 2.5s infinite ease-in-out;
     }
 
     @keyframes pulse {
@@ -97,38 +32,18 @@
         text-shadow:
           0 0 20px #00ccff,
           0 0 40px #00ccff,
-          0 0 60px #00e7ff;
+          0 0 80px #00e7ff;
       }
       50% {
         text-shadow:
-          0 0 35px #00ffff,
-          0 0 70px #00ccff,
-          0 0 100px #00e7ff;
+          0 0 40px #00ffff,
+          0 0 80px #00ccff,
+          0 0 120px #00e7ff;
       }
     }
   </style>
 </head>
 <body>
-  <div class="stars-layer"></div>
-
-  <div class="logo-container">
-    <!-- شعار العقل الثاني -->
-    <svg class="helpar-logo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="32" cy="32" r="28" stroke="#00ccff" stroke-width="2" fill="none"/>
-      <circle cx="32" cy="32" r="6" fill="#00e7ff"/>
-      <path d="M32 6 A26 26 0 0 1 58 32" stroke="#00e7ff" stroke-width="1" stroke-dasharray="4,4"/>
-      <line x1="24" y1="24" x2="16" y2="16" stroke="#00ccff" stroke-width="1" opacity="0.5"/>
-      <line x1="40" y1="24" x2="48" y2="16" stroke="#00ccff" stroke-width="1" opacity="0.5"/>
-      <line x1="24" y1="40" x2="16" y2="48" stroke="#00ccff" stroke-width="1" opacity="0.5"/>
-      <line x1="40" y1="40" x2="48" y2="48" stroke="#00ccff" stroke-width="1" opacity="0.5"/>
-      <circle cx="16" cy="16" r="1.5" fill="#00ffff" opacity="0.3"/>
-      <circle cx="48" cy="16" r="1.5" fill="#00ffff" opacity="0.3"/>
-      <circle cx="16" cy="48" r="1.5" fill="#00ffff" opacity="0.3"/>
-      <circle cx="48" cy="48" r="1.5" fill="#00ffff" opacity="0.3"/>
-    </svg>
-
-    <div class="helpar-name">HELPAR</div>
-    <div class="helpar-sub">Your Second Mind</div>
-  </div>
+  <div class="helpar-name">HELPAR</div>
 </body>
 </html>
