@@ -1,1 +1,57 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HELPAR</title>
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      width: 100vw; height: 100vh;
+      overflow: hidden;
+      background: linear-gradient(135deg, #050d1f, #0b2c3d, #0e4456, #06161e);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 2;
+}
 
+.helpar-name {
+  font-size: 6vw;
+  color: #00ccff;
+  text-shadow: 0 0 12px #00ccff, 0 0 24px #00ccff;
+  letter-spacing: 0.2em;
+  font-weight: bold;
+}
+
+.helpar-sub {
+  margin-top: 10px;
+  font-size: 1.8vw;
+  color: #89a6b8;
+  opacity: 0.8;
+}
+
+.neon-pulse {
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { text-shadow: 0 0 12px #00ccff, 0 0 24px #00ccff; }
+  50% { text-shadow: 0 0 24px #00ffff, 0 0 36px #00ccff; }
+}
+
+  </style>
+</head>
+<body>
+  <div class="logo-container">
+    <div class="helpar-name neon-pulse">HELPAR</div>
+    <div class="helpar-sub">Your Second Mind</div>
+  </div>
+</body>
+</html>
