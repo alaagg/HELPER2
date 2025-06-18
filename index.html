@@ -1,139 +1,71 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-  <title>Expandable Cube Section</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rotating Cube</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      width: 100vw;
-      height: 100vh;
-      background: #010308;
-      overflow: hidden;
+      height: 100%;
+      background: #000;
       display: flex;
-      justify-content: center;
       align-items: center;
-      font-family: Arial, sans-serif;
-      touch-action: none;
-    }.scene {
-  width: 300px;
-  height: 300px;
-  position: relative;
-  transform-style: preserve-3d;
-  animation: spinY 10s linear infinite;
-}
+      justify-content: center;
+      overflow: hidden;
+    }
 
-.face {
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  background: rgba(0, 200, 255, 0.07);
-  border: 2px solid #00ccff;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 20px #00ccff66;
-}
+    .scene {
+      width: 200px;
+      height: 200px;
+      perspective: 800px;
+    }
 
-.face.front  { transform: rotateY(0deg) translateZ(150px); }
-.face.back   { transform: rotateY(180deg) translateZ(150px); }
-.face.right  { transform: rotateY(90deg) translateZ(150px); }
-.face.left   { transform: rotateY(-90deg) translateZ(150px); }
+    .cube {
+      width: 200px;
+      height: 200px;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: spinY 5s linear infinite;
+    }
 
-.section {
-  width: 48%; height: 48%;
-  margin: 1%;
-  background: rgba(0, 200, 255, 0.1);
-  color: #00ccff;
-  border: 1px solid #00ccff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s ease-out;
-  font-size: 1em;
-  text-align: center;
-}
+    .face {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border: 2px solid #0ff;
+      background: rgba(0, 200, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #fff;
+    }
 
-.section:hover {
-  background: rgba(0, 200, 255, 0.2);
-}
+    .front  { transform: rotateY(  0deg) translateZ(100px); }
+    .back   { transform: rotateY(180deg) translateZ(100px); }
+    .right  { transform: rotateY( 90deg) translateZ(100px); }
+    .left   { transform: rotateY(-90deg) translateZ(100px); }
+    .top    { transform: rotateX( 90deg) translateZ(100px); }
+    .bottom { transform: rotateX(-90deg) translateZ(100px); }
 
-.expanded {
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  background: rgba(0, 200, 255, 0.1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2em;
-  font-weight: bold;
-  color: #00ccff;
-  z-index: 5;
-  transition: all 0.3s ease-out;
-}
-
-.back-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: none;
-  border: none;
-  color: #00ccff;
-  font-size: 1.5em;
-  cursor: pointer;
-}
-
-@keyframes spinY {
-  0% { transform: rotateY(0deg); }
-  100% { transform: rotateY(360deg); }
-}
-
+    @keyframes spinY {
+      from { transform: rotateY(0deg); }
+      to   { transform: rotateY(360deg); }
+    }
   </style>
 </head>
 <body>
-  <div class="scene" id="cube">
-    <div class="face front" id="frontFace">
-      <div class="section" onclick="expandSection('🎬 Movies')">🎬 Movies</div>
-      <div class="section" onclick="expandSection('🎵 Music')">🎵 Music</div>
-      <div class="section" onclick="expandSection('⚽ Sports')">⚽ Sports</div>
-      <div class="section" onclick="expandSection('🔥 Trends')">🔥 Trends</div>
+  <div class="scene">
+    <div class="cube">
+      <div class="face front">Front</div>
+      <div class="face back">Back</div>
+      <div class="face right">Right</div>
+      <div class="face left">Left</div>
+      <div class="face top">Top</div>
+      <div class="face bottom">Bottom</div>
     </div>
-    <div class="face back">
-      <div class="section" onclick="expandSection('💼 Work')">💼 Work</div>
-      <div class="section" onclick="expandSection('📋 Tasks')">📋 Tasks</div>
-      <div class="section" onclick="expandSection('⏰ Reminders')">⏰ Reminders</div>
-      <div class="section" onclick="expandSection('📆 Calendar')">📆 Calendar</div>
-    </div>
-    <div class="face right">
-      <div class="section" onclick="expandSection('👨‍👩‍👧 Family')">👨‍👩‍👧 Family</div>
-      <div class="section" onclick="expandSection('👩‍⚕️ Health')">👩‍⚕️ Health</div>
-      <div class="section" onclick="expandSection('🧠 Privacy')">🧠 Privacy</div>
-      <div class="section" onclick="expandSection('💤 Sleep')">💤 Sleep</div>
-    </div>
-    <div class="face left">
-      <div class="section" onclick="expandSection('💸 Budget')">💸 Budget</div>
-      <div class="section" onclick="expandSection('✈️ Travel')">✈️ Travel</div>
-      <div class="section" onclick="expandSection('🏦 Finance')">🏦 Finance</div>
-      <div class="section" onclick="expandSection('🧾 Bills')">🧾 Bills</div>
-    </div>
-  </div>  <div id="expandedSection" class="expanded" style="display:none;">
-    <button class="back-btn" onclick="collapseSection()">⟵</button>
-    <div id="sectionTitle"></div>
-  </div>  <script>
-    function expandSection(name) {
-      document.getElementById('cube').style.animationPlayState = 'paused';
-      document.getElementById('expandedSection').style.display = 'flex';
-      document.getElementById('sectionTitle').innerText = name;
-    }
-
-    function collapseSection() {
-      document.getElementById('cube').style.animationPlayState = 'running';
-      document.getElementById('expandedSection').style.display = 'none';
-    }
-  </script></body>
+  </div>
+</body>
 </html>
