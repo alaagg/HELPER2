@@ -6,13 +6,29 @@
   <title>HELPAR</title>
   <style>
     html, body {
-      margin: 0; padding: 0;
-      width: 100vw; height: 100vh;
-      background: #000;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: #010308;
       font-family: 'Segoe UI', Arial, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+
+    .logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    svg.helpar-logo {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 20px;
+      animation: pulse 3s infinite ease-in-out;
     }
 
     .helpar-name {
@@ -24,26 +40,66 @@
         0 0 20px #00ccff,
         0 0 40px #00ccff,
         0 0 80px #00e7ff;
-      animation: pulse 2.5s infinite ease-in-out;
+      animation: pulse 3s infinite ease-in-out;
+    }
+
+    .helpar-sub {
+      margin-top: 10px;
+      font-size: 3vw;
+      color: #89a6b8;
+      opacity: 0.8;
+      text-shadow:
+        0 0 8px #00bfff,
+        0 0 16px #00aacc;
     }
 
     @keyframes pulse {
       0%, 100% {
+        filter: drop-shadow(0 0 6px #00ccff);
         text-shadow:
           0 0 20px #00ccff,
           0 0 40px #00ccff,
           0 0 80px #00e7ff;
       }
       50% {
+        filter: drop-shadow(0 0 12px #00e7ff);
         text-shadow:
-          0 0 40px #00ffff,
-          0 0 80px #00ccff,
-          0 0 120px #00e7ff;
+          0 0 35px #00ffff,
+          0 0 70px #00ccff,
+          0 0 100px #00e7ff;
       }
     }
   </style>
 </head>
 <body>
-  <div class="helpar-name">HELPAR</div>
+  <div class="logo-container">
+    <!-- شعار: شبكة داخل دائرة -->
+    <svg class="helpar-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <!-- دائرة خارجية -->
+      <circle cx="50" cy="50" r="45" stroke="#00ccff" stroke-width="2" fill="none"/>
+
+      <!-- الشبكة العصبية -->
+      <!-- خطوط -->
+      <line x1="30" y1="30" x2="50" y2="20" stroke="#00e7ff" stroke-width="1" opacity="0.6"/>
+      <line x1="50" y1="20" x2="70" y2="30" stroke="#00e7ff" stroke-width="1" opacity="0.6"/>
+      <line x1="30" y1="30" x2="30" y2="70" stroke="#00e7ff" stroke-width="1" opacity="0.6"/>
+      <line x1="30" y1="70" x2="70" y2="70" stroke="#00e7ff" stroke-width="1" opacity="0.6"/>
+      <line x1="70" y1="70" x2="70" y2="30" stroke="#00e7ff" stroke-width="1" opacity="0.6"/>
+      <line x1="50" y1="20" x2="50" y2="50" stroke="#00ffff" stroke-width="1" opacity="0.4"/>
+      <line x1="50" y1="50" x2="70" y2="70" stroke="#00ffff" stroke-width="1" opacity="0.4"/>
+      <line x1="50" y1="50" x2="30" y2="70" stroke="#00ffff" stroke-width="1" opacity="0.4"/>
+
+      <!-- نقاط -->
+      <circle cx="30" cy="30" r="2" fill="#00ffff"/>
+      <circle cx="50" cy="20" r="2" fill="#00ffff"/>
+      <circle cx="70" cy="30" r="2" fill="#00ffff"/>
+      <circle cx="30" cy="70" r="2" fill="#00ffff"/>
+      <circle cx="70" cy="70" r="2" fill="#00ffff"/>
+      <circle cx="50" cy="50" r="2.5" fill="#00ccff"/>
+    </svg>
+
+    <div class="helpar-name">HELPAR</div>
+    <div class="helpar-sub">Your Second Mind</div>
+  </div>
 </body>
 </html>
