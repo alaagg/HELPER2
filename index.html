@@ -1,51 +1,85 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>HELPAR</title>
   <style>
     html, body {
-      margin: 0; padding: 0;
-      width: 100vw; height: 100vh;
-      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
       background: linear-gradient(135deg, #050d1f, #0b2c3d, #0e4456, #06161e);
       font-family: 'Segoe UI', Arial, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       position: relative;
-    }.logo-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  z-index: 2;
-}
+      overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      touch-action: none;
+    }
 
-.helpar-name {
-  font-size: 6vw;
-  color: #00ccff;
-  text-shadow: 0 0 12px #00ccff, 0 0 24px #00ccff;
-  letter-spacing: 0.2em;
-  font-weight: bold;
-}
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: inherit;
+      z-index: -1;
+    }
 
-.helpar-sub {
-  margin-top: 10px;
-  font-size: 1.8vw;
-  color: #89a6b8;
-  opacity: 0.8;
-}
+    .logo-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      z-index: 2;
+    }
 
-.neon-pulse {
-  animation: pulse 2s infinite ease-in-out;
-}
+    .helpar-name {
+      font-size: 10vw;
+      color: #00ccff;
+      text-shadow:
+        0 0 20px #00ccff,
+        0 0 40px #00ccff,
+        0 0 60px #00e7ff;
+      letter-spacing: 0.25em;
+      font-weight: bold;
+    }
 
-@keyframes pulse {
-  0%, 100% { text-shadow: 0 0 12px #00ccff, 0 0 24px #00ccff; }
-  50% { text-shadow: 0 0 24px #00ffff, 0 0 36px #00ccff; }
-}
+    .helpar-sub {
+      margin-top: 16px;
+      font-size: 3.2vw;
+      color: #89a6b8;
+      opacity: 0.85;
+      text-shadow:
+        0 0 10px #00bfff,
+        0 0 20px #00aacc;
+    }
 
+    .neon-pulse {
+      animation: pulse 2.5s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        text-shadow:
+          0 0 20px #00ccff,
+          0 0 40px #00ccff,
+          0 0 60px #00e7ff;
+      }
+      50% {
+        text-shadow:
+          0 0 30px #00ffff,
+          0 0 60px #00ccff,
+          0 0 90px #00e7ff;
+      }
+    }
   </style>
 </head>
 <body>
