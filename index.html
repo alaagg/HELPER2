@@ -31,8 +31,7 @@
       height: 200px;
       transform-style: preserve-3d;
       animation: spin 20s linear infinite;
-      margin-top: -600px;
-      transition: transform 0.5s ease;
+      margin-top: -400px; /* نزل المكعب شوي */
     }
 
     .face {
@@ -59,64 +58,59 @@
 </head>
 <body>
   <div id="scene">
-    <div class="cube" id="cube"></div>
+    <div class="cube" id="cube">
+      <div class="face front"></div>
+      <div class="face back"></div>
+      <div class="face right"></div>
+      <div class="face left"></div>
+    </div>
   </div>
 
   <script>
     const cube = document.getElementById('cube');
     let angle = 0;
-    let rotating = true;
 
-    // لمس
+    // تحكم باللمس
     let startX = null;
     document.addEventListener('touchstart', e => {
       startX = e.touches[0].clientX;
-      stopRotation();
     });
 
     document.addEventListener('touchend', e => {
       const endX = e.changedTouches[0].clientX;
       const diff = endX - startX;
+
       if (Math.abs(diff) > 50) {
-        angle += diff > 0 ? -90 : 90;
+        angle += diff < 0 ? -90 : 90; // صحّح الاتجاه
         cube.style.animation = 'none';
         cube.style.transform = `rotateY(${angle}deg)`;
+        setTimeout(() => {
+          cube.style.animation = 'spin 20s linear infinite';
+        }, 600);
       }
-      startX = null;
-      resumeRotation();
     });
 
-    // ماوس
-    let isDragging = false;
+    // تحكم بالماوس
+    let dragging = false;
     let mouseStart = 0;
     document.addEventListener('mousedown', e => {
-      isDragging = true;
+      dragging = true;
       mouseStart = e.clientX;
-      stopRotation();
     });
 
     document.addEventListener('mouseup', e => {
-      if (!isDragging) return;
+      if (!dragging) return;
       const diff = e.clientX - mouseStart;
       if (Math.abs(diff) > 50) {
-        angle += diff > 0 ? -90 : 90;
+        angle += diff < 0 ? -90 : 90; // صحّح الاتجاه
         cube.style.animation = 'none';
         cube.style.transform = `rotateY(${angle}deg)`;
+        setTimeout(() => {
+          cube.style.animation = 'spin 20s linear infinite';
+        }, 600);
       }
-      isDragging = false;
-      resumeRotation();
+      dragging = false;
     });
-
-    function stopRotation() {
-      cube.style.animationPlayState = 'paused';
-    }
-
-    function resumeRotation() {
-      setTimeout(() => {
-        cube.style.animation = 'spin 20s linear infinite';
-        cube.style.transform = `rotateY(${angle}deg)`;
-      }, 600);
-    }
   </script>
 </body>
 </html>
