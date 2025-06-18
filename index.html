@@ -14,7 +14,7 @@
       font-family: 'Segoe UI', Arial, sans-serif;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       overflow: hidden;
     }
 
@@ -22,33 +22,45 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      margin-top: 5vh;
       text-align: center;
     }
 
     svg.brain-veins {
-      width: 240px;
-      height: 240px;
-      margin-bottom: 40px;
+      width: 280px;
+      height: 280px;
+      margin-bottom: 30px;
     }
 
     .pulse-path {
-      stroke: #00ccff;
-      stroke-width: 2.8;
+      stroke-width: 2.6;
       fill: none;
       stroke-linecap: round;
       opacity: 0.2;
       animation: lightUp 3s ease-in-out infinite;
     }
 
-    .pulse-path:nth-child(2) { animation-delay: 0.2s; }
-    .pulse-path:nth-child(3) { animation-delay: 0.4s; }
-    .pulse-path:nth-child(4) { animation-delay: 0.6s; }
-    .pulse-path:nth-child(5) { animation-delay: 0.8s; }
+    /* توزيع ألوان الطيف */
+    .pulse-path:nth-child(1)  { stroke: #ff0000; animation-delay: 0s; }
+    .pulse-path:nth-child(2)  { stroke: #ff4000; animation-delay: 0.15s; }
+    .pulse-path:nth-child(3)  { stroke: #ff8000; animation-delay: 0.3s; }
+    .pulse-path:nth-child(4)  { stroke: #ffbf00; animation-delay: 0.45s; }
+    .pulse-path:nth-child(5)  { stroke: #ffff00; animation-delay: 0.6s; }
+    .pulse-path:nth-child(6)  { stroke: #bfff00; animation-delay: 0.75s; }
+    .pulse-path:nth-child(7)  { stroke: #80ff00; animation-delay: 0.9s; }
+    .pulse-path:nth-child(8)  { stroke: #40ff00; animation-delay: 1.05s; }
+    .pulse-path:nth-child(9)  { stroke: #00ff40; animation-delay: 1.2s; }
+    .pulse-path:nth-child(10) { stroke: #00ff80; animation-delay: 1.35s; }
+    .pulse-path:nth-child(11) { stroke: #00ffff; animation-delay: 1.5s; }
+    .pulse-path:nth-child(12) { stroke: #0080ff; animation-delay: 1.65s; }
+    .pulse-path:nth-child(13) { stroke: #4000ff; animation-delay: 1.8s; }
+    .pulse-path:nth-child(14) { stroke: #8000ff; animation-delay: 1.95s; }
+    .pulse-path:nth-child(15) { stroke: #bf00ff; animation-delay: 2.1s; }
 
     @keyframes lightUp {
-      0% { stroke-opacity: 0.1; }
+      0% { stroke-opacity: 0.05; }
       40% { stroke-opacity: 1; }
-      100% { stroke-opacity: 0.1; }
+      100% { stroke-opacity: 0.05; }
     }
 
     .helpar-name {
@@ -92,11 +104,21 @@
 <body>
   <div class="logo-container">
     <svg class="brain-veins" viewBox="0 0 100 100">
-      <path class="pulse-path" d="M50 100 Q45 80 50 60" />
-      <path class="pulse-path" d="M50 100 Q55 80 50 60" />
-      <path class="pulse-path" d="M50 100 Q40 75 45 50" />
-      <path class="pulse-path" d="M50 100 Q60 75 55 50" />
-      <path class="pulse-path" d="M50 100 Q50 70 50 40" />
+      <path class="pulse-path" d="M50 100 Q45 82 50 64" />
+      <path class="pulse-path" d="M50 100 Q55 82 50 64" />
+      <path class="pulse-path" d="M50 100 Q40 78 45 55" />
+      <path class="pulse-path" d="M50 100 Q60 78 55 55" />
+      <path class="pulse-path" d="M50 100 Q50 76 50 50" />
+      <path class="pulse-path" d="M50 100 Q35 74 42 48" />
+      <path class="pulse-path" d="M50 100 Q65 74 58 48" />
+      <path class="pulse-path" d="M50 100 Q30 68 40 42" />
+      <path class="pulse-path" d="M50 100 Q70 68 60 42" />
+      <path class="pulse-path" d="M50 100 Q50 72 50 40" />
+      <path class="pulse-path" d="M50 100 Q28 65 38 38" />
+      <path class="pulse-path" d="M50 100 Q72 65 62 38" />
+      <path class="pulse-path" d="M50 100 Q50 68 50 34" />
+      <path class="pulse-path" d="M50 100 Q26 62 36 36" />
+      <path class="pulse-path" d="M50 100 Q74 62 64 36" />
     </svg>
 
     <div class="helpar-name">HELPAR</div>
