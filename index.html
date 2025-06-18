@@ -24,8 +24,8 @@
     }
 
     .cube {
-      width: 300px;
-      height: 300px;
+      width: 275px;
+      height: 275px;
       position: relative;
       transform-style: preserve-3d;
       animation: spinY 12s linear infinite;
@@ -34,8 +34,8 @@
 
     .face {
       position: absolute;
-      width: 300px;
-      height: 300px;
+      width: 275px;
+      height: 275px;
       display: flex;
       flex-wrap: wrap;
       border: 2px solid #0ff;
@@ -51,9 +51,11 @@
       align-items: center;
       justify-content: center;
       color: #fff;
-      font-size: 18px;
+      font-size: 16px;
       cursor: pointer;
       transition: all 0.5s ease;
+      text-align: center;
+      padding: 5px;
     }
 
     .expanded {
@@ -69,12 +71,12 @@
       justify-content: center;
     }
 
-    .front  { transform: rotateY(  0deg) translateZ(150px); }
-    .back   { transform: rotateY(180deg) translateZ(150px); }
-    .right  { transform: rotateY( 90deg) translateZ(150px); }
-    .left   { transform: rotateY(-90deg) translateZ(150px); }
-    .top    { transform: rotateX( 90deg) translateZ(150px); }
-    .bottom { transform: rotateX(-90deg) translateZ(150px); }
+    .front  { transform: rotateY(  0deg) translateZ(137.5px); }
+    .back   { transform: rotateY(180deg) translateZ(137.5px); }
+    .right  { transform: rotateY( 90deg) translateZ(137.5px); }
+    .left   { transform: rotateY(-90deg) translateZ(137.5px); }
+    .top    { transform: rotateX( 90deg) translateZ(137.5px); }
+    .bottom { transform: rotateX(-90deg) translateZ(137.5px); }
 
     @keyframes spinY {
       from { transform: rotateY(0deg); }
@@ -86,22 +88,40 @@
   <div class="scene" id="scene">
     <div class="cube" id="cube">
       <div class="face front">
-        <div>F1</div><div>F2</div><div>F3</div><div>F4</div>
+        <div data-task="Movies">🎬 Movies</div>
+        <div data-task="Series">📺 Series</div>
+        <div data-task="Music">🎵 Music</div>
+        <div data-task="Fashion">👗 Fashion</div>
       </div>
       <div class="face back">
-        <div>B1</div><div>B2</div><div>B3</div><div>B4</div>
+        <div data-task="Health">💊 Health</div>
+        <div data-task="Fitness">🏋️‍♂️ Fitness</div>
+        <div data-task="Nutrition">🥗 Nutrition</div>
+        <div data-task="Sleep">🛌 Sleep</div>
       </div>
       <div class="face right">
-        <div>R1</div><div>R2</div><div>R3</div><div>R4</div>
+        <div data-task="Kids">🧒 Kids</div>
+        <div data-task="Education">📚 Education</div>
+        <div data-task="Homework">📝 Homework</div>
+        <div data-task="Games">🎮 Games</div>
       </div>
       <div class="face left">
-        <div>L1</div><div>L2</div><div>L3</div><div>L4</div>
+        <div data-task="News">📰 News</div>
+        <div data-task="Weather">🌦 Weather</div>
+        <div data-task="Traffic">🚦 Traffic</div>
+        <div data-task="Calendar">📆 Calendar</div>
       </div>
       <div class="face top">
-        <div>T1</div><div>T2</div><div>T3</div><div>T4</div>
+        <div data-task="Work">💼 Work</div>
+        <div data-task="Meetings">🗓 Meetings</div>
+        <div data-task="Emails">✉️ Emails</div>
+        <div data-task="Focus">🎯 Focus Mode</div>
       </div>
       <div class="face bottom">
-        <div>Bo1</div><div>Bo2</div><div>Bo3</div><div>Bo4</div>
+        <div data-task="Explore">🌐 Explore</div>
+        <div data-task="Trends">📈 Trends</div>
+        <div data-task="Shopping">🛍 Shopping</div>
+        <div data-task="Finance">💰 Finance</div>
       </div>
     </div>
   </div>
@@ -112,7 +132,7 @@
     let startX = 0;
     let currentRotation = 0;
 
-    // تحكم باللمس يمين ويسار
+    // تحكم باللمس
     scene.addEventListener('touchstart', e => {
       startX = e.touches[0].clientX;
     });
@@ -120,12 +140,12 @@
     scene.addEventListener('touchmove', e => {
       const deltaX = e.touches[0].clientX - startX;
       currentRotation += deltaX * 0.3;
-      cube.style.animation = 'none'; // إيقاف الأنميشن
+      cube.style.animation = 'none';
       cube.style.transform = `rotateY(${currentRotation}deg)`;
       startX = e.touches[0].clientX;
     });
 
-    // عند اختيار قسم
+    // اختيار القسم
     document.querySelectorAll('.face > div').forEach(div => {
       div.addEventListener('click', () => {
         const expanded = div.cloneNode(true);
@@ -141,4 +161,4 @@
     });
   </script>
 </body>
-                       </html>
+          </html>
