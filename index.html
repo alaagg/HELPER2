@@ -2,16 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Interactive Cube</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HELPAR Cube</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
-      background: #000;
+      background: linear-gradient(135deg, #0a0a1f, #0f0a2f, #090a20);
+      background-size: 400% 400%;
+      animation: pulseBackground 16s ease infinite;
       overflow: hidden;
       touch-action: none;
+    }
+
+    @keyframes pulseBackground {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     .scene {
@@ -28,7 +36,7 @@
       height: 275px;
       position: relative;
       transform-style: preserve-3d;
-      animation: spinY 12s linear infinite;
+      animation: spinY 18s linear infinite;
       transition: transform 0.5s ease;
     }
 
@@ -39,7 +47,7 @@
       display: flex;
       flex-wrap: wrap;
       border: 2px solid #0ff;
-      background: rgba(0, 200, 255, 0.1);
+      background: rgba(0, 200, 255, 0.08);
     }
 
     .face > div {
@@ -48,14 +56,21 @@
       border: 1px solid #0ff;
       box-sizing: border-box;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       color: #fff;
-      font-size: 16px;
-      cursor: pointer;
-      transition: all 0.5s ease;
+      font-size: 13px;
       text-align: center;
-      padding: 5px;
+      padding: 6px;
+      cursor: pointer;
+      transition: all 0.4s ease;
+    }
+
+    .face > div span {
+      font-size: 20px;
+      margin-bottom: 4px;
+      display: block;
     }
 
     .expanded {
@@ -69,14 +84,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
     }
 
     .front  { transform: rotateY(  0deg) translateZ(137.5px); }
     .back   { transform: rotateY(180deg) translateZ(137.5px); }
     .right  { transform: rotateY( 90deg) translateZ(137.5px); }
     .left   { transform: rotateY(-90deg) translateZ(137.5px); }
-    .top    { transform: rotateX( 90deg) translateZ(137.5px); }
-    .bottom { transform: rotateX(-90deg) translateZ(137.5px); }
 
     @keyframes spinY {
       from { transform: rotateY(0deg); }
@@ -87,41 +101,33 @@
 <body>
   <div class="scene" id="scene">
     <div class="cube" id="cube">
+      <!-- Front Face -->
       <div class="face front">
-        <div data-task="Movies">🎬 Movies</div>
-        <div data-task="Series">📺 Series</div>
-        <div data-task="Music">🎵 Music</div>
-        <div data-task="Fashion">👗 Fashion</div>
+        <div><span>🎬 📺</span>Movies + Series</div>
+        <div><span>🎵 🔥</span>Music + Social Trends</div>
+        <div><span>🛍 👗</span>Shopping + Fashion</div>
+        <div><span>🌐 📰</span>Explore + News</div>
       </div>
+      <!-- Back Face -->
       <div class="face back">
-        <div data-task="Health">💊 Health</div>
-        <div data-task="Fitness">🏋️‍♂️ Fitness</div>
-        <div data-task="Nutrition">🥗 Nutrition</div>
-        <div data-task="Sleep">🛌 Sleep</div>
+        <div><span>🌦 🚦</span>Weather + Traffic</div>
+        <div><span>💼 🗓</span>Work + Meetings</div>
+        <div><span>✉️ 🎯</span>Emails + Focus</div>
+        <div><span>💰 📆</span>Finance + Calendar</div>
       </div>
+      <!-- Right Face -->
       <div class="face right">
-        <div data-task="Kids">🧒 Kids</div>
-        <div data-task="Education">📚 Education</div>
-        <div data-task="Homework">📝 Homework</div>
-        <div data-task="Games">🎮 Games</div>
+        <div><span>🧒 📚</span>Kids + Education</div>
+        <div><span>📝 🎮</span>Homework + Games</div>
+        <div><span>💊 🏋️</span>Health + Fitness</div>
+        <div><span>🥗 🛌</span>Nutrition + Sleep</div>
       </div>
+      <!-- Left Face -->
       <div class="face left">
-        <div data-task="News">📰 News</div>
-        <div data-task="Weather">🌦 Weather</div>
-        <div data-task="Traffic">🚦 Traffic</div>
-        <div data-task="Calendar">📆 Calendar</div>
-      </div>
-      <div class="face top">
-        <div data-task="Work">💼 Work</div>
-        <div data-task="Meetings">🗓 Meetings</div>
-        <div data-task="Emails">✉️ Emails</div>
-        <div data-task="Focus">🎯 Focus Mode</div>
-      </div>
-      <div class="face bottom">
-        <div data-task="Explore">🌐 Explore</div>
-        <div data-task="Trends">📈 Trends</div>
-        <div data-task="Shopping">🛍 Shopping</div>
-        <div data-task="Finance">💰 Finance</div>
+        <div><span>🎉 🕒</span>Events + Daily Routine</div>
+        <div><span>🔍 🔔</span>Search + Notifications</div>
+        <div><span>📊 🧾</span>Reports + Budgeting</div>
+        <div><span>🧠 🎯</span>Mind & Productivity</div>
       </div>
     </div>
   </div>
@@ -132,7 +138,6 @@
     let startX = 0;
     let currentRotation = 0;
 
-    // تحكم باللمس
     scene.addEventListener('touchstart', e => {
       startX = e.touches[0].clientX;
     });
@@ -145,7 +150,6 @@
       startX = e.touches[0].clientX;
     });
 
-    // اختيار القسم
     document.querySelectorAll('.face > div').forEach(div => {
       div.addEventListener('click', () => {
         const expanded = div.cloneNode(true);
@@ -155,10 +159,10 @@
 
         expanded.addEventListener('click', () => {
           expanded.remove();
-          cube.style.animation = 'spinY 12s linear infinite';
+          cube.style.animation = 'spinY 18s linear infinite';
         });
       });
     });
   </script>
 </body>
-          </html>
+</html>
