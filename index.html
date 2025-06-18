@@ -1,81 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HEL﻿PAR</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>HELPAR</title>
   <style>
     html, body {
       margin: 0; padding: 0;
-      width:100%; height:100%;
-      background: linear-gradient(135deg,#010308,#050a14,#0a121c,#0f1a24);
-      display:flex; justify-content:center; align-items:flex-start;
-      overflow:hidden; font-family:'Segoe UI',Arial,sans-serif;
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, #010308, #050a14, #0a121c, #0f1a24);
+      display: flex; justify-content: center; align-items: flex-start;
+      overflow: hidden; font-family: 'Segoe UI', Arial, sans-serif;
     }
     .logo-container {
-      position:relative; margin-top:6vh;
-      display:flex; flex-direction:column; align-items:center;
+      position: relative; margin-top: 6vh;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
     }
-    .network-glow {
-      position:absolute; top:-30px; left:50%;
-      transform:translateX(-50%);
-      width:400px; height:400px;
-      background:radial-gradient(circle at center,
-        rgba(0,204,255,0.25) 0%,transparent 70%);
-      border-radius:50%; z-index:1;
+    .helpar-logo {
+      width: 320px; height: 320px;
+      position: relative; z-index: 2;
     }
-    svg.brain-veins {
-      position:relative; z-index:2;
-      width:320px; height:320px;
-      margin-bottom:30px;
-      animation:pulse 2.5s infinite ease-in-out;
+    /* rotating frequency circles */
+    .freq-group {
+      transform-origin: 50% 50%;
+      animation: rotateFreq 12s linear infinite;
     }
-    .pulse-path {
-      fill:none; stroke-width:3; stroke-linecap:round;
-      opacity:0.15; animation:lightUp 2.5s ease-in-out infinite;
+    .freq-circle {
+      fill: none;
+      stroke: #00ccff;
+      stroke-width: 2;
+      opacity: 0.1;
+      animation: pulseFreq 3s ease-in-out infinite;
     }
-    /* 7 فروع بألوان الطيف وزوايا متساوية */
-    .pulse-path:nth-child(1){ stroke:#ff3b3b;  animation-delay:0s; }
-    .pulse-path:nth-child(2){ stroke:#ff853b;  animation-delay:0.2s; }
-    .pulse-path:nth-child(3){ stroke:#ffd43b;  animation-delay:0.4s; }
-    .pulse-path:nth-child(4){ stroke:#3bff73;  animation-delay:0.6s; }
-    .pulse-path:nth-child(5){ stroke:#3bffff;  animation-delay:0.8s; }
-    .pulse-path:nth-child(6){ stroke:#3b5bff;  animation-delay:1.0s; }
-    .pulse-path:nth-child(7){ stroke:#cc3bff;  animation-delay:1.2s; }
+    .freq-circle:nth-child(1) { r: 90; animation-delay: 0s; }
+    .freq-circle:nth-child(2) { r: 105; animation-delay: 0.5s; }
+    .freq-circle:nth-child(3) { r: 120; animation-delay: 1s; }
+    .freq-circle:nth-child(4) { r: 135; animation-delay: 1.5s; }
 
-    @keyframes lightUp {
-      0%,100%{ stroke-opacity:0.05 }
-      50%    { stroke-opacity:1    }
+    @keyframes rotateFreq {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
     }
-    @keyframes pulse {
-      0%,100%{ filter:drop-shadow(0 0 6px #00ccff) }
-      50%    { filter:drop-shadow(0 0 12px #00e7ff) }
+    @keyframes pulseFreq {
+      0%,100% { stroke-opacity: 0.05; }
+      50%     { stroke-opacity: 0.3; }
     }
+
+    /* brain outline */
+    .brain-outline {
+      fill: none;
+      stroke: #00ccff;
+      stroke-width: 4;
+      filter: drop-shadow(0 0 8px #00ccff);
+    }
+
+    /* chip in center */
+    .chip {
+      fill: #00ccff;
+      stroke: #00e7ff;
+      stroke-width: 2;
+      filter: drop-shadow(0 0 6px #00e7ff);
+    }
+    .chip-conn {
+      stroke: #00e7ff;
+      stroke-width: 1;
+      stroke-linecap: round;
+      opacity: 0.6;
+    }
+
+    /* HELPAR text */
     .helpar-name {
-      font-size:10vw; color:#00ccff; font-weight:bold;
-      letter-spacing:0.2em;
-      text-shadow:0 0 25px #00ccff,0 0 50px #00ccff,0 0 80px #00e7ff;
-      animation:pulse 2.5s infinite ease-in-out;
+      font-size: 10vw; color: #00ccff; font-weight: bold;
+      letter-spacing: 0.2em;
+      text-shadow: 0 0 25px #00ccff, 0 0 50px #00ccff, 0 0 80px #00e7ff;
+      animation: pulseText 2.5s infinite ease-in-out;
+      margin-top: 20px;
+    }
+    @keyframes pulseText {
+      0%,100% {
+        text-shadow: 0 0 25px #00ccff, 0 0 50px #00ccff, 0 0 80px #00e7ff;
+      }
+      50% {
+        text-shadow: 0 0 40px #00ffff, 0 0 80px #00ccff, 0 0 110px #00e7ff;
+      }
     }
     .helpar-sub {
-      margin-top:10px; font-size:3.5vw; opacity:0.9;
-      color:#89a6b8; text-shadow:0 0 8px #00bfff,0 0 16px #00aacc;
+      margin-top: 10px; font-size: 3.5vw; color: #89a6b8;
+      opacity: 0.9; text-shadow: 0 0 8px #00bfff, 0 0 16px #00aacc;
     }
   </style>
 </head>
 <body>
   <div class="logo-container">
-    <div class="network-glow"></div>
-    <svg class="brain-veins" viewBox="0 0 100 100">
-      <!-- الجذع المركزي -->
-      <path class="pulse-path" d="M50 100 L50 70" />
-      <!-- الفروع بزاويا ±30° و±60° و0° -->
-      <path class="pulse-path" d="M50 70 L25 40" />
-      <path class="pulse-path" d="M50 70 L75 40" />
-      <path class="pulse-path" d="M50 70 L35 20" />
-      <path class="pulse-path" d="M50 70 L65 20" />
-      <path class="pulse-path" d="M50 70 L20 60" />
-      <path class="pulse-path" d="M50 70 L80 60" />
+    <svg class="helpar-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <!-- rotating frequency circles -->
+      <g class="freq-group">
+        <circle class="freq-circle" cx="100" cy="100" r="90"/>
+        <circle class="freq-circle" cx="100" cy="100" r="105"/>
+        <circle class="freq-circle" cx="100" cy="100" r="120"/>
+        <circle class="freq-circle" cx="100" cy="100" r="135"/>
+      </g>
+      <!-- simplified brain outline -->
+      <path class="brain-outline"
+            d="M30,100
+               Q30,60 70,60
+               Q100,60 130,60
+               Q170,60 170,100
+               Q170,140 130,140
+               Q100,140 70,140
+               Q30,140 30,100 Z" />
+      <!-- central microchip -->
+      <rect class="chip" x="85" y="85" width="30" height="30" rx="4" ry="4"/>
+      <!-- four connections from chip -->
+      <line class="chip-conn" x1="100" y1="85" x2="100" y2="60"/>
+      <line class="chip-conn" x1="100" y1="115" x2="100" y2="140"/>
+      <line class="chip-conn" x1="85" y1="100" x2="60" y2="100"/>
+      <line class="chip-conn" x1="115" y1="100" x2="140" y2="100"/>
     </svg>
 
     <div class="helpar-name">HELPAR</div>
