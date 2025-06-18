@@ -30,83 +30,93 @@
       width: 200px;
       height: 200px;
       transform-style: preserve-3d;
-      transform: rotateY(0deg);
+      animation: spin 20s linear infinite;
+      margin-top: -600px;
       transition: transform 0.5s ease;
-      margin-top: -300px; /* رفع المكعب أكثر */
     }
 
     .face {
       position: absolute;
       width: 200px;
       height: 200px;
-      background: rgba(255, 255, 255, 0.08);
+      background-size: cover;
+      background-position: center;
       border: 2px solid #fff;
       box-shadow: 0 0 20px #00ccff88;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      color: #fff;
-      backdrop-filter: blur(3px);
+      border-radius: 10px;
     }
 
-    .front  { transform: rotateY(  0deg) translateZ(100px); }
-    .back   { transform: rotateY(180deg) translateZ(100px); }
-    .right  { transform: rotateY( 90deg) translateZ(100px); }
-    .left   { transform: rotateY(-90deg) translateZ(100px); }
+    .front  { transform: rotateY(  0deg) translateZ(100px); background-image: url('face1.png'); }
+    .back   { transform: rotateY(180deg) translateZ(100px); background-image: url('face2.png'); }
+    .right  { transform: rotateY( 90deg) translateZ(100px); background-image: url('face3.png'); }
+    .left   { transform: rotateY(-90deg) translateZ(100px); background-image: url('face4.png'); }
+
+    @keyframes spin {
+      from { transform: rotateY(0deg); }
+      to   { transform: rotateY(360deg); }
+    }
   </style>
 </head>
 <body>
   <div id="scene">
-    <div class="cube" id="cube">
-      <div class="face front">🎧 Headphones</div>
-      <div class="face back">📱 Smartphone</div>
-      <div class="face right">⌚ Smartwatch</div>
-      <div class="face left">🎮 Gamepad</div>
-    </div>
+    <div class="cube" id="cube"></div>
   </div>
 
   <script>
-    let angle = 0;
     const cube = document.getElementById('cube');
+    let angle = 0;
+    let rotating = true;
 
-    // تحكم باللمس
+    // لمس
     let startX = null;
     document.addEventListener('touchstart', e => {
       startX = e.touches[0].clientX;
+      stopRotation();
     });
 
     document.addEventListener('touchend', e => {
-      if (startX === null) return;
       const endX = e.changedTouches[0].clientX;
       const diff = endX - startX;
-
       if (Math.abs(diff) > 50) {
         angle += diff > 0 ? -90 : 90;
+        cube.style.animation = 'none';
         cube.style.transform = `rotateY(${angle}deg)`;
       }
-
       startX = null;
+      resumeRotation();
     });
 
-    // تحكم بالماوس
-    let dragging = false;
-    let mouseX = 0;
-
+    // ماوس
+    let isDragging = false;
+    let mouseStart = 0;
     document.addEventListener('mousedown', e => {
-      dragging = true;
-      mouseX = e.clientX;
+      isDragging = true;
+      mouseStart = e.clientX;
+      stopRotation();
     });
 
     document.addEventListener('mouseup', e => {
-      if (!dragging) return;
-      const diff = e.clientX - mouseX;
+      if (!isDragging) return;
+      const diff = e.clientX - mouseStart;
       if (Math.abs(diff) > 50) {
         angle += diff > 0 ? -90 : 90;
+        cube.style.animation = 'none';
         cube.style.transform = `rotateY(${angle}deg)`;
       }
-      dragging = false;
+      isDragging = false;
+      resumeRotation();
     });
+
+    function stopRotation() {
+      cube.style.animationPlayState = 'paused';
+    }
+
+    function resumeRotation() {
+      setTimeout(() => {
+        cube.style.animation = 'spin 20s linear infinite';
+        cube.style.transform = `rotateY(${angle}deg)`;
+      }, 600);
+    }
   </script>
 </body>
 </html>
