@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Helpar Cube</title>
+  <title>3D Cube</title>
   <style>
-    html, body {
+    body, html {
       margin: 0;
       padding: 0;
       width: 100vw;
@@ -13,25 +13,24 @@
       background: url('rem.png') no-repeat center center fixed;
       background-size: cover;
       overflow: hidden;
-      font-family: sans-serif;
     }
 
     #scene {
       width: 100%;
       height: 100%;
-      perspective: 1000px;
       display: flex;
       align-items: center;
       justify-content: center;
+      perspective: 1200px;
     }
 
     .cube {
-      position: relative;
       width: 200px;
       height: 200px;
+      position: relative;
       transform-style: preserve-3d;
-      animation: spin 20s linear infinite;
-      margin-top: -400px;
+      animation: rotateCube 20s linear infinite;
+      margin-top: -300px;
       transition: transform 0.5s ease;
     }
 
@@ -41,20 +40,18 @@
       height: 200px;
       background-size: cover;
       background-position: center;
-      border: 2px solid #fff;
-      box-shadow: 0 0 20px #00ccff88;
-      border-radius: 10px;
-      backface-visibility: hidden;
+      border: 2px solid white;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
     }
 
-    .front  { transform: rotateY(  0deg) translateZ(100px); background-image: url('face1.png'); }
+    .front  { transform: rotateY(0deg) translateZ(100px); background-image: url('face1.png'); }
     .back   { transform: rotateY(180deg) translateZ(100px); background-image: url('face2.png'); }
-    .right  { transform: rotateY( 90deg) translateZ(100px); background-image: url('face3.png'); }
+    .right  { transform: rotateY(90deg) translateZ(100px); background-image: url('face3.png'); }
     .left   { transform: rotateY(-90deg) translateZ(100px); background-image: url('face4.png'); }
 
-    @keyframes spin {
+    @keyframes rotateCube {
       from { transform: rotateY(0deg); }
-      to   { transform: rotateY(360deg); }
+      to { transform: rotateY(360deg); }
     }
   </style>
 </head>
@@ -71,47 +68,59 @@
   <script>
     const cube = document.getElementById('cube');
     let angle = 0;
+    let isTouching = false;
 
-    // لمس
+    // إيقاف الدوران مؤقتًا عند السحب
+    function stopRotation() {
+      cube.style.animationPlayState = 'paused';
+    }
+
+    function resumeRotation() {
+      cube.style.animationPlayState = 'running';
+    }
+
+    // للمس
     let startX = null;
-    document.addEventListener('touchstart', e => {
+    document.addEventListener('touchstart', (e) => {
       startX = e.touches[0].clientX;
+      stopRotation();
     });
 
-    document.addEventListener('touchend', e => {
-      const endX = e.changedTouches[0].clientX;
-      const diff = endX - startX;
-
-      if (Math.abs(diff) > 50) {
-        angle += diff < 0 ? -90 : 90;
+    document.addEventListener('touchend', (e) => {
+      let diff = e.changedTouches[0].clientX - startX;
+      if (Math.abs(diff) > 30) {
+        angle += diff < 0 ? 90 : -90;
         cube.style.animation = 'none';
         cube.style.transform = `rotateY(${angle}deg)`;
         setTimeout(() => {
-          cube.style.animation = 'spin 20s linear infinite';
-        }, 600);
+          cube.style.animation = 'rotateCube 20s linear infinite';
+        }, 300);
       }
+      startX = null;
     });
 
-    // ماوس
-    let dragging = false;
+    // للماوس
+    let isDragging = false;
     let mouseStart = 0;
-    document.addEventListener('mousedown', e => {
-      dragging = true;
+
+    document.addEventListener('mousedown', (e) => {
+      isDragging = true;
       mouseStart = e.clientX;
+      stopRotation();
     });
 
-    document.addEventListener('mouseup', e => {
-      if (!dragging) return;
-      const diff = e.clientX - mouseStart;
-      if (Math.abs(diff) > 50) {
-        angle += diff < 0 ? -90 : 90;
+    document.addEventListener('mouseup', (e) => {
+      if (!isDragging) return;
+      let diff = e.clientX - mouseStart;
+      if (Math.abs(diff) > 30) {
+        angle += diff < 0 ? 90 : -90;
         cube.style.animation = 'none';
         cube.style.transform = `rotateY(${angle}deg)`;
         setTimeout(() => {
-          cube.style.animation = 'spin 20s linear infinite';
-        }, 600);
+          cube.style.animation = 'rotateCube 20s linear infinite';
+        }, 300);
       }
-      dragging = false;
+      isDragging = false;
     });
   </script>
 </body>
