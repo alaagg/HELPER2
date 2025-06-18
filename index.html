@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>HELPAR</title>
   <style>
     html, body {
@@ -10,11 +10,12 @@
       padding: 0;
       width: 100%;
       height: 100%;
-      background: #010308;
+      background: linear-gradient(135deg, #010308, #050a14, #0a121c, #0f1a24);
       font-family: 'Segoe UI', Arial, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
+      overflow: hidden;
     }
 
     .logo-container {
@@ -24,12 +25,47 @@
       text-align: center;
     }
 
-    svg.helpar-logo {
-      width: 160px;
-      height: 160px;
+    svg.brain-veins {
+      width: 140px;
+      height: 140px;
       margin-bottom: 20px;
-      animation: pulse 3s infinite ease-in-out;
-      filter: drop-shadow(0 0 12px #00ccff);
+    }
+
+    .pulse-path {
+      stroke: #00ccff;
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+      opacity: 0.2;
+      animation: lightUp 3s ease-in-out infinite;
+    }
+
+    .pulse-path:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .pulse-path:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    .pulse-path:nth-child(4) {
+      animation-delay: 0.6s;
+    }
+
+    .pulse-path:nth-child(5) {
+      animation-delay: 0.8s;
+    }
+
+    @keyframes lightUp {
+      0% {
+        stroke-opacity: 0.1;
+      }
+      40% {
+        stroke-opacity: 1;
+      }
+      100% {
+        stroke-opacity: 0.1;
+      }
     }
 
     .helpar-name {
@@ -56,14 +92,12 @@
 
     @keyframes pulse {
       0%, 100% {
-        filter: drop-shadow(0 0 6px #00ccff);
         text-shadow:
           0 0 20px #00ccff,
           0 0 40px #00ccff,
           0 0 80px #00e7ff;
       }
       50% {
-        filter: drop-shadow(0 0 16px #00e7ff);
         text-shadow:
           0 0 35px #00ffff,
           0 0 70px #00ccff,
@@ -74,28 +108,13 @@
 </head>
 <body>
   <div class="logo-container">
-    <!-- شعار: شبكة عقل داخل دائرة -->
-    <svg class="helpar-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <!-- دائرة خارجية -->
-      <circle cx="50" cy="50" r="45" stroke="#00ccff" stroke-width="2" fill="none"/>
-
-      <!-- الشبكة العصبية -->
-      <line x1="30" y1="30" x2="50" y2="20" stroke="#00e7ff" stroke-width="1.5" />
-      <line x1="50" y1="20" x2="70" y2="30" stroke="#00e7ff" stroke-width="1.5" />
-      <line x1="30" y1="30" x2="30" y2="70" stroke="#00e7ff" stroke-width="1.5" />
-      <line x1="30" y1="70" x2="70" y2="70" stroke="#00e7ff" stroke-width="1.5" />
-      <line x1="70" y1="70" x2="70" y2="30" stroke="#00e7ff" stroke-width="1.5" />
-      <line x1="50" y1="20" x2="50" y2="50" stroke="#00ffff" stroke-width="1.5" />
-      <line x1="50" y1="50" x2="70" y2="70" stroke="#00ffff" stroke-width="1.5" />
-      <line x1="50" y1="50" x2="30" y2="70" stroke="#00ffff" stroke-width="1.5" />
-
-      <!-- نقاط -->
-      <circle cx="30" cy="30" r="3" fill="#00ffff" />
-      <circle cx="50" cy="20" r="3" fill="#00ffff" />
-      <circle cx="70" cy="30" r="3" fill="#00ffff" />
-      <circle cx="30" cy="70" r="3" fill="#00ffff" />
-      <circle cx="70" cy="70" r="3" fill="#00ffff" />
-      <circle cx="50" cy="50" r="3.5" fill="#00ccff" />
+    <!-- الشرايين المتوهجة -->
+    <svg class="brain-veins" viewBox="0 0 100 100">
+      <path class="pulse-path" d="M50 100 Q45 80 50 60" />
+      <path class="pulse-path" d="M50 100 Q55 80 50 60" />
+      <path class="pulse-path" d="M50 100 Q40 75 45 50" />
+      <path class="pulse-path" d="M50 100 Q60 75 55 50" />
+      <path class="pulse-path" d="M50 100 Q50 70 50 40" />
     </svg>
 
     <div class="helpar-name">HELPAR</div>
