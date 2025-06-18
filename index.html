@@ -32,7 +32,7 @@
       transform-style: preserve-3d;
       transform: rotateY(0deg);
       transition: transform 0.5s ease;
-      margin-top: -150px; /* رفع المكعب أكثر */
+      margin-top: -300px; /* رفع المكعب أكثر */
     }
 
     .face {
@@ -70,7 +70,7 @@
     let angle = 0;
     const cube = document.getElementById('cube');
 
-    // لمس
+    // تحكم باللمس
     let startX = null;
     document.addEventListener('touchstart', e => {
       startX = e.touches[0].clientX;
@@ -89,7 +89,7 @@
       startX = null;
     });
 
-    // دعم الماوس أيضًا (اختياري)
+    // تحكم بالماوس
     let dragging = false;
     let mouseX = 0;
 
