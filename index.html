@@ -2,16 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>HELPAR All In One</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>HELPAR</title>
   <style>
     html, body {
       margin: 0; padding: 0;
       width: 100%; height: 100%;
       background: linear-gradient(135deg, #010308, #050a14, #0a121c, #0f1a24);
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-      overflow: hidden;
       font-family: 'Segoe UI', Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    .centered {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      color: #00ccff;
     }
 
     .helpar-logo {
@@ -19,11 +29,6 @@
       max-width: 160px;
       margin-bottom: 2vh;
       filter: drop-shadow(0 0 10px #00ccff) drop-shadow(0 0 20px #00ccff);
-    }
-
-    .text-container {
-      text-align: center;
-      color: #00ccff;
     }
 
     .helpar-name {
@@ -104,33 +109,78 @@
       color: #000;
     }
 
-    .show-langs .face.front,
-    .show-langs .face.back,
-    .show-langs .face.right,
-    .show-langs .face.left {
+    #video-section, #store-img {
+      display: none;
+      width: 100vw;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 0; left: 0;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    #timer {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 16px;
       color: #00ccff;
+      font-family: monospace;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 6px 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px #00ccff;
+      z-index: 2;
+    }
+
+    #store-img img {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
     }
   </style>
 </head>
 <body>
-  <div class="text-container">
+
+  <!-- واجهة البداية -->
+  <div id="start-section" class="centered">
     <img src="logo.png" alt="Helpar Logo" class="helpar-logo" />
     <h1 class="helpar-name">HELPAR</h1>
     <p class="helpar-sub">Your Second Mind</p>
-  </div>
 
-  <div class="scene">
-    <div class="cube" id="cube">
-      <div class="face front">English</div>
-      <div class="face back">العربية</div>
-      <div class="face right">Français</div>
-      <div class="face left">Español</div>
-      <div class="face top"></div>
-      <div class="face bottom"></div>
+    <div class="scene">
+      <div class="cube" id="cube">
+        <div class="face front">English</div>
+        <div class="face back">العربية</div>
+        <div class="face right">Français</div>
+        <div class="face left">Español</div>
+        <div class="face top"></div>
+        <div class="face bottom"></div>
+      </div>
     </div>
+
+    <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
   </div>
 
-  <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
+  <!-- قسم الفيديو -->
+  <div id="video-section">
+    <video autoplay controls id="introVideo">
+      <source src="HELBERpro.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+    <div id="timer">00:00</div>
+  </div>
+
+  <!-- صورة الخلفية بعد انتهاء الفيديو -->
+  <div id="store-img">
+    <img src="bakrawnd.png" alt="Helpar Store" />
+  </div>
 
   <script>
     function showLanguages() {
@@ -140,9 +190,36 @@
     const faces = document.querySelectorAll(".face");
     faces.forEach(face => {
       face.addEventListener("click", () => {
-        window.location.href = "video.html"; // غيّر هذا الرابط حسب صفحة الفيديو الحقيقية
+        document.getElementById("start-section").style.display = "none";
+        document.getElementById("video-section").style.display = "flex";
+        playVideo();
       });
     });
+
+    function playVideo() {
+      const video = document.getElementById("introVideo");
+      const timer = document.getElementById("timer");
+
+      video.addEventListener("loadedmetadata", () => {
+        updateTime();
+      });
+
+      video.addEventListener("timeupdate", updateTime);
+
+      function updateTime() {
+        const remaining = Math.max(0, video.duration - video.currentTime);
+        const minutes = Math.floor(remaining / 60);
+        const seconds = Math.floor(remaining % 60);
+        timer.textContent =
+          (minutes < 10 ? "0" : "") + minutes + ":" +
+          (seconds < 10 ? "0" : "") + seconds;
+      }
+
+      video.onended = () => {
+        document.getElementById("video-section").style.display = "none";
+        document.getElementById("store-img").style.display = "flex";
+      };
+    }
   </script>
 </body>
 </html>
