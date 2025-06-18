@@ -21,7 +21,6 @@
       touch-action: none;
     }
 
-    /* خلفية النجوم */
     .stars-layer {
       position: absolute;
       width: 200%;
@@ -53,7 +52,6 @@
       z-index: 2;
     }
 
-    /* شعار بسيط فوق الاسم */
     .helpar-logo {
       width: 100px;
       height: 100px;
@@ -117,11 +115,28 @@
   <div class="stars-layer"></div>
 
   <div class="logo-container">
-    <!-- شعار مجرد دائرة توحي بالعقل -->
+    <!-- شعار العقل الثاني -->
     <svg class="helpar-logo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <!-- إطار العقل -->
       <circle cx="32" cy="32" r="28" stroke="#00ccff" stroke-width="2" fill="none"/>
+      
+      <!-- النواة (مركز الذكاء) -->
       <circle cx="32" cy="32" r="6" fill="#00e7ff"/>
+      
+      <!-- اتصال فكري يوحي بالحساب -->
       <path d="M32 6 A26 26 0 0 1 58 32" stroke="#00e7ff" stroke-width="1" stroke-dasharray="4,4"/>
+      
+      <!-- إشعاعات خفيفة توحي بالشبكة الذهنية -->
+      <line x1="24" y1="24" x2="16" y2="16" stroke="#00ccff" stroke-width="1" opacity="0.5"/>
+      <line x1="40" y1="24" x2="48" y2="16" stroke="#00ccff" stroke-width="1" opacity="0.5"/>
+      <line x1="24" y1="40" x2="16" y2="48" stroke="#00ccff" stroke-width="1" opacity="0.5"/>
+      <line x1="40" y1="40" x2="48" y2="48" stroke="#00ccff" stroke-width="1" opacity="0.5"/>
+      
+      <!-- نقاط تشبه خلايا العقل -->
+      <circle cx="16" cy="16" r="1.5" fill="#00ffff" opacity="0.3"/>
+      <circle cx="48" cy="16" r="1.5" fill="#00ffff" opacity="0.3"/>
+      <circle cx="16" cy="48" r="1.5" fill="#00ffff" opacity="0.3"/>
+      <circle cx="48" cy="48" r="1.5" fill="#00ffff" opacity="0.3"/>
     </svg>
 
     <div class="helpar-name neon-pulse">HELPAR</div>
