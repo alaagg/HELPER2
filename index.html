@@ -17,8 +17,8 @@
       font-family: Arial, sans-serif;
       touch-action: none;
     }.scene {
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: 300px;
   position: relative;
   transform-style: preserve-3d;
   animation: spinY 10s linear infinite;
@@ -26,8 +26,8 @@
 
 .face {
   position: absolute;
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: 300px;
   background: rgba(0, 200, 255, 0.07);
   border: 2px solid #00ccff;
   display: flex;
@@ -37,10 +37,10 @@
   box-shadow: 0 0 20px #00ccff66;
 }
 
-.face.front  { transform: rotateY(0deg) translateZ(200px); }
-.face.back   { transform: rotateY(180deg) translateZ(200px); }
-.face.right  { transform: rotateY(90deg) translateZ(200px); }
-.face.left   { transform: rotateY(-90deg) translateZ(200px); }
+.face.front  { transform: rotateY(0deg) translateZ(150px); }
+.face.back   { transform: rotateY(180deg) translateZ(150px); }
+.face.right  { transform: rotateY(90deg) translateZ(150px); }
+.face.left   { transform: rotateY(-90deg) translateZ(150px); }
 
 .section {
   width: 48%; height: 48%;
@@ -54,7 +54,7 @@
   cursor: pointer;
   font-weight: bold;
   transition: all 0.3s ease-out;
-  font-size: 1.2em;
+  font-size: 1em;
   text-align: center;
 }
 
@@ -64,8 +64,8 @@
 
 .expanded {
   position: absolute;
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: 300px;
   background: rgba(0, 200, 255, 0.1);
   display: flex;
   justify-content: center;
@@ -98,14 +98,29 @@
 <body>
   <div class="scene" id="cube">
     <div class="face front" id="frontFace">
-      <div class="section" onclick="expandSection('Movies')">🎬 Movies</div>
-      <div class="section" onclick="expandSection('Music')">🎵 Music</div>
-      <div class="section" onclick="expandSection('Sports')">⚽ Sports</div>
-      <div class="section" onclick="expandSection('Trends')">🔥 Trends</div>
+      <div class="section" onclick="expandSection('🎬 Movies')">🎬 Movies</div>
+      <div class="section" onclick="expandSection('🎵 Music')">🎵 Music</div>
+      <div class="section" onclick="expandSection('⚽ Sports')">⚽ Sports</div>
+      <div class="section" onclick="expandSection('🔥 Trends')">🔥 Trends</div>
     </div>
-    <div class="face back"></div>
-    <div class="face right"></div>
-    <div class="face left"></div>
+    <div class="face back">
+      <div class="section" onclick="expandSection('💼 Work')">💼 Work</div>
+      <div class="section" onclick="expandSection('📋 Tasks')">📋 Tasks</div>
+      <div class="section" onclick="expandSection('⏰ Reminders')">⏰ Reminders</div>
+      <div class="section" onclick="expandSection('📆 Calendar')">📆 Calendar</div>
+    </div>
+    <div class="face right">
+      <div class="section" onclick="expandSection('👨‍👩‍👧 Family')">👨‍👩‍👧 Family</div>
+      <div class="section" onclick="expandSection('👩‍⚕️ Health')">👩‍⚕️ Health</div>
+      <div class="section" onclick="expandSection('🧠 Privacy')">🧠 Privacy</div>
+      <div class="section" onclick="expandSection('💤 Sleep')">💤 Sleep</div>
+    </div>
+    <div class="face left">
+      <div class="section" onclick="expandSection('💸 Budget')">💸 Budget</div>
+      <div class="section" onclick="expandSection('✈️ Travel')">✈️ Travel</div>
+      <div class="section" onclick="expandSection('🏦 Finance')">🏦 Finance</div>
+      <div class="section" onclick="expandSection('🧾 Bills')">🧾 Bills</div>
+    </div>
   </div>  <div id="expandedSection" class="expanded" style="display:none;">
     <button class="back-btn" onclick="collapseSection()">⟵</button>
     <div id="sectionTitle"></div>
