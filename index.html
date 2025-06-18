@@ -32,7 +32,7 @@
       transform-style: preserve-3d;
       transform: rotateY(0deg);
       transition: transform 0.5s ease;
-      margin-top: -60px; /* رفع المكعب */
+      margin-top: -150px; /* رفع المكعب أكثر */
     }
 
     .face {
@@ -45,7 +45,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      font-size: 22px;
       color: #fff;
       backdrop-filter: blur(3px);
     }
@@ -59,10 +59,10 @@
 <body>
   <div id="scene">
     <div class="cube" id="cube">
-      <div class="face front">🎧 Product 1</div>
-      <div class="face back">📱 Product 2</div>
-      <div class="face right">⌚ Product 3</div>
-      <div class="face left">🎮 Product 4</div>
+      <div class="face front">🎧 Headphones</div>
+      <div class="face back">📱 Smartphone</div>
+      <div class="face right">⌚ Smartwatch</div>
+      <div class="face left">🎮 Gamepad</div>
     </div>
   </div>
 
@@ -70,40 +70,42 @@
     let angle = 0;
     const cube = document.getElementById('cube');
 
-    // للمس
-    let startX = 0;
+    // لمس
+    let startX = null;
     document.addEventListener('touchstart', e => {
       startX = e.touches[0].clientX;
     });
 
-    document.addEventListener('touchmove', e => {
-      const deltaX = e.touches[0].clientX - startX;
-      if (Math.abs(deltaX) > 50) {
-        angle += deltaX > 0 ? -90 : 90;
+    document.addEventListener('touchend', e => {
+      if (startX === null) return;
+      const endX = e.changedTouches[0].clientX;
+      const diff = endX - startX;
+
+      if (Math.abs(diff) > 50) {
+        angle += diff > 0 ? -90 : 90;
         cube.style.transform = `rotateY(${angle}deg)`;
-        startX = e.touches[0].clientX; // تحديث النقطة
       }
+
+      startX = null;
     });
 
-    // للماوس كمان (اختياري)
-    let isDragging = false;
+    // دعم الماوس أيضًا (اختياري)
+    let dragging = false;
+    let mouseX = 0;
+
     document.addEventListener('mousedown', e => {
-      isDragging = true;
-      startX = e.clientX;
+      dragging = true;
+      mouseX = e.clientX;
     });
 
-    document.addEventListener('mouseup', () => {
-      isDragging = false;
-    });
-
-    document.addEventListener('mousemove', e => {
-      if (!isDragging) return;
-      const deltaX = e.clientX - startX;
-      if (Math.abs(deltaX) > 50) {
-        angle += deltaX > 0 ? -90 : 90;
+    document.addEventListener('mouseup', e => {
+      if (!dragging) return;
+      const diff = e.clientX - mouseX;
+      if (Math.abs(diff) > 50) {
+        angle += diff > 0 ? -90 : 90;
         cube.style.transform = `rotateY(${angle}deg)`;
-        startX = e.clientX;
       }
+      dragging = false;
     });
   </script>
 </body>
