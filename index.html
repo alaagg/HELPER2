@@ -5,75 +5,68 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Helpar Cube</title>
   <style>
-    body { margin: 0; overflow: hidden; }
-    canvas { display: block; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      background: url('rem.png') no-repeat center center fixed;
+      background-size: cover;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+
+    #scene {
+      width: 100%;
+      height: 100%;
+      perspective: 1000px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cube {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      transform-style: preserve-3d;
+      animation: rotate 20s linear infinite;
+    }
+
+    .face {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 2px solid #fff;
+      box-shadow: 0 0 20px #00ccff88;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #fff;
+      backdrop-filter: blur(3px);
+    }
+
+    .front  { transform: rotateY(  0deg) translateZ(100px); }
+    .back   { transform: rotateY(180deg) translateZ(100px); }
+    .right  { transform: rotateY( 90deg) translateZ(100px); }
+    .left   { transform: rotateY(-90deg) translateZ(100px); }
+
+    @keyframes rotate {
+      from { transform: rotateY(0deg); }
+      to   { transform: rotateY(360deg); }
+    }
   </style>
 </head>
 <body>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
-  <script>
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x000000);
-
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 5;
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
-
-    const loader = new THREE.TextureLoader();
-    const materials = [
-      new THREE.MeshBasicMaterial({ map: loader.load('face1.jpg') }),  // وجه 1
-      new THREE.MeshBasicMaterial({ map: loader.load('face2.jpeg') }), // وجه 2
-      new THREE.MeshBasicMaterial({ map: loader.load('face3.jpeg') }), // وجه 3
-      new THREE.MeshBasicMaterial({ map: loader.load('face4.jpeg') }), // وجه 4
-      new THREE.MeshBasicMaterial({ color: 0x111111 }),                 // وجه علوي فارغ
-      new THREE.MeshBasicMaterial({ color: 0x111111 })                  // وجه سفلي فارغ
-    ];
-
-    const geometry = new THREE.BoxGeometry(2, 2, 2);
-    const cube = new THREE.Mesh(geometry, materials);
-    cube.position.y = 0.5;
-    scene.add(cube);
-
-    const light = new THREE.PointLight(0xffffff, 1, 100);
-    light.position.set(10, 10, 10);
-    scene.add(light);
-
-    let isDragging = false;
-    let previousX = 0;
-
-    function animate() {
-      requestAnimationFrame(animate);
-      if (!isDragging) cube.rotation.y += 0.01;
-      renderer.render(scene, camera);
-    }
-    animate();
-
-    document.addEventListener('touchstart', (e) => {
-      isDragging = true;
-      previousX = e.touches[0].clientX;
-    });
-
-    document.addEventListener('touchmove', (e) => {
-      if (isDragging) {
-        const currentX = e.touches[0].clientX;
-        const deltaX = currentX - previousX;
-        cube.rotation.y += deltaX * 0.01;
-        previousX = currentX;
-      }
-    });
-
-    document.addEventListener('touchend', () => {
-      isDragging = false;
-    });
-
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-  </script>
+  <div id="scene">
+    <div class="cube">
+      <div class="face front">Product 1</div>
+      <div class="face back">Product 2</div>
+      <div class="face right">Product 3</div>
+      <div class="face left">Product 4</div>
+    </div>
+  </div>
 </body>
 </html>
