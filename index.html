@@ -1,18 +1,21 @@
 <!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
   <title>Expandable Cube Section</title>
   <style>
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
+      width: 100vw;
       height: 100vh;
       background: #010308;
+      overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
-      perspective: 1000px;
       font-family: Arial, sans-serif;
+      touch-action: none;
     }.scene {
   width: 400px;
   height: 400px;
@@ -51,6 +54,8 @@
   cursor: pointer;
   font-weight: bold;
   transition: all 0.3s ease-out;
+  font-size: 1.2em;
+  text-align: center;
 }
 
 .section:hover {
