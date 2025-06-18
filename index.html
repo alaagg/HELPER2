@@ -13,6 +13,17 @@
       overflow: hidden;
     }
 
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 10px #00ccff) drop-shadow(0 0 20px #00ccff);
+      }
+      50% {
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 20px #00e7ff) drop-shadow(0 0 30px #00ccff);
+      }
+    }
+
     .centered {
       display: flex;
       flex-direction: column;
@@ -28,7 +39,7 @@
       width: 20vw;
       max-width: 160px;
       margin-bottom: 2vh;
-      filter: drop-shadow(0 0 10px #00ccff) drop-shadow(0 0 20px #00ccff);
+      animation: pulse 3s infinite;
     }
 
     .helpar-name {
@@ -37,6 +48,7 @@
       letter-spacing: 0.2em;
       text-shadow: 0 0 25px #00ccff, 0 0 50px #00ccff;
       margin: 0;
+      animation: pulse 3s infinite;
     }
 
     .helpar-sub {
@@ -122,21 +134,39 @@
     video {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
+      background: #000;
     }
 
     #timer {
       position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 16px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 20px;
       color: #00ccff;
       font-family: monospace;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 6px 10px;
-      border-radius: 8px;
-      box-shadow: 0 0 8px #00ccff;
       z-index: 2;
+    }
+
+    #backBtn, #backBtnStore {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 10px 16px;
+      font-size: 15px;
+      background: rgba(0,0,0,0.6);
+      color: #00ccff;
+      border: 1px solid #00ccff;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 3;
+      transition: all 0.3s ease;
+    }
+
+    #backBtn:hover, #backBtnStore:hover {
+      background: #00ccff;
+      color: black;
     }
 
     #store-img img {
@@ -148,7 +178,6 @@
 </head>
 <body>
 
-  <!-- واجهة البداية -->
   <div id="start-section" class="centered">
     <img src="logo.png" alt="Helpar Logo" class="helpar-logo" />
     <h1 class="helpar-name">HELPAR</h1>
@@ -168,8 +197,8 @@
     <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
   </div>
 
-  <!-- قسم الفيديو -->
   <div id="video-section">
+    <button id="backBtn" onclick="goBack()">&#x2190;</button>
     <video autoplay controls id="introVideo">
       <source src="HELBERpro.mp4" type="video/mp4" />
       Your browser does not support the video tag.
@@ -177,8 +206,8 @@
     <div id="timer">00:00</div>
   </div>
 
-  <!-- صورة الخلفية بعد انتهاء الفيديو -->
   <div id="store-img">
+    <button id="backBtnStore" onclick="goBack()">&#x2190;</button>
     <img src="bakrawnd.png" alt="Helpar Store" />
   </div>
 
@@ -195,6 +224,15 @@
         playVideo();
       });
     });
+
+    function goBack() {
+      document.getElementById("video-section").style.display = "none";
+      document.getElementById("store-img").style.display = "none";
+      document.getElementById("start-section").style.display = "flex";
+      const vid = document.getElementById("introVideo");
+      vid.pause();
+      vid.currentTime = 0;
+    }
 
     function playVideo() {
       const video = document.getElementById("introVideo");
@@ -216,6 +254,7 @@
       }
 
       video.onended = () => {
+        timer.style.display = "none";
         document.getElementById("video-section").style.display = "none";
         document.getElementById("store-img").style.display = "flex";
       };
