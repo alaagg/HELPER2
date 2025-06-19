@@ -2,134 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>HELPAR All In One</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HELPar Cube Interactive</title>
   <style>
     html, body {
-      margin: 0; padding: 0;
-      width: 100%; height: 100%;
-      background: radial-gradient(circle at center, #050b18 0%, #000 100%);
-      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
       overflow: hidden;
+      background: radial-gradient(circle at center, #050b18 0%, #000 100%);
+      font-family: Arial, sans-serif;
       touch-action: none;
     }
 
-    /* === ترحيب === */
-    .centered {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      color: #00ccff;
-    }
-
-    .helpar-logo {
-      width: 16vw;
-      max-width: 120px;
-      margin-bottom: 2vh;
-      animation: pulse 3s infinite;
-      filter: drop-shadow(0 0 48px #00ccff) drop-shadow(0 0 96px #00e7ff);
-    }
-
-    .helpar-name {
-      font-size: 8vw;
-      font-weight: bold;
-      letter-spacing: 0.2em;
-      text-shadow: 0 0 4px #00ccff, 0 0 8px #00ccff;
-      margin: 0;
-      animation: pulse 2s infinite;
-    }
-
-    .helpar-sub {
-      margin-top: 0.5em;
-      font-size: 3.5vw;
-      color: #89a6b8;
-      opacity: 0.9;
-      text-shadow: 0 0 8px #00bfff, 0 0 16px #00aacc;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-    }
-
-    .scene-welcome {
-      width: 120px;
-      height: 120px;
-      margin: 40px auto;
-      perspective: 800px;
-    }
-
-    .cube-welcome {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      transform-style: preserve-3d;
-      animation: spin 5s linear infinite;
-    }
-
-    @keyframes spin {
-      from { transform: rotateX(-10deg) rotateY(0deg); }
-      to { transform: rotateX(-10deg) rotateY(360deg); }
-    }
-
-    .face-welcome {
-      position: absolute;
-      width: 120px;
-      height: 120px;
-      border: 2px solid #00ccff;
-      background: rgba(0, 0, 0, 0.1);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 20px;
-      font-weight: bold;
-      color: #00ccff;
-      cursor: pointer;
-    }
-
-    .front  { transform: rotateY(0deg) translateZ(60px); }
-    .back   { transform: rotateY(180deg) translateZ(60px); }
-    .right  { transform: rotateY(90deg) translateZ(60px); }
-    .left   { transform: rotateY(-90deg) translateZ(60px); }
-    .top    { transform: rotateX(90deg) translateZ(60px); }
-    .bottom { transform: rotateX(-90deg) translateZ(60px); }
-
-    #video-section {
-      display: none;
-      width: 100vw;
-      height: 100vh;
-      justify-content: center;
-      align-items: center;
-      position: absolute;
-      top: 0; left: 0;
-      background: #000;
-    }
-
-    video {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      background: #000;
-    }
-
-    #timer {
-      position: absolute;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 24px;
-      color: #00ccff;
-      font-family: monospace;
-      z-index: 2;
-    }
-
-    /* === مكعب تفاعلي بعد الفيديو === */
     .scene {
-      display: none;
       width: 200px;
       height: 200px;
       position: absolute;
@@ -162,6 +49,13 @@
       align-items: center;
     }
 
+    .front  { transform: rotateY(0deg) translateZ(100px); }
+    .back   { transform: rotateY(180deg) translateZ(100px); }
+    .right  { transform: rotateY(90deg) translateZ(100px); }
+    .left   { transform: rotateY(-90deg) translateZ(100px); }
+    .top    { transform: rotateX(90deg) translateZ(100px); }
+    .bottom { transform: rotateX(-90deg) translateZ(100px); }
+
     .helper-label {
       position: absolute;
       bottom: 80px;
@@ -171,9 +65,8 @@
       font-size: 2rem;
       font-weight: bold;
       letter-spacing: 6px;
-      text-shadow: 0 0 30px #00ccff, 0 0 60px #00ccff;
+      text-shadow: 0 0 30px #00ccff, 0 0 60px #00ccff, 0 -60px 120px #00ccff, 0 -100px 180px #00ccff;
       z-index: 1;
-      display: none;
     }
 
     .section-screen {
@@ -202,39 +95,13 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      text-shadow: 0 0 10px #00ccff;
+      box-sizing: border-box;
     }
   </style>
 </head>
 <body>
 
-<!-- صفحة الترحيب -->
-<div id="start-section" class="centered">
-  <img src="logo.png" alt="Helpar Logo" class="helpar-logo" />
-  <h1 class="helpar-name">HELPAR</h1>
-  <p class="helpar-sub">Your Second Mind</p>
-
-  <div class="scene-welcome">
-    <div class="cube-welcome">
-      <div class="face-welcome front">English</div>
-      <div class="face-welcome back">العربية</div>
-      <div class="face-welcome right">Français</div>
-      <div class="face-welcome left">Español</div>
-      <div class="face-welcome top">Top</div>
-      <div class="face-welcome bottom">Bottom</div>
-    </div>
-  </div>
-</div>
-
-<!-- فيديو تعريفي -->
-<div id="video-section">
-  <video autoplay playsinline id="introVideo">
-    <source src="HELBERpro.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-  <div id="timer">00</div>
-</div>
-
-<!-- المكعب التفاعلي -->
 <div class="scene" id="scene">
   <div class="cube" id="cube">
     <div class="face front" data-face="Section">🛍️</div>
@@ -246,7 +113,7 @@
   </div>
 </div>
 
-<div class="helper-label" id="helperLabel">HELPER</div>
+<div class="helper-label">HELPER</div>
 
 <div class="section-screen" id="sectionScreen">
   <div class="grid-item">Section 1</div>
@@ -256,34 +123,10 @@
 </div>
 
 <script>
-  // انتقال من الترحيب إلى الفيديو
-  document.querySelectorAll('.face-welcome').forEach(face => {
-    face.addEventListener('click', () => {
-      document.getElementById("start-section").style.display = "none";
-      document.getElementById("video-section").style.display = "flex";
-      document.getElementById("introVideo").play();
-    });
-  });
-
-  // عند انتهاء الفيديو -> عرض المكعب
-  const video = document.getElementById("introVideo");
-  video.onended = () => {
-    document.getElementById("video-section").style.display = "none";
-    document.getElementById("scene").style.display = "block";
-    document.getElementById("helperLabel").style.display = "block";
-    startAutoRotate();
-  };
-
-  // عداد زمني
-  video.addEventListener("timeupdate", () => {
-    const t = Math.ceil(video.duration - video.currentTime);
-    document.getElementById("timer").textContent = t;
-  });
-
-  // المكعب التفاعلي (الذكاء)
   const cube = document.getElementById('cube');
   const scene = document.getElementById('scene');
   const sectionScreen = document.getElementById('sectionScreen');
+
   let angleY = 0;
   let autoInterval;
   let rotating = true;
@@ -319,13 +162,16 @@
     if (!dragging) return;
     let deltaX = e.touches[0].clientX - startX;
     if (Math.abs(deltaX) > 50) {
-      angleY += deltaX > 0 ? 90 : -90;
+      if (deltaX > 0) angleY += 90;
+      else angleY -= 90;
       updateTransform();
       dragging = false;
     }
   });
 
-  document.addEventListener('touchend', () => dragging = false);
+  document.addEventListener('touchend', () => {
+    dragging = false;
+  });
 
   document.querySelectorAll('.face').forEach(face => {
     face.addEventListener('click', () => {
@@ -345,6 +191,8 @@
       rotating = true;
     }
   };
+
+  startAutoRotate();
 </script>
 
 </body>
