@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HELPAR Demo</title>
@@ -10,135 +12,209 @@
       font-family: Arial, sans-serif;
       overflow: hidden;
       touch-action: none;
-    }.centered {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: #00ccff;
-}
+    }
 
-.lang-btn {
-  padding: 12px 24px;
-  font-size: 18px;
-  background: transparent;
-  border: 2px solid #00ccff;
-  border-radius: 10px;
-  color: #00ccff;
-  cursor: pointer;
-  margin-top: 20px;
-}
+    @keyframes pulseGlow {
+      0%, 100% {
+        filter: drop-shadow(0 0 8px #00ccff) drop-shadow(0 0 16px #00ccff);
+        transform: scale(1);
+      }
+      50% {
+        filter: drop-shadow(0 0 16px #00e7ff) drop-shadow(0 0 32px #00e7ff);
+        transform: scale(1.05);
+      }
+    }
 
-.scene {
-  width: 150px;
-  height: 150px;
-  margin: 0 auto;
-  perspective: 800px;
-  display: none;
-}
+    .centered {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #00ccff;
+    }
 
-#sceneSection {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
+    .helpar-logo {
+      width: 100px;
+      height: auto;
+      margin-bottom: 20px;
+      animation: pulseGlow 2s infinite;
+    }
 
-.cube {
-  width: 100%; height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.5s ease;
-}
+    .helpar-title {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #00ccff;
+      text-shadow: 0 0 8px #00ccff, 0 0 16px #00e7ff;
+      animation: pulseGlow 2s infinite;
+    }
 
-@keyframes rotateCubeLang {
-  from { transform: rotateX(-10deg) rotateY(0deg); }
-  to { transform: rotateX(-10deg) rotateY(360deg); }
-}
+    .lang-btn {
+      padding: 12px 24px;
+      font-size: 18px;
+      background: transparent;
+      border: 2px solid #00ccff;
+      border-radius: 10px;
+      color: #00ccff;
+      cursor: pointer;
+      margin-top: 20px;
+    }
 
-#cubeLang.rotating {
-  animation: rotateCubeLang 5s linear infinite;
-}
+    .scene {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto;
+      perspective: 800px;
+      display: none;
+    }
 
-.face {
-  position: absolute;
-  width: 150px; height: 150px;
-  border: 2px solid #00ccff;
-  background: rgba(0, 0, 0, 0.5);
-  color: #00ccff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.5rem;
-}
+    #sceneLang {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
 
-.front  { transform: rotateY(0deg) translateZ(75px); }
-.back   { transform: rotateY(180deg) translateZ(75px); }
-.right  { transform: rotateY(90deg) translateZ(75px); }
-.left   { transform: rotateY(-90deg) translateZ(75px); }
-.top    { transform: rotateX(90deg) translateZ(75px); }
-.bottom { transform: rotateX(-90deg) translateZ(75px); }
+    .cube {
+      width: 100%; height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+    }
 
-#videoSection, #sectionCubeContainer {
-  display: none;
-  position: absolute;
-  width: 100vw; height: 100vh;
-  top: 0; left: 0;
-  justify-content: center;
-  align-items: center;
-}
+    @keyframes rotateCubeLang {
+      from { transform: rotateX(-10deg) rotateY(0deg); }
+      to { transform: rotateX(-10deg) rotateY(360deg); }
+    }
 
-video {
-  max-width: 90vw;
-  max-height: 90vh;
-  object-fit: contain;
-  border: 2px solid #00ccff;
-  box-shadow: 0 0 20px #00ccff;
-  border-radius: 12px;
-}
+    #cubeLang.rotating {
+      animation: rotateCubeLang 5s linear infinite;
+    }
 
-.section-screen {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: #000d;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  z-index: 2;
-}
+    .face {
+      position: absolute;
+      width: 150px; height: 150px;
+      border: 2px solid #00ccff;
+      background: rgba(0, 0, 0, 0.5);
+      color: #00ccff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.5rem;
+    }
 
-.section-screen.active { display: grid; }
+    .lang-label {
+      font-size: 1rem;
+      margin-top: 8px;
+      color: #00ccff;
+    }
 
-.grid-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #00ccff;
-  font-size: 1.5rem;
-  border: 1px solid #00ccff;
-}
+    .front  { transform: rotateY(0deg) translateZ(75px); }
+    .back   { transform: rotateY(180deg) translateZ(75px); }
+    .right  { transform: rotateY(90deg) translateZ(75px); }
+    .left   { transform: rotateY(-90deg) translateZ(75px); }
+
+    .glow-core {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 8px; height: 8px;
+      transform: translate(-50%, -50%);
+      background: #00ccff;
+      border-radius: 50%;
+      box-shadow:
+        0 0 4px #00ccff,
+        0 0 8px #00ccff,
+        0 0 12px #00e7ff,
+        0 0 24px #00e7ff;
+      z-index: 3;
+      pointer-events: none;
+      animation: pulseCore 2s infinite;
+    }
+
+    @keyframes pulseCore {
+      0%, 100% {
+        box-shadow:
+          0 0 4px #00ccff,
+          0 0 8px #00ccff,
+          0 0 12px #00e7ff,
+          0 0 24px #00e7ff;
+      }
+      50% {
+        box-shadow:
+          0 0 6px #00e7ff,
+          0 0 10px #00e7ff,
+          0 0 18px #00ccff,
+          0 0 28px #00ccff;
+      }
+    }
+
+    /* باقي العناصر (الفيديو والمكعب الثاني) بدون تعديل */
+    #videoSection, #sectionCubeContainer {
+      display: none;
+      position: absolute;
+      width: 100vw; height: 100vh;
+      top: 0; left: 0;
+      justify-content: center;
+      align-items: center;
+    }
+
+    video {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border: 2px solid #00ccff;
+      box-shadow: 0 0 20px #00ccff;
+      border-radius: 12px;
+    }
+
+    .section-screen {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: #000d;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      z-index: 2;
+    }
+
+    .section-screen.active { display: grid; }
+
+    .grid-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #00ccff;
+      font-size: 1.5rem;
+      border: 1px solid #00ccff;
+    }
 
   </style>
 </head>
 <body>
   <div id="start" class="centered">
-    <h1>HELPAR</h1>
+    <img src="logo.png" alt="HELPAR Logo" class="helpar-logo" />
+    <div class="helpar-title">HELPAR</div>
+
     <div class="scene" id="sceneLang">
       <div class="cube" id="cubeLang">
-        <div class="face front">🇬🇧</div>
-        <div class="face back">🇸🇦</div>
-        <div class="face right">🇪🇸</div>
-        <div class="face left">🇫🇷</div>
-        <div class="face top">🌐</div>
-        <div class="face bottom">⬇️</div>
+        <div class="face front">🇬🇧<span class="lang-label">English</span></div>
+        <div class="face back">🇸🇦<span class="lang-label">Arabic</span></div>
+        <div class="face right">🇪🇸<span class="lang-label">Spanish</span></div>
+        <div class="face left">🇫🇷<span class="lang-label">French</span></div>
       </div>
+      <div class="glow-core"></div>
     </div>
+
     <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
-  </div>  <div id="videoSection">
+  </div>
+
+  <div id="videoSection">
     <video id="introVideo" autoplay playsinline>
       <source src="HELBERpro.mp4" type="video/mp4">
     </video>
-  </div>  <div id="sectionCubeContainer">
+  </div>
+
+  <div id="sectionCubeContainer">
     <div class="scene" id="sceneSection">
       <div class="cube" id="cubeSection">
         <div class="face front">🛍️</div>
@@ -155,7 +231,9 @@ video {
       <div class="grid-item">Section 3</div>
       <div class="grid-item">Section 4</div>
     </div>
-  </div>  <script>
+  </div>
+
+  <script>
     const sceneLang = document.getElementById("sceneLang");
     const cubeLang = document.getElementById("cubeLang");
     const start = document.getElementById("start");
@@ -224,5 +302,6 @@ video {
         rotating = true;
       }
     };
-  </script></body>
+  </script>
+</body>
 </html>
