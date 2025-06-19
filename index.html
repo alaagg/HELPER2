@@ -1,285 +1,75 @@
 <!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HELPAR All In One</title>
   <style>
     html, body {
-      margin: 0; padding: 0;
-      width: 100%; height: 100%;
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
       background: linear-gradient(135deg, #010308, #050a14, #0a121c, #0f1a24);
       font-family: 'Segoe UI', Arial, sans-serif;
-      overflow: hidden;
-    }@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-    filter: drop-shadow(0 0 48px #00ccff) drop-shadow(0 0 96px #00e7ff);
-  }
-  50% {
-    transform: scale(1.2);
-    filter: drop-shadow(0 0 64px #00e7ff) drop-shadow(0 0 112px #00ccff);
-  }
-}
-
-.centered {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  color: #00ccff;
-}
-
-.helpar-logo {
-  width: 16vw;
-  max-width: 120px;
-  margin-bottom: 2vh;
-  animation: pulse 3s infinite;
-  filter: drop-shadow(0 0 48px #00ccff) drop-shadow(0 0 96px #00e7ff);
-}
-
-.helpar-name {
-  font-size: 8vw;
-  font-weight: bold;
-  letter-spacing: 0.2em;
-  text-shadow: 0 0 4px #00ccff, 0 0 8px #00ccff;
-  margin: 0;
-  animation: pulse 2s infinite;
-}
-
-.helpar-sub {
-  margin-top: 0.5em;
-  font-size: 3.5vw;
-  color: #89a6b8;
-  opacity: 0.9;
-  text-shadow: 0 0 8px #00bfff, 0 0 16px #00aacc;
-}
-
-.scene, .cube, .face, .helper-label, .section-screen, .grid-item {
-  position: absolute;
-}
-
-.lang-btn {
-  padding: 10px 20px;
-  font-size: 18px;
-  background: #000;
-  border: 2px solid #00ccff;
-  color: #00ccff;
-  border-radius: 10px;
-  cursor: pointer;
-  box-shadow: 0 0 10px #00ccff;
-  transition: background 0.3s;
-  margin-top: 20px;
-}
-.lang-btn:hover {
-  background: #00ccff;
-  color: #000;
-}
-
-#video-section {
-  display: none;
-  width: 100vw;
-  height: 100vh;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 0; left: 0;
-}
-
-video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  background: #000;
-}
-
-#timer {
-  display: none;
-  position: absolute;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 24px;
-  color: #00ccff;
-  font-family: monospace;
-  z-index: 2;
-}
-
-#helpar-cube-section {
-  display: none;
-  width: 100vw;
-  height: 100vh;
-  background: radial-gradient(circle at center, #050b18 0%, #000 100%);
-  overflow: hidden;
-}
-
-#helpar-cube-section .scene {
-  width: 200px;
-  height: 200px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -55%);
-  perspective: 1000px;
-  z-index: 2;
-}
-
-#helpar-cube-section .cube {
-  width: 200px;
-  height: 200px;
-  transform-style: preserve-3d;
-  transform: rotateX(-18deg) rotateY(0deg);
-  transition: transform 0.5s ease;
-}
-
-#helpar-cube-section .face {
-  width: 200px;
-  height: 200px;
-  border: 2px solid #00ccff;
-  box-shadow: 0 0 30px #00ccff, inset 0 0 30px #00ccff;
-  background: rgba(0, 0, 0, 0.8);
-  color: #00ccff;
-  font-size: 1.4rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.front  { transform: rotateY(0deg) translateZ(100px); }
-.back   { transform: rotateY(180deg) translateZ(100px); }
-.right  { transform: rotateY(90deg) translateZ(100px); }
-.left   { transform: rotateY(-90deg) translateZ(100px); }
-.top    { transform: rotateX(90deg) translateZ(100px); }
-.bottom { transform: rotateX(-90deg) translateZ(100px); }
-
-.helper-label {
-  bottom: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #00ccff;
-  font-size: 2rem;
-  font-weight: bold;
-  letter-spacing: 6px;
-  text-shadow: 0 0 30px #00ccff, 0 0 60px #00ccff;
-  z-index: 1;
-}
-
-.section-screen {
-  display: none;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  grid-template-columns: 50% 50%;
-  grid-template-rows: 50% 50%;
-  background: linear-gradient(to bottom, #010308, #0a0f1c);
-  z-index: 3;
-}
-
-.section-screen.active {
-  display: grid;
-}
-
-.grid-item {
-  border: 2px solid #00ccff;
-  background: rgba(0, 204, 255, 0.04);
-  color: #00ccff;
-  font-size: 1.5rem;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-shadow: 0 0 10px #00ccff;
-  box-sizing: border-box;
-}
-
+      touch-action: none;
+    }
+    /* إخفاء واجهة المكعب التفاعلي حتى نهاية الفيديو */
+    #interactive-section {
+      display: none;
+    }
   </style>
 </head>
 <body>
-  <div id="start-section" class="centered">
-    <img src="logo.png" alt="Helpar Logo" class="helpar-logo" />
-    <h1 class="helpar-name">HELPAR</h1>
-    <p class="helpar-sub">Your Second Mind</p>
-    <div class="scene">
-      <div class="cube" id="cube">
-        <div class="face front hidden">English</div>
-        <div class="face back hidden">العربية</div>
-        <div class="face right hidden">Français</div>
-        <div class="face left hidden">Español</div>
-        <div class="face top"></div>
-        <div class="face bottom"></div>
-      </div>
+  <!-- القسم الأول: الترحيب واختيار اللغة والفيديو -->
+  <div id="intro-section">
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+      <h1 style="color: #00ccff; font-size: 3em; text-shadow: 0 0 20px #00ccff">HELPAR</h1>
+      <p style="color: #89a6b8; font-size: 1.2em">Your Second Mind</p>
+      <button onclick="startVideo()" style="margin-top: 30px; padding: 10px 20px; font-size: 18px; background: black; color: #00ccff; border: 2px solid #00ccff; border-radius: 8px; cursor: pointer;">Choose Language</button>
     </div>
-    <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
-  </div>  <div id="video-section">
-    <video autoplay playsinline id="introVideo">
+  </div>  <div id="video-section" style="display:none; width:100vw; height:100vh; position:absolute; top:0; left:0; background:#000; justify-content:center; align-items:center;">
+    <video id="introVideo" autoplay playsinline style="width:100%; height:100%; object-fit:contain">
       <source src="HELBERpro.mp4" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
-    <div id="timer">00</div>
-  </div>  <div id="helpar-cube-section">
-    <div class="scene" id="scene">
-      <div class="cube" id="helparCube">
-        <div class="face front" data-face="Section">🛍️</div>
+  </div>  <!-- القسم الثاني: المكعب التفاعلي -->  <div id="interactive-section">
+    <div class="scene" id="scene" style="width: 200px; height: 200px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -55%); perspective: 1000px; z-index: 2;">
+      <div class="cube" id="cube" style="width: 200px; height: 200px; transform-style: preserve-3d; transform: rotateX(-18deg) rotateY(0deg); transition: transform 0.5s ease;">
+        <div class="face front" data-face="Section">🏍️</div>
         <div class="face back" data-face="Section">👨‍💻</div>
         <div class="face right" data-face="Section">🍽️</div>
         <div class="face left" data-face="Section">🎮</div>
         <div class="face top">🔝</div>
         <div class="face bottom">🔻</div>
       </div>
-    </div>
-    <div class="helper-label">HELPER</div>
-    <div class="section-screen" id="sectionScreen">
-      <div class="grid-item">Section 1</div>
-      <div class="grid-item">Section 2</div>
-      <div class="grid-item">Section 3</div>
-      <div class="grid-item">Section 4</div>
-    </div>
+    </div><div class="helper-label" style="position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); color: #00ccff; font-size: 2rem; font-weight: bold; letter-spacing: 6px; text-shadow: 0 0 30px #00ccff, 0 0 60px #00ccff, 0 -60px 120px #00ccff, 0 -100px 180px #00ccff; z-index: 1;">HELPER</div>
+
+<div class="section-screen" id="sectionScreen" style="display:none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; grid-template-columns: 50% 50%; grid-template-rows: 50% 50%; background: linear-gradient(to bottom, #010308, #0a0f1c); z-index: 3;">
+  <div class="grid-item">Section 1</div>
+  <div class="grid-item">Section 2</div>
+  <div class="grid-item">Section 3</div>
+  <div class="grid-item">Section 4</div>
+</div>
+
   </div>  <script>
-    function showLanguages() {
-      document.querySelectorAll('.face').forEach(f => f.classList.remove('hidden'));
-    }
-
-    const faces = document.querySelectorAll(".face");
-    faces.forEach(face => {
-      face.addEventListener("click", () => {
-        document.getElementById("start-section").style.display = "none";
-        document.getElementById("video-section").style.display = "flex";
-        document.getElementById("timer").style.display = "block";
-        const vid = document.getElementById("introVideo");
-        vid.play();
-        playVideo();
-      });
-    });
-
-    function playVideo() {
+    function startVideo() {
+      document.getElementById("intro-section").style.display = "none";
+      document.getElementById("video-section").style.display = "flex";
       const video = document.getElementById("introVideo");
-      const timer = document.getElementById("timer");
-
-      video.addEventListener("loadedmetadata", () => {
-        updateTime();
-      });
-
-      video.addEventListener("timeupdate", updateTime);
-
-      function updateTime() {
-        const remaining = Math.max(0, video.duration - video.currentTime);
-        const seconds = Math.ceil(remaining);
-        timer.textContent = seconds;
-      }
+      video.play();
 
       video.onended = () => {
-        timer.style.display = "none";
         document.getElementById("video-section").style.display = "none";
-        document.getElementById("helpar-cube-section").style.display = "block";
+        document.getElementById("interactive-section").style.display = "block";
         startAutoRotate();
       };
     }
 
-    const cube = document.getElementById('helparCube');
+    const cube = document.getElementById('cube');
     const scene = document.getElementById('scene');
     const sectionScreen = document.getElementById('sectionScreen');
+
     let angleY = 0;
     let autoInterval;
     let rotating = true;
