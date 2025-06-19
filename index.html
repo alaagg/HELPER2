@@ -11,8 +11,10 @@
       background: linear-gradient(135deg, #010308, #050a14, #0a121c, #0f1a24);
       font-family: 'Segoe UI', Arial, sans-serif;
       overflow: hidden;
+      touch-action: none;
     }
 
+    /* -------- الصفحة الرئيسية -------- */
     @keyframes pulse {
       0%, 100% {
         transform: scale(1);
@@ -40,7 +42,6 @@
       max-width: 120px;
       margin-bottom: 2vh;
       animation: pulse 3s infinite;
-      filter: drop-shadow(0 0 48px #00ccff) drop-shadow(0 0 96px #00e7ff);
     }
 
     .helpar-name {
@@ -60,50 +61,6 @@
       text-shadow: 0 0 8px #00bfff, 0 0 16px #00aacc;
     }
 
-    .scene {
-      width: 120px;
-      height: 120px;
-      margin: 40px auto;
-      perspective: 800px;
-    }
-
-    .cube {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      transform-style: preserve-3d;
-      animation: spin 5s linear infinite;
-    }
-
-    @keyframes spin {
-      from { transform: rotateX(-10deg) rotateY(0deg); }
-      to { transform: rotateX(-10deg) rotateY(360deg); }
-    }
-
-    .face {
-      position: absolute;
-      width: 120px;
-      height: 120px;
-      border: 2px solid #00ccff;
-      background: rgba(0, 0, 0, 0.05);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 20px;
-      font-weight: bold;
-      color: #00ccff;
-      text-shadow: 0 0 5px #00ccff;
-      box-shadow: 0 0 12px #00ccff;
-      cursor: pointer;
-    }
-
-    .front  { transform: rotateY(0deg) translateZ(60px); }
-    .back   { transform: rotateY(180deg) translateZ(60px); }
-    .right  { transform: rotateY(90deg) translateZ(60px); }
-    .left   { transform: rotateY(-90deg) translateZ(60px); }
-    .top    { transform: rotateX(90deg) translateZ(60px); }
-    .bottom { transform: rotateX(-90deg) translateZ(60px); }
-
     .lang-btn {
       padding: 10px 20px;
       font-size: 18px;
@@ -122,6 +79,49 @@
       color: #000;
     }
 
+    /* -------- مكعب اللغة -------- */
+    .scene.lang {
+      width: 120px;
+      height: 120px;
+      margin: 40px auto;
+      perspective: 800px;
+    }
+
+    .cube.lang {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: spin 5s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotateX(-10deg) rotateY(0deg); }
+      to { transform: rotateX(-10deg) rotateY(360deg); }
+    }
+
+    .face.lang {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border: 2px solid #00ccff;
+      background: rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      font-weight: bold;
+      color: #00ccff;
+      text-shadow: 0 0 5px #00ccff;
+      box-shadow: 0 0 12px #00ccff;
+      cursor: pointer;
+    }
+
+    .hidden {
+      visibility: hidden;
+    }
+
+    /* -------- الفيديو والمتجر -------- */
     #video-section, #store-img {
       display: none;
       width: 100vw;
@@ -173,115 +173,8 @@
       object-fit: cover;
     }
 
-    .hidden {
-      visibility: hidden;
-    }
-  </style>
-</head>
-<body>
-
-  <div id="start-section" class="centered">
-    <img src="logo.png" alt="Helpar Logo" class="helpar-logo" />
-    <h1 class="helpar-name">HELPAR</h1>
-    <p class="helpar-sub">Your Second Mind</p>
-
-    <div class="scene">
-      <div class="cube" id="cube">
-        <div class="face front hidden">English</div>
-        <div class="face back hidden">العربية</div>
-        <div class="face right hidden">Français</div>
-        <div class="face left hidden">Español</div>
-        <div class="face top"></div>
-        <div class="face bottom"></div>
-      </div>
-    </div>
-
-    <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
-  </div>
-
-  <div id="video-section">
-    <button id="backBtn" onclick="goBack()">&#x2190;</button>
-    <video autoplay playsinline id="introVideo">
-      <source src="HELBERpro.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-    <div id="timer">00</div>
-  </div>
-
-  <div id="store-img">
-    <button id="backBtnStore" onclick="goBack()">&#x2190;</button>
-    <img src="bakrawnd.png" alt="Helpar Store" />
-  </div>
-
-  <script>
-    function showLanguages() {
-      document.querySelectorAll('.face').forEach(f => f.classList.remove('hidden'));
-    }
-
-    const faces = document.querySelectorAll(".face");
-    faces.forEach(face => {
-      face.addEventListener("click", () => {
-        document.getElementById("start-section").style.display = "none";
-        document.getElementById("video-section").style.display = "flex";
-        document.getElementById("timer").style.display = "block";
-        const vid = document.getElementById("introVideo");
-        vid.play();
-        playVideo();
-      });
-    });
-
-    function goBack() {
-      document.getElementById("video-section").style.display = "none";
-      document.getElementById("store-img").style.display = "none";
-      document.getElementById("start-section").style.display = "flex";
-      document.getElementById("timer").style.display = "none";
-      const vid = document.getElementById("introVideo");
-      vid.pause();
-      vid.currentTime = 0;
-    }
-
-    function playVideo() {
-      const video = document.getElementById("introVideo");
-      const timer = document.getElementById("timer");
-
-      video.addEventListener("loadedmetadata", () => {
-        updateTime();
-      });
-
-      video.addEventListener("timeupdate", updateTime);
-
-      function updateTime() {
-        const remaining = Math.max(0, video.duration - video.currentTime);
-        const seconds = Math.ceil(remaining);
-        timer.textContent = seconds;
-      }
-
-      video.onended = () => {
-        timer.style.display = "none";
-        document.getElementById("video-section").style.display = "none";
-        document.getElementById("store-img").style.display = "flex";
-      };
-    }
-  </script>
-  <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HELPar Cube Interactive</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-      background: radial-gradient(circle at center, #050b18 0%, #000 100%);
-      font-family: Arial, sans-serif;
-      touch-action: none;
-    }
-
-    .scene {
+    /* -------- مكعب HELPAR التفاعلي -------- */
+    .scene.helper {
       width: 200px;
       height: 200px;
       position: absolute;
@@ -292,7 +185,7 @@
       z-index: 2;
     }
 
-    .cube {
+    .cube.helper {
       width: 200px;
       height: 200px;
       transform-style: preserve-3d;
@@ -300,7 +193,7 @@
       transition: transform 0.5s ease;
     }
 
-    .face {
+    .face.helper {
       position: absolute;
       width: 200px;
       height: 200px;
@@ -314,13 +207,6 @@
       align-items: center;
     }
 
-    .front  { transform: rotateY(0deg) translateZ(100px); }
-    .back   { transform: rotateY(180deg) translateZ(100px); }
-    .right  { transform: rotateY(90deg) translateZ(100px); }
-    .left   { transform: rotateY(-90deg) translateZ(100px); }
-    .top    { transform: rotateX(90deg) translateZ(100px); }
-    .bottom { transform: rotateX(-90deg) translateZ(100px); }
-
     .helper-label {
       position: absolute;
       bottom: 80px;
@@ -330,15 +216,14 @@
       font-size: 2rem;
       font-weight: bold;
       letter-spacing: 6px;
-      text-shadow: 0 0 30px #00ccff, 0 0 60px #00ccff, 0 -60px 120px #00ccff, 0 -100px 180px #00ccff;
+      text-shadow: 0 0 30px #00ccff, 0 0 60px #00ccff;
       z-index: 1;
     }
 
     .section-screen {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 100vw;
       height: 100vh;
       grid-template-columns: 50% 50%;
@@ -360,24 +245,58 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      text-shadow: 0 0 10px #00ccff;
-      box-sizing: border-box;
     }
   </style>
 </head>
 <body>
 
-<div class="scene" id="scene">
-  <div class="cube" id="cube">
-    <div class="face front" data-face="Section">🛍️</div>
-    <div class="face back" data-face="Section">👨‍💻</div>
-    <div class="face right" data-face="Section">🍽️</div>
-    <div class="face left" data-face="Section">🎮</div>
-    <div class="face top">🔝</div>
-    <div class="face bottom">🔻</div>
+<!-- الصفحة الأولى -->
+<div id="start-section" class="centered">
+  <img src="logo.png" alt="Helpar Logo" class="helpar-logo" />
+  <h1 class="helpar-name">HELPAR</h1>
+  <p class="helpar-sub">Your Second Mind</p>
+
+  <div class="scene lang">
+    <div class="cube lang" id="langCube">
+      <div class="face lang front hidden">English</div>
+      <div class="face lang back hidden">العربية</div>
+      <div class="face lang right hidden">Français</div>
+      <div class="face lang left hidden">Español</div>
+      <div class="face lang top"></div>
+      <div class="face lang bottom"></div>
+    </div>
   </div>
+
+  <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
 </div>
 
+<!-- الفيديو -->
+<div id="video-section">
+  <button id="backBtn" onclick="goBack()">&#x2190;</button>
+  <video autoplay playsinline id="introVideo">
+    <source src="HELBERpro.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+  <div id="timer">00</div>
+</div>
+
+<!-- صورة المتجر -->
+<div id="store-img">
+  <button id="backBtnStore" onclick="goBack()">&#x2190;</button>
+  <img src="bakrawnd.png" alt="Helpar Store" />
+</div>
+
+<!-- مكعب HELPAR التفاعلي -->
+<div class="scene helper" id="scene">
+  <div class="cube helper" id="cube">
+    <div class="face helper front" data-face="Section">🛍️</div>
+    <div class="face helper back" data-face="Section">👨‍💻</div>
+    <div class="face helper right" data-face="Section">🍽️</div>
+    <div class="face helper left" data-face="Section">🎮</div>
+    <div class="face helper top">🔝</div>
+    <div class="face helper bottom">🔻</div>
+  </div>
+</div>
 <div class="helper-label">HELPER</div>
 
 <div class="section-screen" id="sectionScreen">
@@ -388,6 +307,56 @@
 </div>
 
 <script>
+  function showLanguages() {
+    document.querySelectorAll('.face.lang').forEach(f => f.classList.remove('hidden'));
+  }
+
+  const langFaces = document.querySelectorAll(".face.lang");
+  langFaces.forEach(face => {
+    face.addEventListener("click", () => {
+      document.getElementById("start-section").style.display = "none";
+      document.getElementById("video-section").style.display = "flex";
+      document.getElementById("timer").style.display = "block";
+      const vid = document.getElementById("introVideo");
+      vid.play();
+      playVideo();
+    });
+  });
+
+  function goBack() {
+    document.getElementById("video-section").style.display = "none";
+    document.getElementById("store-img").style.display = "none";
+    document.getElementById("start-section").style.display = "flex";
+    document.getElementById("timer").style.display = "none";
+    const vid = document.getElementById("introVideo");
+    vid.pause();
+    vid.currentTime = 0;
+  }
+
+  function playVideo() {
+    const video = document.getElementById("introVideo");
+    const timer = document.getElementById("timer");
+
+    video.addEventListener("loadedmetadata", () => {
+      updateTime();
+    });
+
+    video.addEventListener("timeupdate", updateTime);
+
+    function updateTime() {
+      const remaining = Math.max(0, video.duration - video.currentTime);
+      const seconds = Math.ceil(remaining);
+      timer.textContent = seconds;
+    }
+
+    video.onended = () => {
+      timer.style.display = "none";
+      document.getElementById("video-section").style.display = "none";
+      document.getElementById("store-img").style.display = "flex";
+    };
+  }
+
+  // مكعب HELPAR التفاعلي
   const cube = document.getElementById('cube');
   const scene = document.getElementById('scene');
   const sectionScreen = document.getElementById('sectionScreen');
@@ -438,7 +407,7 @@
     dragging = false;
   });
 
-  document.querySelectorAll('.face').forEach(face => {
+  document.querySelectorAll('.face.helper').forEach(face => {
     face.addEventListener('click', () => {
       if (!rotating) {
         history.pushState({popup: true}, "section");
@@ -460,7 +429,5 @@
   startAutoRotate();
 </script>
 
-</body>
-</html>
 </body>
 </html>
