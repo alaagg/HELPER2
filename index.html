@@ -3,150 +3,120 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>HELPAR — Black Velvet Cube</title>
+  <title>Lock Puzzle Cube</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
-      overflow: hidden;
       background: #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       font-family: sans-serif;
-      touch-action: none;
+      overflow: hidden;
     }
 
     .scene {
-      width: 100vw;
-      height: 100vh;
+      width: 300px;
+      height: 300px;
       perspective: 1000px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      margin-bottom: 20px;
     }
 
     .cube {
-      width: 275px;
-      height: 275px;
+      width: 200px;
+      height: 200px;
       position: relative;
       transform-style: preserve-3d;
-      transform: rotateY(0deg);
-      transition: transform 0.5s ease;
+      transform: rotateY(90deg);
+      transition: transform 1s ease-in-out;
     }
 
     .face {
       position: absolute;
-      width: 275px;
-      height: 275px;
+      width: 200px;
+      height: 200px;
+      background: #111;
+      border: 2px solid #0ff;
       display: flex;
       flex-wrap: wrap;
-      background: #000;
-      border: 1px solid rgba(0,255,255,0.1);
-      transition: opacity 0.5s ease, box-shadow 0.5s ease;
     }
 
     .face > div {
       width: 50%;
       height: 50%;
-      box-sizing: border-box;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: #00ccff;
-      font-size: 14px;
-      text-align: center;
-      padding: 6px;
+      box-sizing: border-box;
+    }
+
+    .piece {
+      width: 60px;
+      height: 60px;
+      border: 3px solid #00ccff;
+      border-radius: 10px;
+    }
+
+    .top-left    { border-right: none; border-bottom: none; }
+    .top-right   { border-left: none; border-bottom: none; }
+    .bottom-left { border-right: none; border-top: none; }
+    .bottom-right{ border-left: none; border-top: none; }
+
+    .front  { transform: rotateY(0deg) translateZ(100px); }
+    .back   { transform: rotateY(180deg) translateZ(100px); }
+    .right  { transform: rotateY(90deg) translateZ(100px); }
+    .left   { transform: rotateY(-90deg) translateZ(100px); }
+
+    button {
+      padding: 12px 30px;
+      font-size: 18px;
+      background: #00ccff;
+      color: #000;
+      border: none;
+      border-radius: 8px;
       cursor: pointer;
-      border: 1px solid rgba(0,255,255,0.05);
-    }
-
-    .face > div span {
-      font-size: 20px;
-      margin-bottom: 4px;
-    }
-
-    .front  { transform: rotateY(  0deg) translateZ(137.5px); }
-    .back   { transform: rotateY(180deg) translateZ(137.5px); }
-    .right  { transform: rotateY( 90deg) translateZ(137.5px); }
-    .left   { transform: rotateY(-90deg) translateZ(137.5px); }
-
-    .highlighted {
-      box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-      opacity: 1;
-    }
-
-    .dimmed {
-      opacity: 0.2;
+      box-shadow: 0 0 15px #00ccff;
     }
   </style>
 </head>
 <body>
-  <div class="scene" id="scene">
+  <div class="scene">
     <div class="cube" id="cube">
+      <!-- Front Face: shows lock icon -->
       <div class="face front">
-        <div><span>🔥</span>Trends</div>
-        <div><span>🎬</span>Movies</div>
-        <div><span>🎵</span>Music</div>
-        <div><span>📺</span>Series</div>
+        <div><div class="piece top-left"></div></div>
+        <div><div class="piece top-right"></div></div>
+        <div><div class="piece bottom-left"></div></div>
+        <div><div class="piece bottom-right"></div></div>
       </div>
+
+      <!-- Other Faces: empty or scrambled -->
       <div class="face back">
-        <div><span>💼</span>Work</div>
-        <div><span>🗓</span>Schedule</div>
-        <div><span>✉️</span>Mail</div>
-        <div><span>🔔</span>Alerts</div>
+        <div></div><div></div><div></div><div></div>
       </div>
       <div class="face right">
-        <div><span>👕</span>Fashion</div>
-        <div><span>🛍</span>Shopping</div>
-        <div><span>💄</span>Beauty</div>
-        <div><span>🌐</span>Explore</div>
+        <div></div><div></div><div></div><div></div>
       </div>
       <div class="face left">
-        <div><span>🧒</span>Kids</div>
-        <div><span>🎮</span>Games</div>
-        <div><span>📚</span>Education</div>
-        <div><span>🧠</span>Mind</div>
+        <div></div><div></div><div></div><div></div>
       </div>
     </div>
   </div>
 
+  <button onclick="rotateToFront()">Unlock</button>
+
   <script>
     const cube = document.getElementById('cube');
-    const scene = document.getElementById('scene');
-    const faces = document.querySelectorAll('.face');
 
-    let rotationY = 0;
-    let startX = 0;
-
-    function updateFaceVisuals() {
-      faces.forEach(face => {
-        face.classList.remove('highlighted', 'dimmed');
-      });
-
-      const index = ((rotationY / 90) % 4 + 4) % 4;
-      const backIndex = (index + 2) % 4;
-      const faceNames = ['front', 'right', 'back', 'left'];
-
-      document.querySelector('.' + faceNames[index]).classList.add('highlighted');
-      document.querySelector('.' + faceNames[backIndex]).classList.add('dimmed');
+    function rotateToFront() {
+      cube.style.transform = 'rotateY(0deg)';
+      setTimeout(() => {
+        window.location.href = "/welcome"; // ← غيره حسب مسارك
+      }, 2000);
     }
-
-    scene.addEventListener('touchstart', e => {
-      startX = e.touches[0].clientX;
-    });
-
-    scene.addEventListener('touchend', e => {
-      const endX = e.changedTouches[0].clientX;
-      const delta = endX - startX;
-
-      if (Math.abs(delta) > 50) {
-        rotationY += (delta > 0 ? -90 : 90);
-        cube.style.transform = `rotateY(${rotationY}deg)`;
-        updateFaceVisuals();
-      }
-    });
-
-    updateFaceVisuals();
   </script>
 </body>
 </html>
