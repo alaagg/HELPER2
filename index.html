@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>HELPAR All In One</title>
@@ -12,181 +11,15 @@
       font-family: 'Segoe UI', Arial, sans-serif;
       overflow: hidden;
     }
-
-    @keyframes pulse {
-      0%, 100% {
-        transform: scale(1);
-        filter: drop-shadow(0 0 48px #00ccff) drop-shadow(0 0 96px #00e7ff);
-      }
-      50% {
-        transform: scale(1.2);
-        filter: drop-shadow(0 0 64px #00e7ff) drop-shadow(0 0 112px #00ccff);
-      }
-    }
-
-    .centered {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      color: #00ccff;
-    }
-
-    .helpar-logo {
-      width: 16vw;
-      max-width: 120px;
-      margin-bottom: 2vh;
-      animation: pulse 3s infinite;
-      filter: drop-shadow(0 0 48px #00ccff) drop-shadow(0 0 96px #00e7ff);
-    }
-
-    .helpar-name {
-      font-size: 8vw;
-      font-weight: bold;
-      letter-spacing: 0.2em;
-      text-shadow: 0 0 4px #00ccff, 0 0 8px #00ccff;
-      margin: 0;
-      animation: pulse 2s infinite;
-    }
-
-    .helpar-sub {
-      margin-top: 0.5em;
-      font-size: 3.5vw;
-      color: #89a6b8;
-      opacity: 0.9;
-      text-shadow: 0 0 8px #00bfff, 0 0 16px #00aacc;
-    }
-
-    .scene {
-      width: 120px;
-      height: 120px;
-      margin: 40px auto;
-      perspective: 800px;
-    }
-
-    .cube {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      transform-style: preserve-3d;
-      animation: spin 5s linear infinite;
-    }
-
-    @keyframes spin {
-      from { transform: rotateX(-10deg) rotateY(0deg); }
-      to { transform: rotateX(-10deg) rotateY(360deg); }
-    }
-
-    .face {
-      position: absolute;
-      width: 120px;
-      height: 120px;
-      border: 2px solid #00ccff;
-      background: rgba(0, 0, 0, 0.05);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 20px;
-      font-weight: bold;
-      color: #00ccff;
-      text-shadow: 0 0 5px #00ccff;
-      box-shadow: 0 0 12px #00ccff;
-      cursor: pointer;
-    }
-
-    .front  { transform: rotateY(0deg) translateZ(60px); }
-    .back   { transform: rotateY(180deg) translateZ(60px); }
-    .right  { transform: rotateY(90deg) translateZ(60px); }
-    .left   { transform: rotateY(-90deg) translateZ(60px); }
-    .top    { transform: rotateX(90deg) translateZ(60px); }
-    .bottom { transform: rotateX(-90deg) translateZ(60px); }
-
-    .lang-btn {
-      padding: 10px 20px;
-      font-size: 18px;
-      background: #000;
-      border: 2px solid #00ccff;
-      color: #00ccff;
-      border-radius: 10px;
-      cursor: pointer;
-      box-shadow: 0 0 10px #00ccff;
-      transition: background 0.3s;
-      margin-top: 20px;
-    }
-
-    .lang-btn:hover {
-      background: #00ccff;
-      color: #000;
-    }
-
-    #video-section, #store-img {
-      display: none;
-      width: 100vw;
-      height: 100vh;
-      justify-content: center;
-      align-items: center;
-      position: absolute;
-      top: 0; left: 0;
-    }
-
-    video {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      background: #000;
-    }
-
-    #timer {
-      display: none;
-      position: absolute;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 24px;
-      color: #00ccff;
-      font-family: monospace;
-      z-index: 2;
-    }
-
-    #backBtn, #backBtnStore {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      font-size: 30px;
-      background: none;
-      color: #00ccff;
-      border: none;
-      cursor: pointer;
-      z-index: 3;
-    }
-
-    #backBtn:hover, #backBtnStore:hover {
-      color: #00ffff;
-    }
-
-    #store-img img {
-      width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-    }
-
-    .hidden {
-      visibility: hidden;
-    }
+    /* تم حذف أنماط الزوائد السابقة للحاجز */
   </style>
 </head>
-<body>
-
-  <div id="start-section" class="centered">
+<body>  <!-- القسم الأول: الواجهة التمهيدية -->  <div id="start-section" class="centered">
     <img src="logo.png" alt="Helpar Logo" class="helpar-logo" />
     <h1 class="helpar-name">HELPAR</h1>
     <p class="helpar-sub">Your Second Mind</p>
-
     <div class="scene">
-      <div class="cube" id="cube">
+      <div class="cube" id="langCube">
         <div class="face front hidden">English</div>
         <div class="face back hidden">العربية</div>
         <div class="face right hidden">Français</div>
@@ -195,73 +28,118 @@
         <div class="face bottom"></div>
       </div>
     </div>
-
     <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
-  </div>
-
-  <div id="video-section">
-    <button id="backBtn" onclick="goBack()">&#x2190;</button>
-    <video autoplay playsinline id="introVideo">
+  </div>  <!-- فيديو المقدمة -->  <div id="video-section" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000; justify-content:center; align-items:center;">
+    <video autoplay playsinline id="introVideo" style="width:100%; height:100%; object-fit:cover;">
       <source src="HELBERpro.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
     </video>
-    <div id="timer">00</div>
-  </div>
-
-  <div id="store-img">
-    <button id="backBtnStore" onclick="goBack()">&#x2190;</button>
-    <img src="bakrawnd.png" alt="Helpar Store" />
-  </div>
-
-  <script>
+  </div>  <!-- القسم الثاني: المكعب التفاعلي الذكي -->  <div id="interactive-cube" style="display:none;">
+    <div class="scene" id="scene">
+      <div class="cube" id="cube">
+        <div class="face front" data-face="Section">🛍️</div>
+        <div class="face back" data-face="Section">👨‍💻</div>
+        <div class="face right" data-face="Section">🍽️</div>
+        <div class="face left" data-face="Section">🎮</div>
+        <div class="face top">🔝</div>
+        <div class="face bottom">🔻</div>
+      </div>
+    </div>
+    <div class="helper-label">HELPER</div>
+    <div class="section-screen" id="sectionScreen" style="display:none;">
+      <div class="grid-item">Section 1</div>
+      <div class="grid-item">Section 2</div>
+      <div class="grid-item">Section 3</div>
+      <div class="grid-item">Section 4</div>
+    </div>
+  </div>  <script>
+    // إظهار اللغات
     function showLanguages() {
       document.querySelectorAll('.face').forEach(f => f.classList.remove('hidden'));
     }
 
-    const faces = document.querySelectorAll(".face");
-    faces.forEach(face => {
+    // عند اختيار اللغة
+    document.querySelectorAll(".face").forEach(face => {
       face.addEventListener("click", () => {
         document.getElementById("start-section").style.display = "none";
         document.getElementById("video-section").style.display = "flex";
-        document.getElementById("timer").style.display = "block";
         const vid = document.getElementById("introVideo");
         vid.play();
-        playVideo();
+        vid.onended = () => {
+          document.getElementById("video-section").style.display = "none";
+          document.getElementById("interactive-cube").style.display = "block";
+          startAutoRotate();
+        };
       });
     });
 
-    function goBack() {
-      document.getElementById("video-section").style.display = "none";
-      document.getElementById("store-img").style.display = "none";
-      document.getElementById("start-section").style.display = "flex";
-      document.getElementById("timer").style.display = "none";
-      const vid = document.getElementById("introVideo");
-      vid.pause();
-      vid.currentTime = 0;
+    // التحكم بالمكعب الذكي
+    const cube = document.getElementById('cube');
+    const scene = document.getElementById('scene');
+    const sectionScreen = document.getElementById('sectionScreen');
+
+    let angleY = 0;
+    let autoInterval;
+    let rotating = true;
+
+    function updateTransform() {
+      cube.style.transform = `rotateX(-18deg) rotateY(${angleY}deg)`;
     }
 
-    function playVideo() {
-      const video = document.getElementById("introVideo");
-      const timer = document.getElementById("timer");
+    function startAutoRotate() {
+      autoInterval = setInterval(() => {
+        angleY += 1;
+        updateTransform();
+      }, 30);
+    }
 
-      video.addEventListener("loadedmetadata", () => {
-        updateTime();
-      });
+    function stopAutoRotate() {
+      clearInterval(autoInterval);
+      rotating = false;
+      angleY = Math.round(angleY / 90) * 90;
+      updateTransform();
+    }
 
-      video.addEventListener("timeupdate", updateTime);
+    let startX = 0;
+    let dragging = false;
 
-      function updateTime() {
-        const remaining = Math.max(0, video.duration - video.currentTime);
-        const seconds = Math.ceil(remaining);
-        timer.textContent = seconds;
+    document.addEventListener('touchstart', (e) => {
+      if (rotating) stopAutoRotate();
+      startX = e.touches[0].clientX;
+      dragging = true;
+    });
+
+    document.addEventListener('touchmove', (e) => {
+      if (!dragging) return;
+      let deltaX = e.touches[0].clientX - startX;
+      if (Math.abs(deltaX) > 50) {
+        if (deltaX > 0) angleY += 90;
+        else angleY -= 90;
+        updateTransform();
+        dragging = false;
       }
+    });
 
-      video.onended = () => {
-        timer.style.display = "none";
-        document.getElementById("video-section").style.display = "none";
-        document.getElementById("store-img").style.display = "flex";
-      };
-    }
-  </script>
-</body>
+    document.addEventListener('touchend', () => {
+      dragging = false;
+    });
+
+    document.querySelectorAll('.face').forEach(face => {
+      face.addEventListener('click', () => {
+        if (!rotating) {
+          history.pushState({popup: true}, "section");
+          scene.style.display = 'none';
+          sectionScreen.style.display = 'grid';
+        }
+      });
+    });
+
+    window.onpopstate = function(event) {
+      if (event.state && event.state.popup) {
+        sectionScreen.style.display = 'none';
+        scene.style.display = 'block';
+        startAutoRotate();
+        rotating = true;
+      }
+    };
+  </script></body>
 </html>
