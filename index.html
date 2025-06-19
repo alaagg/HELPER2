@@ -14,7 +14,6 @@
       touch-action: none;
     }
 
-    /* -------- الصفحة الرئيسية -------- */
     @keyframes pulse {
       0%, 100% {
         transform: scale(1);
@@ -79,7 +78,6 @@
       color: #000;
     }
 
-    /* -------- مكعب اللغة -------- */
     .scene.lang {
       width: 120px;
       height: 120px;
@@ -117,11 +115,8 @@
       cursor: pointer;
     }
 
-    .hidden {
-      visibility: hidden;
-    }
+    .hidden { visibility: hidden; }
 
-    /* -------- الفيديو والمتجر -------- */
     #video-section, #store-img {
       display: none;
       width: 100vw;
@@ -163,9 +158,7 @@
       z-index: 3;
     }
 
-    #backBtn:hover, #backBtnStore:hover {
-      color: #00ffff;
-    }
+    #backBtn:hover, #backBtnStore:hover { color: #00ffff; }
 
     #store-img img {
       width: 100vw;
@@ -173,7 +166,6 @@
       object-fit: cover;
     }
 
-    /* -------- مكعب HELPAR التفاعلي -------- */
     .scene.helper {
       width: 200px;
       height: 200px;
@@ -232,9 +224,7 @@
       z-index: 3;
     }
 
-    .section-screen.active {
-      display: grid;
-    }
+    .section-screen.active { display: grid; }
 
     .grid-item {
       border: 2px solid #00ccff;
@@ -286,8 +276,8 @@
   <img src="bakrawnd.png" alt="Helpar Store" />
 </div>
 
-<!-- مكعب HELPAR التفاعلي -->
-<div class="scene helper" id="scene">
+<!-- مكعب HELPAR -->
+<div class="scene helper" id="scene" style="display: none;">
   <div class="cube helper" id="cube">
     <div class="face helper front" data-face="Section">🛍️</div>
     <div class="face helper back" data-face="Section">👨‍💻</div>
@@ -297,7 +287,8 @@
     <div class="face helper bottom">🔻</div>
   </div>
 </div>
-<div class="helper-label">HELPER</div>
+
+<div class="helper-label" id="helperLabel" style="display: none;">HELPER</div>
 
 <div class="section-screen" id="sectionScreen">
   <div class="grid-item">Section 1</div>
@@ -328,6 +319,8 @@
     document.getElementById("store-img").style.display = "none";
     document.getElementById("start-section").style.display = "flex";
     document.getElementById("timer").style.display = "none";
+    document.getElementById("scene").style.display = "none";
+    document.getElementById("helperLabel").style.display = "none";
     const vid = document.getElementById("introVideo");
     vid.pause();
     vid.currentTime = 0;
@@ -337,26 +330,23 @@
     const video = document.getElementById("introVideo");
     const timer = document.getElementById("timer");
 
-    video.addEventListener("loadedmetadata", () => {
-      updateTime();
-    });
-
+    video.addEventListener("loadedmetadata", () => updateTime());
     video.addEventListener("timeupdate", updateTime);
 
     function updateTime() {
       const remaining = Math.max(0, video.duration - video.currentTime);
-      const seconds = Math.ceil(remaining);
-      timer.textContent = seconds;
+      timer.textContent = Math.ceil(remaining);
     }
 
     video.onended = () => {
       timer.style.display = "none";
       document.getElementById("video-section").style.display = "none";
       document.getElementById("store-img").style.display = "flex";
+      document.getElementById("scene").style.display = "block";
+      document.getElementById("helperLabel").style.display = "block";
     };
   }
 
-  // مكعب HELPAR التفاعلي
   const cube = document.getElementById('cube');
   const scene = document.getElementById('scene');
   const sectionScreen = document.getElementById('sectionScreen');
@@ -396,8 +386,7 @@
     if (!dragging) return;
     let deltaX = e.touches[0].clientX - startX;
     if (Math.abs(deltaX) > 50) {
-      if (deltaX > 0) angleY += 90;
-      else angleY -= 90;
+      angleY += deltaX > 0 ? 90 : -90;
       updateTransform();
       dragging = false;
     }
