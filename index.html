@@ -1,145 +1,290 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>HELPAR All In One</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HELPAR — Full Interactive</title>
   <style>
     html, body {
       margin: 0; padding: 0;
-      width: 100%; height: 100%;
-      background: linear-gradient(135deg, #010308, #050a14, #0a121c, #0f1a24);
-      font-family: 'Segoe UI', Arial, sans-serif;
+      width: 100vw; height: 100vh;
       overflow: hidden;
+      font-family: Arial, sans-serif;
+      background: #000;
+      touch-action: none;
     }
-    /* تم حذف أنماط الزوائد السابقة للحاجز */
+
+    /* واجهة البداية */
+    #start-section {
+      position: absolute;
+      width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #00ccff;
+      background: radial-gradient(circle at center, #050b18 0%, #000 100%);
+      z-index: 3;
+    }
+
+    .helpar-logo {
+      width: 120px;
+      margin-bottom: 20px;
+      animation: pulse 3s infinite;
+    }
+
+    .helpar-name {
+      font-size: 8vw;
+      font-weight: bold;
+      text-shadow: 0 0 8px #00ccff;
+    }
+
+    .lang-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      background: transparent;
+      border: 2px solid #00ccff;
+      color: #00ccff;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    @keyframes pulse {
+      0%, 100% { filter: drop-shadow(0 0 20px #00ccff); }
+      50% { filter: drop-shadow(0 0 40px #00e7ff); }
+    }
+
+    .scene {
+      width: 150px; height: 150px;
+      margin: 30px auto;
+      perspective: 800px;
+    }
+
+    .cube {
+      width: 100%; height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: spin 8s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotateX(-10deg) rotateY(0deg); }
+      to { transform: rotateX(-10deg) rotateY(360deg); }
+    }
+
+    .face {
+      position: absolute;
+      width: 150px; height: 150px;
+      border: 2px solid #00ccff;
+      background: rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #00ccff;
+      font-size: 16px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .front  { transform: rotateY(0deg) translateZ(75px); }
+    .back   { transform: rotateY(180deg) translateZ(75px); }
+    .right  { transform: rotateY(90deg) translateZ(75px); }
+    .left   { transform: rotateY(-90deg) translateZ(75px); }
+    .top    { transform: rotateX(90deg) translateZ(75px); }
+    .bottom { transform: rotateX(-90deg) translateZ(75px); }
+
+    /* فيديو */
+    #video-section {
+      display: none;
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      justify-content: center;
+      align-items: center;
+      background: #000;
+      z-index: 2;
+    }
+
+    video {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+    }
+
+    /* AI Cube */
+    #ai-cube-section {
+      display: none;
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .ai-cube {
+      width: 300px;
+      height: 300px;
+      transform-style: preserve-3d;
+      animation: rotateCube 12s linear infinite;
+      transition: transform 0.5s ease;
+    }
+
+    @keyframes rotateCube {
+      from { transform: rotateY(0deg); }
+      to { transform: rotateY(360deg); }
+    }
+
+    .ai-face {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: rgba(0,255,255,0.05);
+      border: 1px solid #00ffff;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+    }
+
+    .f1 { transform: rotateY(0deg) translateZ(150px); }
+    .f2 { transform: rotateY(90deg) translateZ(150px); }
+    .f3 { transform: rotateY(180deg) translateZ(150px); }
+    .f4 { transform: rotateY(-90deg) translateZ(150px); }
+
+    .section-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      color: #00ffff;
+      cursor: pointer;
+      border: 1px solid #00ffff44;
+      background: rgba(0, 255, 255, 0.07);
+      transition: 0.3s;
+    }
+
+    .section-box:hover {
+      background: rgba(0, 255, 255, 0.2);
+    }
+
+    #section-content {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      width: 100vw; height: 100vh;
+      background: #000;
+      color: #00ccff;
+    }
+
+    #section-content button {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      font-size: 18px;
+      background: none;
+      border: none;
+      color: #00ccff;
+      cursor: pointer;
+    }
   </style>
 </head>
-<body>  <!-- القسم الأول: الواجهة التمهيدية -->  <div id="start-section" class="centered">
-    <img src="logo.png" alt="Helpar Logo" class="helpar-logo" />
+<body>
+
+  <!-- القسم الأول: الواجهة -->
+  <div id="start-section">
+    <img src="logo.png" class="helpar-logo" alt="HELPAR Logo" />
     <h1 class="helpar-name">HELPAR</h1>
-    <p class="helpar-sub">Your Second Mind</p>
     <div class="scene">
       <div class="cube" id="langCube">
-        <div class="face front hidden">English</div>
-        <div class="face back hidden">العربية</div>
-        <div class="face right hidden">Français</div>
-        <div class="face left hidden">Español</div>
+        <div class="face front">English</div>
+        <div class="face back">العربية</div>
+        <div class="face right">Français</div>
+        <div class="face left">Español</div>
         <div class="face top"></div>
         <div class="face bottom"></div>
       </div>
     </div>
     <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
-  </div>  <!-- فيديو المقدمة -->  <div id="video-section" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000; justify-content:center; align-items:center;">
-    <video autoplay playsinline id="introVideo" style="width:100%; height:100%; object-fit:cover;">
+  </div>
+
+  <!-- الفيديو -->
+  <div id="video-section">
+    <video autoplay playsinline id="introVideo">
       <source src="HELBERpro.mp4" type="video/mp4" />
     </video>
-  </div>  <!-- القسم الثاني: المكعب التفاعلي الذكي -->  <div id="interactive-cube" style="display:none;">
-    <div class="scene" id="scene">
-      <div class="cube" id="cube">
-        <div class="face front" data-face="Section">🛍️</div>
-        <div class="face back" data-face="Section">👨‍💻</div>
-        <div class="face right" data-face="Section">🍽️</div>
-        <div class="face left" data-face="Section">🎮</div>
-        <div class="face top">🔝</div>
-        <div class="face bottom">🔻</div>
+  </div>
+
+  <!-- المكعب الذكي -->
+  <div id="ai-cube-section">
+    <div class="ai-cube" id="mainCube">
+      <div class="ai-face f1">
+        <div class="section-box" onclick="openSection('🔥 Trend')">🔥 Trend</div>
+        <div class="section-box" onclick="openSection('👗 Fashion')">👗 Fashion</div>
+        <div class="section-box" onclick="openSection('🎵 Music')">🎵 Music</div>
+        <div class="section-box" onclick="openSection('🤖 AI')">🤖 AI</div>
+      </div>
+      <div class="ai-face f2">
+        <div class="section-box" onclick="openSection('🎬 Movies')">🎬 Movies</div>
+        <div class="section-box" onclick="openSection('📺 Series')">📺 Series</div>
+        <div class="section-box" onclick="openSection('🎮 Games')">🎮 Games</div>
+        <div class="section-box" onclick="openSection('📚 Books')">📚 Books</div>
+      </div>
+      <div class="ai-face f3">
+        <div class="section-box" onclick="openSection('💪 Fitness')">💪 Fitness</div>
+        <div class="section-box" onclick="openSection('🩺 Health')">🩺 Health</div>
+        <div class="section-box" onclick="openSection('😴 Sleep')">😴 Sleep</div>
+        <div class="section-box" onclick="openSection('🍽️ Food')">🍽️ Food</div>
+      </div>
+      <div class="ai-face f4">
+        <div class="section-box" onclick="openSection('👶 Kids')">👶 Kids</div>
+        <div class="section-box" onclick="openSection('👨‍👩‍👧‍👦 Family')">👨‍👩‍👧‍👦 Family</div>
+        <div class="section-box" onclick="openSection('💼 Work')">💼 Work</div>
+        <div class="section-box" onclick="openSection('✅ Tasks')">✅ Tasks</div>
       </div>
     </div>
-    <div class="helper-label">HELPER</div>
-    <div class="section-screen" id="sectionScreen" style="display:none;">
-      <div class="grid-item">Section 1</div>
-      <div class="grid-item">Section 2</div>
-      <div class="grid-item">Section 3</div>
-      <div class="grid-item">Section 4</div>
-    </div>
-  </div>  <script>
-    // إظهار اللغات
+  </div>
+
+  <!-- القسم المختار -->
+  <div id="section-content">
+    <h1 id="section-title">Section</h1>
+    <p id="section-desc">You opened: Section</p>
+    <button onclick="goBack()">← Back</button>
+  </div>
+
+  <script>
     function showLanguages() {
       document.querySelectorAll('.face').forEach(f => f.classList.remove('hidden'));
     }
 
-    // عند اختيار اللغة
-    document.querySelectorAll(".face").forEach(face => {
-      face.addEventListener("click", () => {
-        document.getElementById("start-section").style.display = "none";
-        document.getElementById("video-section").style.display = "flex";
-        const vid = document.getElementById("introVideo");
+    document.querySelectorAll('.face').forEach(face => {
+      face.addEventListener('click', () => {
+        document.getElementById('start-section').style.display = 'none';
+        document.getElementById('video-section').style.display = 'flex';
+        const vid = document.getElementById('introVideo');
         vid.play();
         vid.onended = () => {
-          document.getElementById("video-section").style.display = "none";
-          document.getElementById("interactive-cube").style.display = "block";
-          startAutoRotate();
+          document.getElementById('video-section').style.display = 'none';
+          document.getElementById('ai-cube-section').style.display = 'flex';
         };
       });
     });
 
-    // التحكم بالمكعب الذكي
-    const cube = document.getElementById('cube');
-    const scene = document.getElementById('scene');
-    const sectionScreen = document.getElementById('sectionScreen');
-
-    let angleY = 0;
-    let autoInterval;
-    let rotating = true;
-
-    function updateTransform() {
-      cube.style.transform = `rotateX(-18deg) rotateY(${angleY}deg)`;
+    function openSection(title) {
+      document.getElementById('ai-cube-section').style.display = 'none';
+      document.getElementById('section-content').style.display = 'flex';
+      document.getElementById('section-title').innerText = title;
+      document.getElementById('section-desc').innerText = "You opened: " + title;
     }
 
-    function startAutoRotate() {
-      autoInterval = setInterval(() => {
-        angleY += 1;
-        updateTransform();
-      }, 30);
+    function goBack() {
+      document.getElementById('section-content').style.display = 'none';
+      document.getElementById('ai-cube-section').style.display = 'flex';
     }
+  </script>
 
-    function stopAutoRotate() {
-      clearInterval(autoInterval);
-      rotating = false;
-      angleY = Math.round(angleY / 90) * 90;
-      updateTransform();
-    }
-
-    let startX = 0;
-    let dragging = false;
-
-    document.addEventListener('touchstart', (e) => {
-      if (rotating) stopAutoRotate();
-      startX = e.touches[0].clientX;
-      dragging = true;
-    });
-
-    document.addEventListener('touchmove', (e) => {
-      if (!dragging) return;
-      let deltaX = e.touches[0].clientX - startX;
-      if (Math.abs(deltaX) > 50) {
-        if (deltaX > 0) angleY += 90;
-        else angleY -= 90;
-        updateTransform();
-        dragging = false;
-      }
-    });
-
-    document.addEventListener('touchend', () => {
-      dragging = false;
-    });
-
-    document.querySelectorAll('.face').forEach(face => {
-      face.addEventListener('click', () => {
-        if (!rotating) {
-          history.pushState({popup: true}, "section");
-          scene.style.display = 'none';
-          sectionScreen.style.display = 'grid';
-        }
-      });
-    });
-
-    window.onpopstate = function(event) {
-      if (event.state && event.state.popup) {
-        sectionScreen.style.display = 'none';
-        scene.style.display = 'block';
-        startAutoRotate();
-        rotating = true;
-      }
-    };
-  </script></body>
+</body>
 </html>
