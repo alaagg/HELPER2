@@ -57,27 +57,21 @@
       border-radius: 10px;
       color: #00ccff;
       cursor: pointer;
-      margin-top: 100px;
+      margin-top: 160px; /* تم توسيع المسافة هنا */
       transform: translateZ(-40px) rotateX(15deg);
       perspective: 500px;
     }
 
-    .scene {
-      width: 225px;
-      height: 225px;
+    /* مكعب اللغة */
+    .scene-lang {
+      width: 150px;
+      height: 150px;
       margin: 0 auto;
       perspective: 800px;
       display: none;
     }
 
-    #sceneLang {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    .cube {
+    .cube-lang {
       width: 100%; height: 100%;
       transform-style: preserve-3d;
       transition: transform 0.5s ease;
@@ -92,9 +86,9 @@
       animation: rotateCubeLang 5s linear infinite;
     }
 
-    .face {
+    .cube-lang .face {
       position: absolute;
-      width: 225px; height: 225px;
+      width: 150px; height: 150px;
       border: 2px solid #00ccff;
       background: rgba(0, 0, 0, 0.5);
       color: #00ccff;
@@ -105,18 +99,16 @@
       font-size: 2.5rem;
     }
 
+    .cube-lang .front  { transform: rotateY(0deg) translateZ(75px); }
+    .cube-lang .back   { transform: rotateY(180deg) translateZ(75px); }
+    .cube-lang .right  { transform: rotateY(90deg) translateZ(75px); }
+    .cube-lang .left   { transform: rotateY(-90deg) translateZ(75px); }
+
     .lang-label {
       font-size: 1rem;
       margin-top: 8px;
       color: #00ccff;
     }
-
-    .front  { transform: rotateY(0deg) translateZ(112.5px); }
-    .back   { transform: rotateY(180deg) translateZ(112.5px); }
-    .right  { transform: rotateY(90deg) translateZ(112.5px); }
-    .left   { transform: rotateY(-90deg) translateZ(112.5px); }
-    .top    { transform: rotateX(90deg) translateZ(112.5px); }
-    .bottom { transform: rotateX(-90deg) translateZ(112.5px); }
 
     .glow-core {
       position: absolute;
@@ -132,25 +124,44 @@
         0 0 24px #00e7ff;
       z-index: 3;
       pointer-events: none;
-      animation: pulseCore 2s infinite;
+      animation: pulseGlowLogo 2s infinite;
     }
 
-    @keyframes pulseCore {
-      0%, 100% {
-        box-shadow:
-          0 0 4px #00ccff,
-          0 0 8px #00ccff,
-          0 0 12px #00e7ff,
-          0 0 24px #00e7ff;
-      }
-      50% {
-        box-shadow:
-          0 0 6px #00e7ff,
-          0 0 10px #00e7ff,
-          0 0 18px #00ccff,
-          0 0 28px #00ccff;
-      }
+    /* مكعب الأقسام */
+    .scene-section {
+      width: 225px;
+      height: 225px;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      perspective: 800px;
+      display: none;
     }
+
+    .cube-section {
+      width: 100%; height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+    }
+
+    .cube-section .face {
+      position: absolute;
+      width: 225px; height: 225px;
+      border: 2px solid #00ccff;
+      background: rgba(0, 0, 0, 0.5);
+      color: #00ccff;
+      font-size: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cube-section .front  { transform: rotateY(0deg) translateZ(112.5px); }
+    .cube-section .back   { transform: rotateY(180deg) translateZ(112.5px); }
+    .cube-section .right  { transform: rotateY(90deg) translateZ(112.5px); }
+    .cube-section .left   { transform: rotateY(-90deg) translateZ(112.5px); }
+    .cube-section .top    { transform: rotateX(90deg) translateZ(112.5px); }
+    .cube-section .bottom { transform: rotateX(-90deg) translateZ(112.5px); }
 
     #videoSection, #sectionCubeContainer {
       display: none;
@@ -199,8 +210,8 @@
     <div class="helpar-title">HELPAR</div>
     <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
 
-    <div class="scene" id="sceneLang">
-      <div class="cube" id="cubeLang">
+    <div class="scene-lang" id="sceneLang">
+      <div class="cube-lang" id="cubeLang">
         <div class="face front">🇬🇧<span class="lang-label">English</span></div>
         <div class="face back">🇸🇦<span class="lang-label">Arabic</span></div>
         <div class="face right">🇪🇸<span class="lang-label">Spanish</span></div>
@@ -217,8 +228,8 @@
   </div>
 
   <div id="sectionCubeContainer">
-    <div class="scene" id="sceneSection" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-      <div class="cube" id="cubeSection">
+    <div class="scene-section" id="sceneSection">
+      <div class="cube-section" id="cubeSection">
         <div class="face front">🛍️</div>
         <div class="face back">👨‍💻</div>
         <div class="face right">🍽️</div>
@@ -261,7 +272,6 @@
       });
     });
 
-    // مكعب الأقسام
     let angleSec = 0;
     let rotating = true;
     let autoRotateInterval;
@@ -293,16 +303,16 @@
 
     cubeSection.addEventListener("touchmove", e => {
       if (!rotating) {
-        let deltaX = e.touches[0].clientX - startX;
-        let rotateBy = deltaX * 0.4;
+        const deltaX = e.touches[0].clientX - startX;
+        const rotateBy = deltaX * 1.2; // ← تسريع الدوران
         cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec + rotateBy}deg)`;
       }
     });
 
     cubeSection.addEventListener("touchend", e => {
       if (!rotating) {
-        let deltaX = e.changedTouches[0].clientX - startX;
-        angleSec += Math.round(deltaX * 0.4 / 90) * 90;
+        const deltaX = e.changedTouches[0].clientX - startX;
+        angleSec += Math.round(deltaX * 1.2 / 90) * 90;
         cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
       }
     });
@@ -325,4 +335,4 @@
     };
   </script>
 </body>
-  </html>
+</html>
