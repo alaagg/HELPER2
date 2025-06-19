@@ -3,40 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>HELPAR Cube</title>
+  <title>HELPAR — AI Cube</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
-      background: linear-gradient(135deg, #0a0a1f, #0f0a2f, #090a20);
-      background-size: 400% 400%;
-      animation: pulseBackground 16s ease infinite;
       overflow: hidden;
+      background: radial-gradient(circle at center, #0d1117 0%, #010409 100%);
+      font-family: sans-serif;
       touch-action: none;
     }
 
-    @keyframes pulseBackground {
-      0%   { background-position: 0% 50%; }
-      50%  { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .waves {
+    /* شبكة خلفية */
+    .ai-grid {
       position: absolute;
       top: 0; left: 0;
       width: 100vw;
       height: 100vh;
-      background: url('data:image/svg+xml;utf8,<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><path fill="%2300ccff22" d="M0 50 Q50 80 100 50 T200 50 T300 50 T400 50 T500 50 T600 50 T700 50 T800 50 T900 50 T1000 50 V100 H0 Z"/></svg>') repeat-x;
-      background-size: 1000px 100px;
-      animation: moveWaves 20s linear infinite;
-      pointer-events: none;
+      background-image: 
+        linear-gradient(90deg, rgba(0,255,255,0.06) 1px, transparent 1px),
+        linear-gradient(rgba(0,255,255,0.06) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: gridMove 30s linear infinite;
       z-index: 0;
     }
 
-    @keyframes moveWaves {
-      0%   { background-position-x: 0; }
-      100% { background-position-x: 1000px; }
+    @keyframes gridMove {
+      0% { background-position: 0 0; }
+      100% { background-position: 100px 100px; }
     }
 
     .scene {
@@ -50,6 +45,17 @@
       z-index: 1;
     }
 
+    /* توهج خلف المكعب */
+    .glow-behind {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 255, 255, 0.15), transparent 70%);
+      box-shadow: 0 0 40px 20px rgba(0, 200, 255, 0.1);
+      z-index: 0;
+    }
+
     .cube {
       width: 275px;
       height: 275px;
@@ -57,6 +63,7 @@
       transform-style: preserve-3d;
       animation: spinY 18s linear infinite;
       transition: transform 0.5s ease;
+      z-index: 2;
     }
 
     .face {
@@ -65,31 +72,26 @@
       height: 275px;
       display: flex;
       flex-wrap: wrap;
-      border: 2px solid #0ff;
-      background: rgba(0, 200, 255, 0.08);
-      opacity: 0.2; /* 👈 كل الوجوه خفيفة افتراضياً */
+      border: 2px solid rgba(0, 200, 255, 0.3);
+      background: rgba(0, 200, 255, 0.06);
       transition: opacity 0.3s ease;
-    }
-
-    .face.front {
-      opacity: 1; /* 👈 فقط الوجه الأمامي واضح */
+      opacity: 1;
     }
 
     .face > div {
       width: 50%;
       height: 50%;
-      border: 1px solid #0ff;
+      border: 1px solid rgba(0, 200, 255, 0.1);
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: #fff;
+      color: #00ccff;
       font-size: 13px;
       text-align: center;
       padding: 6px;
       cursor: pointer;
-      transition: all 0.4s ease;
     }
 
     .face > div span {
@@ -124,16 +126,15 @@
   </style>
 </head>
 <body>
-  <!-- الخلفية التفاعلية: الموجات -->
-  <div class="waves"></div>
+  <div class="ai-grid"></div>
 
-  <!-- المكعب -->
   <div class="scene" id="scene">
+    <div class="glow-behind"></div>
     <div class="cube" id="cube">
       <!-- Front Face -->
       <div class="face front">
         <div><span>🎬 📺</span>Movies + Series</div>
-        <div><span>🎵 🔥</span>Music + Social Trends</div>
+        <div><span>🎵 🔥</span>Music + Trends</div>
         <div><span>🛍 👗</span>Shopping + Fashion</div>
         <div><span>🌐 📰</span>Explore + News</div>
       </div>
@@ -153,10 +154,10 @@
       </div>
       <!-- Left Face -->
       <div class="face left">
-        <div><span>🎉 🕒</span>Events + Daily Routine</div>
+        <div><span>🎉 🕒</span>Events + Routine</div>
         <div><span>🔍 🔔</span>Search + Notifications</div>
         <div><span>📊 🧾</span>Reports + Budgeting</div>
-        <div><span>🧠 🎯</span>Mind & Productivity</div>
+        <div><span>🧠 🎯</span>Mind + Productivity</div>
       </div>
     </div>
   </div>
@@ -179,13 +180,26 @@
       startX = e.touches[0].clientX;
     });
 
+    // التحكم في شفافية الوجه الخلفي حسب الزاوية
+    setInterval(() => {
+      const deg = (currentRotation % 360 + 360) % 360;
+      const faces = document.querySelectorAll('.face');
+      faces.forEach(face => face.style.opacity = "1");
+      if ((deg > 135 && deg < 225)) {
+        document.querySelector('.back').style.opacity = "0.1";
+      } else if ((deg > 45 && deg < 135)) {
+        document.querySelector('.right').style.opacity = "0.1";
+      } else if ((deg > 225 && deg < 315)) {
+        document.querySelector('.left').style.opacity = "0.1";
+      }
+    }, 200);
+
     document.querySelectorAll('.face > div').forEach(div => {
       div.addEventListener('click', () => {
         const expanded = div.cloneNode(true);
         expanded.classList.add('expanded');
         document.body.appendChild(expanded);
         cube.style.animation = 'none';
-
         expanded.addEventListener('click', () => {
           expanded.remove();
           cube.style.animation = 'spinY 18s linear infinite';
