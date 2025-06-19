@@ -14,20 +14,21 @@
       touch-action: none;
     }
 
-    @keyframes pulseGlow {
+    @keyframes pulseGlowLogo {
       0%, 100% {
-        filter: drop-shadow(0 0 8px #00ccff) drop-shadow(0 0 16px #00ccff);
+        filter: drop-shadow(0 0 12px #00e7ff) drop-shadow(0 0 24px #00ccff);
         transform: scale(1);
       }
       50% {
-        filter: drop-shadow(0 0 16px #00e7ff) drop-shadow(0 0 32px #00e7ff);
-        transform: scale(1.05);
+        filter: drop-shadow(0 0 20px #00e7ff) drop-shadow(0 0 40px #00ccff);
+        transform: scale(1.07);
       }
     }
 
     .centered {
       position: absolute;
-      top: 50%; left: 50%;
+      top: 45%;
+      left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
       color: #00ccff;
@@ -36,16 +37,16 @@
     .helpar-logo {
       width: 100px;
       height: auto;
-      margin-bottom: 20px;
-      animation: pulseGlow 2s infinite;
+      margin-bottom: 10px;
+      animation: pulseGlowLogo 2s infinite;
     }
 
     .helpar-title {
       font-size: 2.5em;
       font-weight: bold;
       color: #00ccff;
-      text-shadow: 0 0 8px #00ccff, 0 0 16px #00e7ff;
-      animation: pulseGlow 2s infinite;
+      text-shadow: 0 0 4px #00ccff, 0 0 8px #00e7ff;
+      animation: none;
     }
 
     .lang-btn {
@@ -56,8 +57,8 @@
       border-radius: 10px;
       color: #00ccff;
       cursor: pointer;
-      margin-top: 40px;
-      transform: translateY(30px) rotateX(15deg);
+      margin-top: 70px;
+      transform: translateZ(-40px) rotateX(15deg);
       perspective: 500px;
     }
 
@@ -194,6 +195,7 @@
   <div id="start" class="centered">
     <img src="logo.png" alt="HELPAR Logo" class="helpar-logo" />
     <div class="helpar-title">HELPAR</div>
+    <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
 
     <div class="scene" id="sceneLang">
       <div class="cube" id="cubeLang">
@@ -204,8 +206,6 @@
       </div>
       <div class="glow-core"></div>
     </div>
-
-    <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
   </div>
 
   <div id="videoSection">
@@ -276,7 +276,7 @@
       videoSection.style.display = "none";
       sectionCubeContainer.style.display = "block";
       sceneSection.style.display = "block";
-      startCubeSection(); // يبدأ بالدوران التلقائي
+      startCubeSection();
     };
 
     cubeSection.addEventListener("touchstart", e => {
