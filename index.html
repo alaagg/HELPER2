@@ -15,7 +15,6 @@
       touch-action: none;
     }
 
-    /* شبكة خلفية */
     .ai-grid {
       position: absolute;
       top: 0; left: 0;
@@ -73,6 +72,8 @@
       flex-wrap: wrap;
       border: 2px solid rgba(0, 200, 255, 0.3);
       background: rgba(0, 200, 255, 0.06);
+      transition: opacity 0.3s ease;
+      opacity: 1;
     }
 
     .face > div {
@@ -119,32 +120,27 @@
 </head>
 <body>
   <div class="ai-grid"></div>
-
   <div class="scene" id="scene">
     <div class="glow-behind"></div>
     <div class="cube" id="cube">
-      <!-- Front Face -->
       <div class="face front">
         <div><span>🎬 📺</span>Movies + Series</div>
         <div><span>🎵 🔥</span>Music + Trends</div>
         <div><span>🛍 👗</span>Shopping + Fashion</div>
         <div><span>🌐 📰</span>Explore + News</div>
       </div>
-      <!-- Back Face -->
       <div class="face back">
         <div><span>🌦 🚦</span>Weather + Traffic</div>
         <div><span>💼 🗓</span>Work + Meetings</div>
         <div><span>✉️ 🎯</span>Emails + Focus</div>
         <div><span>💰 📆</span>Finance + Calendar</div>
       </div>
-      <!-- Right Face -->
       <div class="face right">
         <div><span>🧒 📚</span>Kids + Education</div>
         <div><span>📝 🎮</span>Homework + Games</div>
         <div><span>💊 🏋️</span>Health + Fitness</div>
         <div><span>🥗 🛌</span>Nutrition + Sleep</div>
       </div>
-      <!-- Left Face -->
       <div class="face left">
         <div><span>🎉 🕒</span>Events + Routine</div>
         <div><span>🔍 🔔</span>Search + Notifications</div>
@@ -157,10 +153,10 @@
   <script>
     const cube = document.getElementById('cube');
     const scene = document.getElementById('scene');
+    const faces = document.querySelectorAll('.face');
     let startX = 0;
     let currentFace = 0;
 
-    // التحكم بالسحب
     scene.addEventListener('touchstart', e => {
       startX = e.touches[0].clientX;
     });
@@ -170,15 +166,22 @@
       const delta = endX - startX;
 
       if (Math.abs(delta) > 50) {
-        if (delta < 0) currentFace += 1;
-        else currentFace -= 1;
+        if (delta < 0) currentFace -= 1;
+        else currentFace += 1;
       }
 
-      const angle = (currentFace * 90) % 360;
+      const angle = (-currentFace * 90) % 360;
       cube.style.transform = `rotateY(${angle}deg)`;
+
+      // Reset opacity
+      faces.forEach(face => face.style.opacity = '1');
+      const index = ((currentFace % 4) + 4) % 4;
+      const backIndex = (index + 2) % 4;
+      const faceClasses = ['front', 'right', 'back', 'left'];
+      document.querySelector(`.${faceClasses[backIndex]}`).style.opacity = '0.1';
     });
 
-    // تكبير المهمة عند الضغط
+    // Expand on click
     document.querySelectorAll('.face > div').forEach(div => {
       div.addEventListener('click', () => {
         const expanded = div.cloneNode(true);
