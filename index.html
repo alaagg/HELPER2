@@ -2,14 +2,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HELPAR All In One</title>
+  <title>HELPAR — All In One</title>
   <style>
     html, body {
       margin: 0; padding: 0;
       width: 100%; height: 100%;
+      background: radial-gradient(circle at center, #050b18 0%, #000 100%);
       font-family: 'Segoe UI', Arial, sans-serif;
       overflow: hidden;
-      background: radial-gradient(circle at center, #050b18 0%, #000 100%);
     }/* بداية واجهة البداية */
 .centered {
   display: flex;
@@ -29,11 +29,6 @@
   filter: drop-shadow(0 0 48px #00ccff) drop-shadow(0 0 96px #00e7ff);
 }
 
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-}
-
 .helpar-name {
   font-size: 8vw;
   font-weight: bold;
@@ -50,10 +45,15 @@
   text-shadow: 0 0 8px #00bfff;
 }
 
-.scene, .cube {
+.scene {
   width: 120px; height: 120px;
   margin: 40px auto;
   perspective: 800px;
+}
+
+.cube {
+  width: 100%; height: 100%;
+  position: relative;
   transform-style: preserve-3d;
   animation: spin 5s linear infinite;
 }
@@ -71,6 +71,7 @@
   display: flex; justify-content: center; align-items: center;
   color: #00ccff; font-size: 20px; font-weight: bold;
   box-shadow: 0 0 12px #00ccff;
+  cursor: pointer;
 }
 
 .front  { transform: rotateY(0deg) translateZ(60px); }
@@ -102,8 +103,7 @@
 }
 
 #introVideo {
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   object-fit: contain;
   background: #000;
 }
@@ -119,8 +119,6 @@
 .cube2 {
   width: 200px; height: 200px;
   transform-style: preserve-3d;
-  transform: rotateX(-18deg) rotateY(0deg);
-  transition: transform 0.5s ease;
   animation: rotateAuto 10s linear infinite;
 }
 
@@ -140,37 +138,44 @@
   font-size: 1.4rem;
 }
 
-.front  { transform: rotateY(0deg) translateZ(100px); }
-.back   { transform: rotateY(180deg) translateZ(100px); }
-.right  { transform: rotateY(90deg) translateZ(100px); }
-.left   { transform: rotateY(-90deg) translateZ(100px); }
-.top    { transform: rotateX(90deg) translateZ(100px); }
-.bottom { transform: rotateX(-90deg) translateZ(100px); }
+.helper-label {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #00ccff;
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: 6px;
+  text-shadow: 0 0 30px #00ccff, 0 0 60px #00ccff, 0 -60px 120px #00ccff, 0 -100px 180px #00ccff;
+  z-index: 1;
+}
 
   </style>
 </head>
-<body>  <!-- واجهة البداية -->  <div id="start-section" class="centered">
+<body>
+  <!-- واجهة الترحيب -->
+  <div id="start-section" class="centered">
     <img src="logo.png" alt="Helpar Logo" class="helpar-logo" />
     <h1 class="helpar-name">HELPAR</h1>
-    <p class="helpar-sub">Your Second Mind</p><div class="scene">
-  <div class="cube" id="langCube">
-    <div class="face front hidden">English</div>
-    <div class="face back hidden">العربية</div>
-    <div class="face right hidden">Français</div>
-    <div class="face left hidden">Español</div>
-    <div class="face top"></div>
-    <div class="face bottom"></div>
-  </div>
-</div>
-
-<button class="lang-btn" onclick="showLanguages()">Choose Language</button>
-
-  </div>  <!-- قسم الفيديو -->  <div id="video-section">
+    <p class="helpar-sub">Your Second Mind</p>
+    <div class="scene">
+      <div class="cube" id="langCube">
+        <div class="face front hidden">English</div>
+        <div class="face back hidden">العربية</div>
+        <div class="face right hidden">Français</div>
+        <div class="face left hidden">Español</div>
+        <div class="face top"></div>
+        <div class="face bottom"></div>
+      </div>
+    </div>
+    <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
+  </div>  <!-- الفيديو -->  <div id="video-section">
     <video autoplay playsinline id="introVideo">
       <source src="HELBERpro.mp4" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
-  </div>  <!-- قسم المكعب التفاعلي الثاني -->  <div id="cube-section">
+  </div>  <!-- المكعب التفاعلي -->  <div id="cube-section">
     <div class="scene2">
       <div class="cube2">
         <div class="face2 front">🛍️</div>
@@ -181,6 +186,7 @@
         <div class="face2 bottom">🔻</div>
       </div>
     </div>
+    <div class="helper-label">HELPER</div>
   </div>  <script>
     function showLanguages() {
       document.querySelectorAll('.face').forEach(f => f.classList.remove('hidden'));
@@ -199,4 +205,4 @@
       });
     });
   </script></body>
-    </html>
+</html>
