@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HELPAR</title>
+  <title>HELPAR Full Project</title>
   <style>
     html, body {
       margin: 0; padding: 0;
@@ -142,6 +142,24 @@
   }
 }
 
+#videoSection, #sectionCubeContainer {
+  display: none;
+  position: absolute;
+  width: 100vw; height: 100vh;
+  top: 0; left: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+video {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border: 2px solid #00ccff;
+  box-shadow: 0 0 20px #00ccff;
+  border-radius: 12px;
+}
+
 .scene-section {
   width: 200px;
   height: 200px;
@@ -192,11 +210,11 @@
       <div class="face left">🇫🇷<span class="lang-label">Français</span></div>
       <div class="glow-core"></div>
     </div>
-  </div>  <div id="videoSection" style="display:none; position:absolute; width:100vw; height:100vh; top:0; left:0; justify-content:center; align-items:center;">
+  </div>  <div id="videoSection">
     <video id="introVideo" autoplay playsinline>
       <source src="HELBERpro.mp4" type="video/mp4">
     </video>
-  </div>  <div id="sectionCubeContainer" style="display:none;">
+  </div>  <div id="sectionCubeContainer">
     <div class="scene-section">
       <div class="cube-section" id="cubeSection">
         <div class="section-face front-sec">🛍️</div>
@@ -218,10 +236,8 @@
     let rotating = true;
     let autoRotateInterval;
     let startX = 0;
-    let overlay;
 
     function showLanguages() {
-      document.querySelector('.lang-btn').style.display = "none";
       sceneLang.style.display = "block";
       cubeLang.classList.add("rotating");
     }
@@ -242,7 +258,6 @@
       videoSection.style.display = "none";
       sectionCubeContainer.style.display = "block";
       startCubeSection();
-      history.pushState({ page: "section" }, null, "");
     };
 
     function startCubeSection() {
@@ -265,7 +280,7 @@
     cubeSection.addEventListener("touchmove", e => {
       if (!rotating) {
         let deltaX = e.touches[0].clientX - startX;
-        let rotateBy = deltaX * 1.2;
+        let rotateBy = deltaX * 0.6;
         cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec + rotateBy}deg)`;
       }
     });
@@ -273,81 +288,20 @@
     cubeSection.addEventListener("touchend", e => {
       if (!rotating) {
         let deltaX = e.changedTouches[0].clientX - startX;
-        angleSec += Math.round(deltaX * 1.2 / 90) * 90;
+        angleSec += Math.round(deltaX * 0.6 / 90) * 90;
         cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
-        showOverlay();
       }
     });
 
-    function showOverlay() {
-      if (!overlay) {
-        overlay = document.createElement("div");
-        overlay.style.cssText = `
-          position: fixed;
-          top: 0; left: 0;
-          width: 100vw; height: 100vh;
-          background: rgba(0,0,0,0.95);
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          grid-template-rows: 1fr 1fr;
-          gap: 2px;
-          z-index: 1000;
-        `;
-
-        const sections = [
-          { icon: "🎩", title: "Shopping" },
-          { icon: "👨‍💻", title: "Programming" },
-          { icon: "🍽️", title: "Food" },
-          { icon: "🎮", title: "Games" }
-        ];
-
-        sections.forEach(section => {
-          const box = document.createElement("div");
-          box.innerHTML = `<div style="font-size: 2.5rem">${section.icon}</div><div>${section.title}</div>`;
-          box.style.cssText = `
-            background: #000;
-            border: 1px solid #00ccff;
-            color: #00ccff;
-            font-size: 1.2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-          `;
-
-          box.addEventListener("click", () => {
-            let targetPage = "";
-            switch (section.title) {
-              case "Shopping": targetPage = "shopping.html"; break;
-              case "Programming": targetPage = "programming.html"; break;
-              case "Food": targetPage = "food.html"; break;
-              case "Games": targetPage = "games.html"; break;
-            }
-            window.location.href = targetPage;
-          });
-
-          overlay.appendChild(box);
-        });
-
-        document.body.appendChild(overlay);
-        history.pushState({ page: "overlay" }, null, "");
-      }
-    }
-
-    window.onpopstate = function () {
-      if (overlay) {
-        overlay.remove();
-        overlay = null;
-      } else if (sectionCubeContainer.style.display === 'block') {
-        sectionCubeContainer.style.display = 'none';
-        videoSection.style.display = 'flex';
-      } else if (videoSection.style.display === 'flex') {
+    window.onpopstate = function (event) {
+      if (videoSection.style.display === 'flex') {
         videoSection.style.display = 'none';
         sceneLang.style.display = 'none';
         start.style.display = 'block';
-        document.querySelector('.lang-btn').style.display = "inline-block";
+      } else if (sectionCubeContainer.style.display === 'block') {
+        sectionCubeContainer.style.display = 'none';
+        videoSection.style.display = 'flex';
       }
-    }
+    };
   </script></body>
 </html>
