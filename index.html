@@ -160,12 +160,22 @@ video {
   border-radius: 12px;
 }
 
-/* Section Cube */
-.section-cube {
-  width: 200px; height: 200px;
+.scene-section {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  perspective: 1000px;
+}
+
+.cube-section {
+  width: 200px;
+  height: 200px;
   transform-style: preserve-3d;
-  transform: rotateX(-18deg) rotateY(0deg);
   transition: transform 0.5s ease;
+  transform: rotateX(-18deg) rotateY(0deg);
 }
 
 .section-face {
@@ -205,8 +215,8 @@ video {
       <source src="HELBERpro.mp4" type="video/mp4">
     </video>
   </div>  <div id="sectionCubeContainer">
-    <div class="scene" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
-      <div class="section-cube" id="cubeSection">
+    <div class="scene-section">
+      <div class="cube-section" id="cubeSection">
         <div class="section-face front-sec">🛍️</div>
         <div class="section-face back-sec">👨‍💻</div>
         <div class="section-face right-sec">🍽️</div>
@@ -282,5 +292,16 @@ video {
         cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
       }
     });
+
+    window.onpopstate = function (event) {
+      if (videoSection.style.display === 'flex') {
+        videoSection.style.display = 'none';
+        sceneLang.style.display = 'none';
+        start.style.display = 'block';
+      } else if (sectionCubeContainer.style.display === 'block') {
+        sectionCubeContainer.style.display = 'none';
+        videoSection.style.display = 'flex';
+      }
+    };
   </script></body>
 </html>
