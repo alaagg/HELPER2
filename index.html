@@ -10,8 +10,7 @@
       background: radial-gradient(circle at center, #050b18 0%, #000 100%);
       font-family: 'Segoe UI', Arial, sans-serif;
       overflow: hidden;
-    }/* بداية واجهة البداية */
-.centered {
+    }.centered {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -120,6 +119,7 @@
   width: 200px; height: 200px;
   transform-style: preserve-3d;
   animation: rotateAuto 10s linear infinite;
+  position: relative;
 }
 
 @keyframes rotateAuto {
@@ -130,13 +130,24 @@
 .face2 {
   position: absolute;
   width: 200px; height: 200px;
-  border: 2px solid #00ccff;
-  box-shadow: 0 0 30px #00ccff, inset 0 0 30px #00ccff;
-  background: rgba(0, 0, 0, 0.8);
+  background: #0a0f1a;
   color: #00ccff;
-  display: flex; justify-content: center; align-items: center;
-  font-size: 1.4rem;
+  font-size: 1.8rem;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #00ccff;
+  box-shadow: 0 0 20px #00ccff;
+  backface-visibility: hidden;
 }
+
+.front  { transform: rotateY(0deg) translateZ(100px); }
+.back   { transform: rotateY(180deg) translateZ(100px); }
+.right  { transform: rotateY(90deg) translateZ(100px); }
+.left   { transform: rotateY(-90deg) translateZ(100px); }
+.top    { transform: rotateX(90deg) translateZ(100px); }
+.bottom { transform: rotateX(-90deg) translateZ(100px); }
 
 .helper-label {
   position: absolute;
