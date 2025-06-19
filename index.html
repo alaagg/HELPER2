@@ -2,181 +2,133 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HELPAR All In One</title>
+  <title>HELPAR Demo</title>
   <style>
     html, body {
       margin: 0; padding: 0;
       width: 100%; height: 100%;
-      background: linear-gradient(135deg, #010308, #050a14, #0a121c, #0f1a24);
-      font-family: 'Segoe UI', Arial, sans-serif;
+      background: radial-gradient(circle at center, #010308 0%, #000 100%);
+      font-family: Arial, sans-serif;
       overflow: hidden;
       touch-action: none;
-    }@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-    filter: drop-shadow(0 0 48px #00ccff) drop-shadow(0 0 96px #00e7ff);
-  }
-  50% {
-    transform: scale(1.2);
-    filter: drop-shadow(0 0 64px #00e7ff) drop-shadow(0 0 112px #00ccff);
-  }
-}
-
-.centered {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%; height: 100%;
+    }.centered {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
   color: #00ccff;
 }
 
-.helpar-logo {
-  width: 16vw;
-  max-width: 120px;
-  margin-bottom: 2vh;
-  animation: pulse 3s infinite;
-  filter: drop-shadow(0 0 48px #00ccff) drop-shadow(0 0 96px #00e7ff);
-}
-
-.helpar-name {
-  font-size: 8vw;
-  font-weight: bold;
-  letter-spacing: 0.2em;
-  text-shadow: 0 0 4px #00ccff, 0 0 8px #00ccff;
-  margin: 0;
-  animation: pulse 2s infinite;
-}
-
-.helpar-sub {
-  margin-top: 0.5em;
-  font-size: 3.5vw;
-  color: #89a6b8;
-  opacity: 0.9;
-  text-shadow: 0 0 8px #00bfff, 0 0 16px #00aacc;
+.lang-btn {
+  padding: 12px 24px;
+  font-size: 18px;
+  background: transparent;
+  border: 2px solid #00ccff;
+  border-radius: 10px;
+  color: #00ccff;
+  cursor: pointer;
+  margin-top: 20px;
 }
 
 .scene {
-  width: 200px;
-  height: 200px;
-  margin: 40px auto;
-  perspective: 1000px;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+  perspective: 800px;
   display: none;
 }
 
 .cube {
-  width: 100%;
-  height: 100%;
-  position: relative;
+  width: 100%; height: 100%;
   transform-style: preserve-3d;
   transition: transform 0.5s ease;
 }
 
+@keyframes rotateCubeLang {
+  from { transform: rotateX(-10deg) rotateY(0deg); }
+  to { transform: rotateX(-10deg) rotateY(360deg); }
+}
+
+#cubeLang.rotating {
+  animation: rotateCubeLang 5s linear infinite;
+}
+
 .face {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 150px; height: 150px;
+  border: 2px solid #00ccff;
+  background: rgba(0, 0, 0, 0.5);
+  color: #00ccff;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid #00ccff;
-  background: rgba(0, 0, 0, 0.1);
-  color: #00ccff;
-  font-size: 1.2em;
-  text-shadow: 0 0 5px #00ccff;
-  box-shadow: 0 0 12px #00ccff;
+  font-size: 1.5rem;
 }
 
-.front  { transform: rotateY(0deg) translateZ(100px); }
-.back   { transform: rotateY(180deg) translateZ(100px); }
-.right  { transform: rotateY(90deg) translateZ(100px); }
-.left   { transform: rotateY(-90deg) translateZ(100px); }
-.top    { transform: rotateX(90deg) translateZ(100px); }
-.bottom { transform: rotateX(-90deg) translateZ(100px); }
+.front  { transform: rotateY(0deg) translateZ(75px); }
+.back   { transform: rotateY(180deg) translateZ(75px); }
+.right  { transform: rotateY(90deg) translateZ(75px); }
+.left   { transform: rotateY(-90deg) translateZ(75px); }
+.top    { transform: rotateX(90deg) translateZ(75px); }
+.bottom { transform: rotateX(-90deg) translateZ(75px); }
 
-.lang-btn {
-  padding: 10px 20px;
-  font-size: 18px;
-  background: #000;
-  border: 2px solid #00ccff;
-  color: #00ccff;
-  border-radius: 10px;
-  cursor: pointer;
-  box-shadow: 0 0 10px #00ccff;
-  transition: background 0.3s;
-  margin-top: 20px;
-}
-
-#video-section, #sectionContainer {
+#videoSection, #sectionCubeContainer {
   display: none;
-  width: 100vw;
-  height: 100vh;
+  position: absolute;
+  width: 100vw; height: 100vh;
+  top: 0; left: 0;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  top: 0; left: 0;
 }
 
 video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  background: #000;
+  width: 100%; height: 100%;
+  object-fit: cover;
 }
 
 .section-screen {
   display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  grid-template-columns: 50% 50%;
-  grid-template-rows: 50% 50%;
-  background: linear-gradient(to bottom, #010308, #0a0f1c);
-  z-index: 3;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: #000d;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  z-index: 2;
 }
 
 .section-screen.active { display: grid; }
 
 .grid-item {
-  border: 2px solid #00ccff;
-  background: rgba(0, 204, 255, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #00ccff;
   font-size: 1.5rem;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-shadow: 0 0 10px #00ccff;
-  box-sizing: border-box;
+  border: 1px solid #00ccff;
 }
 
   </style>
 </head>
 <body>
-  <div id="start-section" class="centered">
-    <img src="logo.png" alt="Helpar Logo" class="helpar-logo" />
-    <h1 class="helpar-name">HELPAR</h1>
-    <p class="helpar-sub">Your Second Mind</p>
+  <div id="start" class="centered">
+    <h1>HELPAR</h1>
     <div class="scene" id="sceneLang">
       <div class="cube" id="cubeLang">
-        <div class="face front">English</div>
-        <div class="face back">العربية</div>
-        <div class="face right">Français</div>
-        <div class="face left">Español</div>
-        <div class="face top"></div>
-        <div class="face bottom"></div>
+        <div class="face front">🇬🇧</div>
+        <div class="face back">🇸🇦</div>
+        <div class="face right">🇪🇸</div>
+        <div class="face left">🇫🇷</div>
+        <div class="face top">🌐</div>
+        <div class="face bottom">⬇️</div>
       </div>
     </div>
     <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
-  </div>  <div id="video-section">
-    <video autoplay playsinline id="introVideo">
-      <source src="HELBERpro.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
+  </div>  <div id="videoSection">
+    <video id="introVideo" autoplay playsinline>
+      <source src="HELBERpro.mp4" type="video/mp4">
     </video>
-  </div>  <div id="sectionContainer">
+  </div>  <div id="sectionCubeContainer">
     <div class="scene" id="sceneSection">
       <div class="cube" id="cubeSection">
         <div class="face front">🛍️</div>
@@ -187,7 +139,6 @@ video {
         <div class="face bottom">🔻</div>
       </div>
     </div>
-    <div class="helper-label">HELPER</div>
     <div class="section-screen" id="sectionScreen">
       <div class="grid-item">Section 1</div>
       <div class="grid-item">Section 2</div>
@@ -195,23 +146,25 @@ video {
       <div class="grid-item">Section 4</div>
     </div>
   </div>  <script>
-    const cubeLang = document.getElementById("cubeLang");
     const sceneLang = document.getElementById("sceneLang");
-    const startSection = document.getElementById("start-section");
+    const cubeLang = document.getElementById("cubeLang");
+    const start = document.getElementById("start");
+    const videoSection = document.getElementById("videoSection");
     const introVideo = document.getElementById("introVideo");
-    const videoSection = document.getElementById("video-section");
-    const sectionContainer = document.getElementById("sectionContainer");
+    const sectionCubeContainer = document.getElementById("sectionCubeContainer");
     const cubeSection = document.getElementById("cubeSection");
     const sceneSection = document.getElementById("sceneSection");
     const sectionScreen = document.getElementById("sectionScreen");
 
     function showLanguages() {
       sceneLang.style.display = "block";
+      cubeLang.classList.add("rotating");
     }
 
     document.querySelectorAll("#cubeLang .face").forEach(face => {
       face.addEventListener("click", () => {
-        startSection.style.display = "none";
+        cubeLang.classList.remove("rotating");
+        start.style.display = "none";
         sceneLang.style.display = "none";
         videoSection.style.display = "flex";
         introVideo.play();
@@ -220,23 +173,23 @@ video {
 
     introVideo.onended = () => {
       videoSection.style.display = "none";
-      sectionContainer.style.display = "block";
-      startSectionCube();
+      sectionCubeContainer.style.display = "block";
+      startCubeSection();
     };
 
     let angleSec = 0;
-    let autoInterval;
     let rotating = true;
+    let interval;
 
-    function startSectionCube() {
-      autoInterval = setInterval(() => {
+    function startCubeSection() {
+      interval = setInterval(() => {
         angleSec += 1;
         cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
       }, 30);
     }
 
     cubeSection.addEventListener("touchstart", () => {
-      clearInterval(autoInterval);
+      clearInterval(interval);
       rotating = false;
       angleSec = Math.round(angleSec / 90) * 90;
       cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
@@ -256,7 +209,7 @@ video {
       if (event.state && event.state.popup) {
         sectionScreen.classList.remove("active");
         sceneSection.style.display = "block";
-        startSectionCube();
+        startCubeSection();
         rotating = true;
       }
     };
