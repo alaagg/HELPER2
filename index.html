@@ -154,10 +154,40 @@
     const cube = document.getElementById('cube');
     const scene = document.getElementById('scene');
     const faces = document.querySelectorAll('.face');
+
     let startX = 0;
-    let currentFace = 0;
+    let rotationY = 0;
+    let userInteracted = false;
+    let autoRotate;
+
+    function updateFaceOpacity() {
+      faces.forEach(face => face.style.opacity = '1');
+      const index = ((rotationY / 90) % 4 + 4) % 4;
+      const backIndex = (index + 2) % 4;
+      const faceClasses = ['front', 'right', 'back', 'left'];
+      document.querySelector(`.${faceClasses[backIndex]}`).style.opacity = '0.1';
+    }
+
+    function startAutoRotate() {
+      autoRotate = setInterval(() => {
+        rotationY += 1;
+        cube.style.transform = `rotateY(${rotationY}deg)`;
+        updateFaceOpacity();
+      }, 50);
+    }
+
+    function stopAutoRotate() {
+      clearInterval(autoRotate);
+    }
+
+    // Start rotation
+    startAutoRotate();
 
     scene.addEventListener('touchstart', e => {
+      if (!userInteracted) {
+        stopAutoRotate();
+        userInteracted = true;
+      }
       startX = e.touches[0].clientX;
     });
 
@@ -166,22 +196,13 @@
       const delta = endX - startX;
 
       if (Math.abs(delta) > 50) {
-        if (delta < 0) currentFace -= 1;
-        else currentFace += 1;
+        if (delta > 0) rotationY += 90;
+        else rotationY -= 90;
+        cube.style.transform = `rotateY(${rotationY}deg)`;
+        updateFaceOpacity();
       }
-
-      const angle = (-currentFace * 90) % 360;
-      cube.style.transform = `rotateY(${angle}deg)`;
-
-      // Reset opacity
-      faces.forEach(face => face.style.opacity = '1');
-      const index = ((currentFace % 4) + 4) % 4;
-      const backIndex = (index + 2) % 4;
-      const faceClasses = ['front', 'right', 'back', 'left'];
-      document.querySelector(`.${faceClasses[backIndex]}`).style.opacity = '0.1';
     });
 
-    // Expand on click
     document.querySelectorAll('.face > div').forEach(div => {
       div.addEventListener('click', () => {
         const expanded = div.cloneNode(true);
