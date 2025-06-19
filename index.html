@@ -262,6 +262,197 @@
         document.getElementById("store-img").style.display = "flex";
       };
     }
-  </script>
+ {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #050b18 0%, #000 100%);
+      font-family: Arial, sans-serif;
+      touch-action: none;
+    }
+
+    .scene {
+      width: 200px;
+      height: 200px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -55%);
+      perspective: 1000px;
+      z-index: 2;
+    }
+
+    .cube {
+      width: 200px;
+      height: 200px;
+      transform-style: preserve-3d;
+      transform: rotateX(-18deg) rotateY(0deg);
+      transition: transform 0.5s ease;
+    }
+
+    .face {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border: 2px solid #00ccff;
+      box-shadow: 0 0 30px #00ccff, inset 0 0 30px #00ccff;
+      background: rgba(0, 0, 0, 0.8);
+      color: #00ccff;
+      font-size: 1.4rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .front  { transform: rotateY(0deg) translateZ(100px); }
+    .back   { transform: rotateY(180deg) translateZ(100px); }
+    .right  { transform: rotateY(90deg) translateZ(100px); }
+    .left   { transform: rotateY(-90deg) translateZ(100px); }
+    .top    { transform: rotateX(90deg) translateZ(100px); }
+    .bottom { transform: rotateX(-90deg) translateZ(100px); }
+
+    .helper-label {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #00ccff;
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 6px;
+      text-shadow: 0 0 30px #00ccff, 0 0 60px #00ccff, 0 -60px 120px #00ccff, 0 -100px 180px #00ccff;
+      z-index: 1;
+    }
+
+    .section-screen {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      grid-template-columns: 50% 50%;
+      grid-template-rows: 50% 50%;
+      background: linear-gradient(to bottom, #010308, #0a0f1c);
+      z-index: 3;
+    }
+
+    .section-screen.active {
+      display: grid;
+    }
+
+    .grid-item {
+      border: 2px solid #00ccff;
+      background: rgba(0, 204, 255, 0.04);
+      color: #00ccff;
+      font-size: 1.5rem;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-shadow: 0 0 10px #00ccff;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+
+<div class="scene" id="scene">
+  <div class="cube" id="cube">
+    <div class="face front" data-face="Section">🛍️</div>
+    <div class="face back" data-face="Section">👨‍💻</div>
+    <div class="face right" data-face="Section">🍽️</div>
+    <div class="face left" data-face="Section">🎮</div>
+    <div class="face top">🔝</div>
+    <div class="face bottom">🔻</div>
+  </div>
+</div>
+
+<div class="helper-label">HELPER</div>
+
+<div class="section-screen" id="sectionScreen">
+  <div class="grid-item">Section 1</div>
+  <div class="grid-item">Section 2</div>
+  <div class="grid-item">Section 3</div>
+  <div class="grid-item">Section 4</div>
+</div>
+
+<script>
+  const cube = document.getElementById('cube');
+  const scene = document.getElementById('scene');
+  const sectionScreen = document.getElementById('sectionScreen');
+
+  let angleY = 0;
+  let autoInterval;
+  let rotating = true;
+
+  function updateTransform() {
+    cube.style.transform = `rotateX(-18deg) rotateY(${angleY}deg)`;
+  }
+
+  function startAutoRotate() {
+    autoInterval = setInterval(() => {
+      angleY += 1;
+      updateTransform();
+    }, 30);
+  }
+
+  function stopAutoRotate() {
+    clearInterval(autoInterval);
+    rotating = false;
+    angleY = Math.round(angleY / 90) * 90;
+    updateTransform();
+  }
+
+  let startX = 0;
+  let dragging = false;
+
+  document.addEventListener('touchstart', (e) => {
+    if (rotating) stopAutoRotate();
+    startX = e.touches[0].clientX;
+    dragging = true;
+  });
+
+  document.addEventListener('touchmove', (e) => {
+    if (!dragging) return;
+    let deltaX = e.touches[0].clientX - startX;
+    if (Math.abs(deltaX) > 50) {
+      if (deltaX > 0) angleY += 90;
+      else angleY -= 90;
+      updateTransform();
+      dragging = false;
+    }
+  });
+
+  document.addEventListener('touchend', () => {
+    dragging = false;
+  });
+
+  document.querySelectorAll('.face').forEach(face => {
+    face.addEventListener('click', () => {
+      if (!rotating) {
+        history.pushState({popup: true}, "section");
+        scene.style.display = 'none';
+        sectionScreen.classList.add("active");
+      }
+    });
+  });
+
+  window.onpopstate = function(event) {
+    if (event.state && event.state.popup) {
+      sectionScreen.classList.remove("active");
+      scene.style.display = 'block';
+      startAutoRotate();
+      rotating = true;
+    }
+  };
+
+  startAutoRotate();
+</script>
+
+</body>
+</html>
 </body>
 </html>
