@@ -1,199 +1,305 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HELPar Cube Interactive</title>
+  <title>HELPAR All In One</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <style>
     html, body {
-      margin: 0;
-      padding: 0;
-      width: 100vw;
-      height: 100vh;
+      margin: 0; padding: 0;
+      width: 100vw; height: 100vh;
+      background: linear-gradient(135deg, #010308, #050a14, #0a121c, #0f1a24);
+      font-family: 'Segoe UI', Arial, sans-serif;
       overflow: hidden;
-      background: radial-gradient(circle at center, #050b18 0%, #000 100%);
-      font-family: Arial, sans-serif;
       touch-action: none;
-    }
+    }@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 48px #00ccff) drop-shadow(0 0 96px #00e7ff);
+  }
+  50% {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 64px #00e7ff) drop-shadow(0 0 112px #00ccff);
+  }
+}
 
-    .scene {
-      width: 200px;
-      height: 200px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -55%);
-      perspective: 1000px;
-      z-index: 2;
-    }
+.centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  color: #00ccff;
+}
 
-    .cube {
-      width: 200px;
-      height: 200px;
-      transform-style: preserve-3d;
-      transform: rotateX(-18deg) rotateY(0deg);
-      transition: transform 0.5s ease;
-    }
+.helpar-logo {
+  width: 16vw;
+  max-width: 120px;
+  margin-bottom: 2vh;
+  animation: pulse 3s infinite;
+}
 
-    .face {
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      border: 2px solid #00ccff;
-      box-shadow: 0 0 30px #00ccff, inset 0 0 30px #00ccff;
-      background: rgba(0, 0, 0, 0.8);
-      color: #00ccff;
-      font-size: 1.4rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+.helpar-name {
+  font-size: 8vw;
+  font-weight: bold;
+  letter-spacing: 0.2em;
+  text-shadow: 0 0 4px #00ccff, 0 0 8px #00ccff;
+  margin: 0;
+  animation: pulse 2s infinite;
+}
 
-    .front  { transform: rotateY(0deg) translateZ(100px); }
-    .back   { transform: rotateY(180deg) translateZ(100px); }
-    .right  { transform: rotateY(90deg) translateZ(100px); }
-    .left   { transform: rotateY(-90deg) translateZ(100px); }
-    .top    { transform: rotateX(90deg) translateZ(100px); }
-    .bottom { transform: rotateX(-90deg) translateZ(100px); }
+.helpar-sub {
+  margin-top: 0.5em;
+  font-size: 3.5vw;
+  color: #89a6b8;
+  opacity: 0.9;
+  text-shadow: 0 0 8px #00bfff, 0 0 16px #00aacc;
+}
 
-    .helper-label {
-      position: absolute;
-      bottom: 80px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: #00ccff;
-      font-size: 2rem;
-      font-weight: bold;
-      letter-spacing: 6px;
-      text-shadow: 0 0 30px #00ccff, 0 0 60px #00ccff, 0 -60px 120px #00ccff, 0 -100px 180px #00ccff;
-      z-index: 1;
-    }
+.scene, .scene-final {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  perspective: 1000px;
+  z-index: 2;
+}
 
-    .section-screen {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      grid-template-columns: 50% 50%;
-      grid-template-rows: 50% 50%;
-      background: linear-gradient(to bottom, #010308, #0a0f1c);
-      z-index: 3;
-    }
+.cube, .cube-final {
+  width: 200px;
+  height: 200px;
+  transform-style: preserve-3d;
+  transform: rotateX(-18deg) rotateY(0deg);
+  transition: transform 0.5s ease;
+}
 
-    .section-screen.active {
-      display: grid;
-    }
+.face {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border: 2px solid #00ccff;
+  box-shadow: 0 0 30px #00ccff, inset 0 0 30px #00ccff;
+  background: rgba(0, 0, 0, 0.8);
+  color: #00ccff;
+  font-size: 1.4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
 
-    .grid-item {
-      border: 2px solid #00ccff;
-      background: rgba(0, 204, 255, 0.04);
-      color: #00ccff;
-      font-size: 1.5rem;
-      font-weight: bold;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-shadow: 0 0 10px #00ccff;
-      box-sizing: border-box;
-    }
+.front  { transform: rotateY(0deg) translateZ(100px); }
+.back   { transform: rotateY(180deg) translateZ(100px); }
+.right  { transform: rotateY(90deg) translateZ(100px); }
+.left   { transform: rotateY(-90deg) translateZ(100px); }
+.top    { transform: rotateX(90deg) translateZ(100px); }
+.bottom { transform: rotateX(-90deg) translateZ(100px); }
+
+.lang-btn {
+  padding: 10px 20px;
+  font-size: 18px;
+  background: #000;
+  border: 2px solid #00ccff;
+  color: #00ccff;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 0 10px #00ccff;
+  transition: background 0.3s;
+  margin-top: 20px;
+}
+
+.lang-btn:hover {
+  background: #00ccff;
+  color: #000;
+}
+
+#video-section {
+  display: none;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0; left: 0;
+  background: #000;
+}
+
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.helper-label {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #00ccff;
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: 6px;
+  text-shadow: 0 0 30px #00ccff, 0 0 60px #00ccff, 0 -60px 120px #00ccff, 0 -100px 180px #00ccff;
+  z-index: 1;
+  display: none;
+}
+
+.section-screen {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 50% 50%;
+  background: linear-gradient(to bottom, #010308, #0a0f1c);
+  z-index: 3;
+}
+
+.section-screen.active {
+  display: grid;
+}
+
+.grid-item {
+  border: 2px solid #00ccff;
+  background: rgba(0, 204, 255, 0.04);
+  color: #00ccff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-shadow: 0 0 10px #00ccff;
+  box-sizing: border-box;
+}
+
   </style>
 </head>
-<body>
-
-<div class="scene" id="scene">
-  <div class="cube" id="cube">
-    <div class="face front" data-face="Section">🛍️</div>
-    <div class="face back" data-face="Section">👨‍💻</div>
-    <div class="face right" data-face="Section">🍽️</div>
-    <div class="face left" data-face="Section">🎮</div>
-    <div class="face top">🔝</div>
-    <div class="face bottom">🔻</div>
+<body>  <div id="start-section" class="centered">
+    <img src="logo.png" alt="Helpar Logo" class="helpar-logo" />
+    <h1 class="helpar-name">HELPAR</h1>
+    <p class="helpar-sub">Your Second Mind</p>
+    <div class="scene">
+      <div class="cube">
+        <div class="face front hidden">English</div>
+        <div class="face back hidden">العربية</div>
+        <div class="face right hidden">Français</div>
+        <div class="face left hidden">Español</div>
+        <div class="face top"></div>
+        <div class="face bottom"></div>
+      </div>
+    </div>
+    <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
+  </div>  <div id="video-section">
+    <video autoplay playsinline id="introVideo">
+      <source src="HELBERpro.mp4" type="video/mp4" />
+    </video>
+  </div>  <div class="scene-final" id="sceneFinal" style="display:none">
+    <div class="cube-final" id="cubeFinal">
+      <div class="face front" data-face="Section">🛍️</div>
+      <div class="face back" data-face="Section">👨‍💻</div>
+      <div class="face right" data-face="Section">🍽️</div>
+      <div class="face left" data-face="Section">🎮</div>
+      <div class="face top">🔝</div>
+      <div class="face bottom">🔻</div>
+    </div>
   </div>
-</div>
-
-<div class="helper-label">HELPER</div>
-
-<div class="section-screen" id="sectionScreen">
-  <div class="grid-item">Section 1</div>
-  <div class="grid-item">Section 2</div>
-  <div class="grid-item">Section 3</div>
-  <div class="grid-item">Section 4</div>
-</div>
-
-<script>
-  const cube = document.getElementById('cube');
-  const scene = document.getElementById('scene');
-  const sectionScreen = document.getElementById('sectionScreen');
-
-  let angleY = 0;
-  let autoInterval;
-  let rotating = true;
-
-  function updateTransform() {
-    cube.style.transform = `rotateX(-18deg) rotateY(${angleY}deg)`;
-  }
-
-  function startAutoRotate() {
-    autoInterval = setInterval(() => {
-      angleY += 1;
-      updateTransform();
-    }, 30);
-  }
-
-  function stopAutoRotate() {
-    clearInterval(autoInterval);
-    rotating = false;
-    angleY = Math.round(angleY / 90) * 90;
-    updateTransform();
-  }
-
-  let startX = 0;
-  let dragging = false;
-
-  document.addEventListener('touchstart', (e) => {
-    if (rotating) stopAutoRotate();
-    startX = e.touches[0].clientX;
-    dragging = true;
-  });
-
-  document.addEventListener('touchmove', (e) => {
-    if (!dragging) return;
-    let deltaX = e.touches[0].clientX - startX;
-    if (Math.abs(deltaX) > 50) {
-      if (deltaX > 0) angleY += 90;
-      else angleY -= 90;
-      updateTransform();
-      dragging = false;
+  <div class="helper-label" id="helperLabel">HELPER</div>  <div class="section-screen" id="sectionScreen">
+    <div class="grid-item">Section 1</div>
+    <div class="grid-item">Section 2</div>
+    <div class="grid-item">Section 3</div>
+    <div class="grid-item">Section 4</div>
+  </div>  <script>
+    function showLanguages() {
+      document.querySelectorAll('.face').forEach(f => f.classList.remove('hidden'));
     }
-  });
 
-  document.addEventListener('touchend', () => {
-    dragging = false;
-  });
+    const faces = document.querySelectorAll(".face");
+    faces.forEach(face => {
+      face.addEventListener("click", () => {
+        document.getElementById("start-section").style.display = "none";
+        document.getElementById("video-section").style.display = "flex";
+        const vid = document.getElementById("introVideo");
+        vid.play();
+        vid.onended = () => {
+          document.getElementById("video-section").style.display = "none";
+          document.getElementById("sceneFinal").style.display = "block";
+          document.getElementById("helperLabel").style.display = "block";
+          startAutoRotate();
+        };
+      });
+    });
 
-  document.querySelectorAll('.face').forEach(face => {
-    face.addEventListener('click', () => {
-      if (!rotating) {
-        history.pushState({popup: true}, "section");
-        scene.style.display = 'none';
-        sectionScreen.classList.add("active");
+    const cube = document.getElementById('cubeFinal');
+    const scene = document.getElementById('sceneFinal');
+    const sectionScreen = document.getElementById('sectionScreen');
+    let angleY = 0;
+    let autoInterval;
+    let rotating = true;
+
+    function updateTransform() {
+      cube.style.transform = `rotateX(-18deg) rotateY(${angleY}deg)`;
+    }
+
+    function startAutoRotate() {
+      autoInterval = setInterval(() => {
+        angleY += 1;
+        updateTransform();
+      }, 30);
+    }
+
+    function stopAutoRotate() {
+      clearInterval(autoInterval);
+      rotating = false;
+      angleY = Math.round(angleY / 90) * 90;
+      updateTransform();
+    }
+
+    let startX = 0;
+    let dragging = false;
+
+    document.addEventListener('touchstart', (e) => {
+      if (rotating) stopAutoRotate();
+      startX = e.touches[0].clientX;
+      dragging = true;
+    });
+
+    document.addEventListener('touchmove', (e) => {
+      if (!dragging) return;
+      let deltaX = e.touches[0].clientX - startX;
+      if (Math.abs(deltaX) > 50) {
+        if (deltaX > 0) angleY += 90;
+        else angleY -= 90;
+        updateTransform();
+        dragging = false;
       }
     });
-  });
 
-  window.onpopstate = function(event) {
-    if (event.state && event.state.popup) {
-      sectionScreen.classList.remove("active");
-      scene.style.display = 'block';
-      startAutoRotate();
-      rotating = true;
-    }
-  };
+    document.addEventListener('touchend', () => {
+      dragging = false;
+    });
 
-  startAutoRotate();
-</script>
+    document.querySelectorAll('#cubeFinal .face').forEach(face => {
+      face.addEventListener('click', () => {
+        if (!rotating) {
+          history.pushState({popup: true}, "section");
+          scene.style.display = 'none';
+          sectionScreen.classList.add("active");
+        }
+      });
+    });
 
-</body>
-</html>
+    window.onpopstate = function(event) {
+      if (event.state && event.state.popup) {
+        sectionScreen.classList.remove("active");
+        scene.style.display = 'block';
+        startAutoRotate();
+        rotating = true;
+      }
+    };
+  </script></body>
+      </html>
