@@ -56,7 +56,9 @@
       border-radius: 10px;
       color: #00ccff;
       cursor: pointer;
-      margin-top: 20px;
+      margin-top: 40px;
+      transform: translateY(30px) rotateX(15deg);
+      perspective: 500px;
     }
 
     .scene {
@@ -147,7 +149,6 @@
       }
     }
 
-    /* باقي العناصر (الفيديو والمكعب الثاني) بدون تعديل */
     #videoSection, #sectionCubeContainer {
       display: none;
       position: absolute;
@@ -187,7 +188,6 @@
       font-size: 1.5rem;
       border: 1px solid #00ccff;
     }
-
   </style>
 </head>
 <body>
@@ -215,7 +215,7 @@
   </div>
 
   <div id="sectionCubeContainer">
-    <div class="scene" id="sceneSection">
+    <div class="scene" id="sceneSection" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
       <div class="cube" id="cubeSection">
         <div class="face front">🛍️</div>
         <div class="face back">👨‍💻</div>
@@ -259,29 +259,50 @@
       });
     });
 
-    introVideo.onended = () => {
-      videoSection.style.display = "none";
-      sectionCubeContainer.style.display = "block";
-      sceneSection.style.display = "block";
-      startCubeSection();
-    };
-
+    // مكعب الأقسام
     let angleSec = 0;
     let rotating = true;
-    let interval;
+    let autoRotateInterval;
+    let startX = 0;
 
     function startCubeSection() {
-      interval = setInterval(() => {
+      autoRotateInterval = setInterval(() => {
         angleSec += 1;
         cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
       }, 30);
     }
 
-    cubeSection.addEventListener("touchstart", () => {
-      clearInterval(interval);
-      rotating = false;
-      angleSec = Math.round(angleSec / 90) * 90;
-      cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
+    introVideo.onended = () => {
+      videoSection.style.display = "none";
+      sectionCubeContainer.style.display = "block";
+      sceneSection.style.display = "block";
+      startCubeSection(); // يبدأ بالدوران التلقائي
+    };
+
+    cubeSection.addEventListener("touchstart", e => {
+      if (rotating) {
+        clearInterval(autoRotateInterval);
+        rotating = false;
+        angleSec = Math.round(angleSec / 90) * 90;
+        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
+      }
+      startX = e.touches[0].clientX;
+    });
+
+    cubeSection.addEventListener("touchmove", e => {
+      if (!rotating) {
+        let deltaX = e.touches[0].clientX - startX;
+        let rotateBy = deltaX * 0.4;
+        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec + rotateBy}deg)`;
+      }
+    });
+
+    cubeSection.addEventListener("touchend", e => {
+      if (!rotating) {
+        let deltaX = e.changedTouches[0].clientX - startX;
+        angleSec += Math.round(deltaX * 0.4 / 90) * 90;
+        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
+      }
     });
 
     document.querySelectorAll("#cubeSection .face").forEach(face => {
@@ -298,8 +319,6 @@
       if (event.state && event.state.popup) {
         sectionScreen.classList.remove("active");
         sceneSection.style.display = "block";
-        startCubeSection();
-        rotating = true;
       }
     };
   </script>
