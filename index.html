@@ -16,18 +16,18 @@
 
     @keyframes pulseGlowLogo {
       0%, 100% {
-        filter: drop-shadow(0 0 12px #00e7ff) drop-shadow(0 0 24px #00ccff);
+        filter: drop-shadow(0 0 24px #00e7ff) drop-shadow(0 0 48px #00ccff);
         transform: scale(1);
       }
       50% {
-        filter: drop-shadow(0 0 20px #00e7ff) drop-shadow(0 0 40px #00ccff);
-        transform: scale(1.07);
+        filter: drop-shadow(0 0 36px #00e7ff) drop-shadow(0 0 64px #00ccff);
+        transform: scale(1.1);
       }
     }
 
     .centered {
       position: absolute;
-      top: 45%;
+      top: 35%;
       left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
@@ -46,7 +46,7 @@
       font-weight: bold;
       color: #00ccff;
       text-shadow: 0 0 4px #00ccff, 0 0 8px #00e7ff;
-      animation: none;
+      animation: pulseGlowLogo 2.5s infinite;
     }
 
     .lang-btn {
@@ -57,14 +57,14 @@
       border-radius: 10px;
       color: #00ccff;
       cursor: pointer;
-      margin-top: 70px;
+      margin-top: 100px;
       transform: translateZ(-40px) rotateX(15deg);
       perspective: 500px;
     }
 
     .scene {
-      width: 150px;
-      height: 150px;
+      width: 225px;
+      height: 225px;
       margin: 0 auto;
       perspective: 800px;
       display: none;
@@ -94,7 +94,7 @@
 
     .face {
       position: absolute;
-      width: 150px; height: 150px;
+      width: 225px; height: 225px;
       border: 2px solid #00ccff;
       background: rgba(0, 0, 0, 0.5);
       color: #00ccff;
@@ -111,10 +111,12 @@
       color: #00ccff;
     }
 
-    .front  { transform: rotateY(0deg) translateZ(75px); }
-    .back   { transform: rotateY(180deg) translateZ(75px); }
-    .right  { transform: rotateY(90deg) translateZ(75px); }
-    .left   { transform: rotateY(-90deg) translateZ(75px); }
+    .front  { transform: rotateY(0deg) translateZ(112.5px); }
+    .back   { transform: rotateY(180deg) translateZ(112.5px); }
+    .right  { transform: rotateY(90deg) translateZ(112.5px); }
+    .left   { transform: rotateY(-90deg) translateZ(112.5px); }
+    .top    { transform: rotateX(90deg) translateZ(112.5px); }
+    .bottom { transform: rotateX(-90deg) translateZ(112.5px); }
 
     .glow-core {
       position: absolute;
@@ -323,4 +325,4 @@
     };
   </script>
 </body>
-</html>
+  </html>
