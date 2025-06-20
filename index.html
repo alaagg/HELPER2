@@ -1,125 +1,67 @@
 <!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>HELPAR — Neon Sheet</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cube Flo</title>
   <style>
-    html, body {
+    /* Center the scene */
+    body {
       margin: 0;
       padding: 0;
-      background: radial-gradient(circle at center, #010308 0%, #000 100%);
-      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       height: 100vh;
-      overflow: hidden;
-    }.scene {
-  width: 100vw;
-  height: 100vh;
-  perspective: 1000px;
+      background: #000;
+    }/* 3D scene container */
+.scene {
+  width: 200px;
+  height: 200px;
+  perspective: 600px;
+}
+
+/* The cube itself */
+#cubeFlo {
+  width: 30px;
+  height: 30px;
   position: relative;
-}
-
-.cube {
-  width: 70px;
-  height: 70px;
-  position: absolute;
   transform-style: preserve-3d;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotateX(-90deg);
-  z-index: 2;
+  /* Tilt on X to look from top and on Y to the left */
+  transform: rotateX(25deg) rotateY(-30deg);
 }
 
-.face {
+/* Each face of the cube */
+#cubeFlo div {
   position: absolute;
-  width: 70px;
-  height: 70px;
-  background: #000;
-  border: 1px solid #00ccff;
-  box-shadow: 0 0 8px #00ccff88, inset 0 0 6px #00ccff44;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  color: #00ccff;
-  font-family: sans-serif;
-  font-weight: bold;
-}
-
-.front  { transform: translateZ(35px); }
-.back   { transform: rotateY(180deg) translateZ(35px); }
-.right  { transform: rotateY(90deg) translateZ(35px); }
-.left   { transform: rotateY(-90deg) translateZ(35px); }
-.top    { transform: rotateX(90deg) translateZ(35px); }
-.bottom { transform: rotateX(-90deg) translateZ(35px); }
-
-.neon-sheet {
-  position: absolute;
-  top: 70%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.5);
-  padding: 25px 35px;
+  width: 30px;
+  height: 30px;
+  background: #fff;
   border: 2px solid #00ccff;
-  background: rgba(0, 0, 0, 0.2);
-  color: #ffffff;
-  font-family: 'Courier New', monospace;
-  font-size: 16px;
-  line-height: 1.6;
-  box-shadow: 0 0 15px #00ccff88;
-  text-shadow: 0 0 6px #00ccff;
-  border-radius: 10px;
-  white-space: pre-wrap;
-  backdrop-filter: blur(4px);
-  animation: enterSheet 2s ease-out forwards, pulseSheet 4s infinite ease-in-out;
-  opacity: 0;
-  max-width: 90vw;
-  max-height: 40vh;
-  overflow-y: auto;
-  z-index: 1;
-  text-align: center;
+  box-shadow:
+    0 0 8px #00ccff,
+    0 0 16px #00ccff;
 }
 
-@keyframes enterSheet {
-  0% { transform: translate(-50%, 20%) scale(0.4); opacity: 0; }
-  60% { transform: translate(-50%, -10%) scale(1.2); opacity: 1; }
-  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-}
-
-@keyframes pulseSheet {
-  0%, 100% { box-shadow: 0 0 12px #00ccff66; }
-  50% { box-shadow: 0 0 22px #00e7ffcc; }
-}
+/* Position the faces */
+#cubeFlo .front  { transform: translateZ(15px); }
+#cubeFlo .back   { transform: rotateY(180deg) translateZ(15px); }
+#cubeFlo .right  { transform: rotateY(90deg) translateZ(15px); }
+#cubeFlo .left   { transform: rotateY(-90deg) translateZ(15px); }
+#cubeFlo .top    { transform: rotateX(90deg) translateZ(15px); }
+#cubeFlo .bottom { transform: rotateX(-90deg) translateZ(15px); }
 
   </style>
 </head>
 <body>
   <div class="scene">
-    <div class="cube">
-      <div class="face front">H</div>
-      <div class="face back">E</div>
-      <div class="face right">L</div>
-      <div class="face left">P</div>
-      <div class="face top">A</div>
-      <div class="face bottom">R</div>
+    <div id="cubeFlo">
+      <div class="front"></div>
+      <div class="back"></div>
+      <div class="right"></div>
+      <div class="left"></div>
+      <div class="top"></div>
+      <div class="bottom"></div>
     </div>
-    <div class="neon-sheet" id="neonMessage"></div>
-  </div>  <script>
-    const message = "HELPar: Your personal AI assistant, built to simplify your life, guide your decisions, and always stay one step ahead.";
-    const messageBox = document.getElementById("neonMessage");
-
-    let i = 0;
-    function typeNeonText() {
-      if (i <= message.length) {
-        messageBox.textContent = message.substring(0, i);
-        i++;
-        let speed = i < 10 ? 120 : 25;
-        setTimeout(typeNeonText, speed);
-      }
-    }
-
-    // بدء العرض بعد استقرار المكعب
-    setTimeout(() => {
-      messageBox.style.opacity = '1';
-      typeNeonText();
-    }, 1500);
-  </script></body>
+  </div>
+</body>
 </html>
