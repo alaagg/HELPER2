@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>HELPAR — Free Flying 3D Cube</title>
+  <title>HELPAR — 3D Top Spin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <style>
     html, body {
@@ -26,7 +26,7 @@
       height: 70px;
       position: absolute;
       transform-style: preserve-3d;
-      transform: rotateX(-90deg) rotateY(0deg);
+      transform: rotateX(-90deg) rotateZ(0deg); /* 👈 عرض الوجه العلوي */
       transition: top 6s ease-in-out, left 6s ease-in-out;
       z-index: 2;
     }
@@ -56,10 +56,10 @@
     .top    { transform: rotateX(90deg) translateZ(35px); }
     .bottom { transform: rotateX(-90deg) translateZ(35px); }
 
-    /* دوران سريع */
+    /* تأثير الدوران السريع حول Z */
     @keyframes spinFast {
-      0%   { transform: rotateX(-90deg) rotateY(0deg); }
-      100% { transform: rotateX(-90deg) rotateY(1080deg); }
+      0%   { transform: rotateX(-90deg) rotateZ(0deg); }
+      100% { transform: rotateX(-90deg) rotateZ(1080deg); }
     }
 
     .spin-now {
@@ -126,13 +126,13 @@
 
     setTimeout(() => {
       cube.classList.remove('spin-now');
-      cube.style.transform = 'rotateX(-90deg) rotateY(0deg)';
+      cube.style.transform = 'rotateX(-90deg) rotateZ(0deg)';
       trail.style.opacity = 0;
       trail.style.transform = 'scale(0.5)';
     }, 1300);
   }
 
-  // حركة مستمرة
+  // تحرك المكعب باستمرار
   setTimeout(moveCube, 1000);
   setInterval(moveCube, 6000);
 
