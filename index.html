@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Flo Cube 3D</title>
+  <title>Flo 3D Cube</title>
   <style>
     html, body {
       margin: 0;
@@ -15,7 +15,8 @@
       touch-action: none;
     }
 
-    body::before {
+    /* خلفية دائرية تدور ببطء لإحساس ثلاثي الأبعاد */
+    .bg-layers::before {
       content: "";
       position: absolute;
       width: 300%;
@@ -25,11 +26,11 @@
       transform: translate(-50%, -50%) rotate(0deg);
       background: repeating-radial-gradient(circle, rgba(0, 204, 255, 0.04) 0px, transparent 30px, transparent 60px);
       animation: spinBg 60s linear infinite;
-      pointer-events: none;
       z-index: 0;
+      pointer-events: none;
     }
 
-    body::after {
+    .bg-layers::after {
       content: "";
       position: absolute;
       width: 100%;
@@ -37,6 +38,7 @@
       background: radial-gradient(circle at center, #0e0f12 0%, #000 100%);
       mix-blend-mode: screen;
       z-index: 0;
+      pointer-events: none;
     }
 
     @keyframes spinBg {
@@ -47,13 +49,17 @@
     canvas {
       display: block;
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
   </style>
 </head>
 <body>
+  <div class="bg-layers"></div>
+
+  <!-- مكتبة Three.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js"></script>
   <script>
+    // إعداد المشهد
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 3;
@@ -62,6 +68,7 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
+    // إنشاء مكعب Flo
     const geometry = new THREE.BoxGeometry(1, 1, 1);
     const material = new THREE.MeshStandardMaterial({
       color: 0xffffff,
@@ -69,10 +76,10 @@
       roughness: 0.2,
       metalness: 0.3
     });
-
     const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
 
+    // إضاءة
     const light1 = new THREE.PointLight(0x00ccff, 1.5, 100);
     light1.position.set(2, 2, 2);
     scene.add(light1);
@@ -80,6 +87,7 @@
     const ambient = new THREE.AmbientLight(0x202020);
     scene.add(ambient);
 
+    // دوران مستمر
     function animate() {
       requestAnimationFrame(animate);
       cube.rotation.x += 0.01;
@@ -88,6 +96,7 @@
     }
     animate();
 
+    // تحديث عند تغيير الحجم
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
