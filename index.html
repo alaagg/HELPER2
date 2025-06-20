@@ -13,7 +13,6 @@
       height: 100vh;
       overflow: hidden;
       display: flex;
-      align-items: center;
       justify-content: center;
       background-image: repeating-linear-gradient(45deg, #2e2e2e 0, #2e2e2e 1px, transparent 1px, transparent 20px),
                         repeating-linear-gradient(-45deg, #2e2e2e 0, #2e2e2e 1px, transparent 1px, transparent 20px);
@@ -25,6 +24,10 @@
       width: 100px;
       height: 100px;
       perspective: 800px;
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
     }
 
     .cube {
@@ -43,7 +46,9 @@
       border-radius: 5px;
       border: 1.2px solid #00ccff88;
       box-shadow:
-        inset 0 0 18px #00ccff44;
+        inset 0 0 22px #00ccff33,
+        0 0 22px #00ccff66,
+        12px 12px 22px #00e7ff44; /* التوهج بزاوية 45° */
       animation: softPulse 3s infinite ease-in-out;
     }
 
@@ -64,10 +69,16 @@
 
     @keyframes softPulse {
       0%, 100% {
-        box-shadow: inset 0 0 18px #00ccff33;
+        box-shadow:
+          inset 0 0 22px #00ccff33,
+          0 0 22px #00ccff44,
+          12px 12px 22px #00e7ff44;
       }
       50% {
-        box-shadow: inset 0 0 25px #00e7ff44;
+        box-shadow:
+          inset 0 0 28px #00e7ff55,
+          0 0 28px #00e7ff66,
+          12px 12px 28px #00ffff66;
       }
     }
   </style>
