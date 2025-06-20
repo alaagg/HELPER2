@@ -44,6 +44,7 @@
       background-repeat: no-repeat;
       transition: transform 0.6s ease, opacity 0.4s ease;
       cursor: pointer;
+      transform-origin: bottom center; /* ✅ النقطة الأساسية */
     }
 
     .front-sec  { transform: rotateY(0deg) translateZ(137.5px); background-image: url('sho.png'); }
@@ -54,10 +55,8 @@
 </head>
 <body>
 
-  <!-- صوت عند الضغط -->
   <audio id="clickSound" src="open.mp3" preload="auto"></audio>
 
-  <!-- مكعب الأقسام -->
   <div id="sectionCubeContainer">
     <div class="scene-section">
       <div class="cube-section" id="cubeSection">
@@ -76,7 +75,6 @@
     let autoRotateInterval;
     let startX = 0;
 
-    // دوران تلقائي
     function startCubeSection() {
       autoRotateInterval = setInterval(() => {
         angleSec += 1;
@@ -85,7 +83,6 @@
     }
     startCubeSection();
 
-    // تحكم باللمس
     cubeSection.addEventListener("touchstart", e => {
       if (rotating) {
         clearInterval(autoRotateInterval);
@@ -111,13 +108,11 @@
       }
     });
 
-    // الضغط على أحد الوجوه
     document.querySelectorAll(".section-face").forEach(face => {
       face.addEventListener("click", () => {
         clearInterval(autoRotateInterval);
         rotating = false;
 
-        // تشغيل الصوت
         const sound = document.getElementById("clickSound");
         if (sound) sound.play();
 
@@ -126,19 +121,17 @@
         const isRight = face.classList.contains("right-sec");
         const isLeft  = face.classList.contains("left-sec");
 
-        // الوجه المختار يعود للخلف
-        if (isFront)  face.style.transform = "rotateY(0deg) translateZ(-120px) scale(0.9)";
-        if (isBack)   face.style.transform = "rotateY(180deg) translateZ(-120px) scale(0.9)";
-        if (isRight)  face.style.transform = "rotateY(90deg) translateZ(-120px) scale(0.9)";
-        if (isLeft)   face.style.transform = "rotateY(-90deg) translateZ(-120px) scale(0.9)";
+        // ✅ تكبير للأعلى فقط مع الحفاظ على أسفل الصورة
+        if (isFront)  face.style.transform = "rotateY(0deg) translateZ(-120px) scale(1.2)";
+        if (isBack)   face.style.transform = "rotateY(180deg) translateZ(-120px) scale(1.2)";
+        if (isRight)  face.style.transform = "rotateY(90deg) translateZ(-120px) scale(1.2)";
+        if (isLeft)   face.style.transform = "rotateY(-90deg) translateZ(-120px) scale(1.2)";
 
-        // إخفاء الوجه الخلفي
         if (isFront)  document.querySelector(".back-sec").style.opacity = "0";
         if (isBack)   document.querySelector(".front-sec").style.opacity = "0";
         if (isRight)  document.querySelector(".left-sec").style.opacity = "0";
         if (isLeft)   document.querySelector(".right-sec").style.opacity = "0";
 
-        // الوجوه الأخرى تتحرك بميل
         document.querySelectorAll(".section-face").forEach(other => {
           if (other !== face && other.style.opacity !== "0") {
             if (other.classList.contains("front-sec"))
@@ -152,7 +145,6 @@
           }
         });
 
-        // التوجيه للصفحة المناسبة
         const target =
           isFront ? "shop.html" :
           isBack  ? "code.html" :
