@@ -3,6 +3,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HELPAR Full Project</title>
+
+  <!-- ✅ تحميل مسبق للصور لتسريع عرض المكعب -->
+  <link rel="preload" href="sho.png" as="image">
+  <link rel="preload" href="code rom.png" as="image">
+  <link rel="preload" href="food.png" as="image">
+  <link rel="preload" href="games room.png" as="image">
+
   <style>
     html, body {
       margin: 0; padding: 0;
@@ -12,6 +19,7 @@
       overflow: hidden;
       touch-action: none;
     }
+
     .centered {
       position: absolute;
       top: 45%;
@@ -162,8 +170,8 @@
     }
 
     .scene-section {
-      width: 300px;
-      height: 300px;
+      width: 275px;
+      height: 275px;
       position: absolute;
       top: 50%;
       left: 50%;
@@ -172,8 +180,8 @@
     }
 
     .cube-section {
-      width: 300px;
-      height: 300px;
+      width: 275px;
+      height: 275px;
       transform-style: preserve-3d;
       transition: transform 0.5s ease;
       transform: rotateX(-18deg) rotateY(0deg);
@@ -181,7 +189,7 @@
 
     .section-face {
       position: absolute;
-      width: 300px; height: 300px;
+      width: 275px; height: 275px;
       border: 2px solid #00ccff;
       background-color: #000;
       background-size: contain;
@@ -189,10 +197,10 @@
       background-repeat: no-repeat;
     }
 
-    .front-sec  { transform: rotateY(0deg) translateZ(150px); background-image: url('sho.png'); }
-    .back-sec   { transform: rotateY(180deg) translateZ(150px); background-image: url('code rom.png'); }
-    .right-sec  { transform: rotateY(90deg) translateZ(150px); background-image: url('food.png'); }
-    .left-sec   { transform: rotateY(-90deg) translateZ(150px); background-image: url('games room.png'); }
+    .front-sec  { transform: rotateY(0deg) translateZ(137.5px); background-image: url('sho.png'); }
+    .back-sec   { transform: rotateY(180deg) translateZ(137.5px); background-image: url('code rom.png'); }
+    .right-sec  { transform: rotateY(90deg) translateZ(137.5px); background-image: url('food.png'); }
+    .left-sec   { transform: rotateY(-90deg) translateZ(137.5px); background-image: url('games room.png'); }
   </style>
 </head>
 <body>
