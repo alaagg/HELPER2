@@ -1,16 +1,10 @@
-<!DOCTYPE html><html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HELPAR Full Project</title>
-
-  <!-- ✅ تحميل مسبق للصور لتسريع عرض المكعب -->
-  <link rel="preload" href="sho.png" as="image">
+  <title>HELPAR Full Project</title>  <!-- ✅ تحميل مسبق للصور لتسريع عرض المكعب -->  <link rel="preload" href="sho.png" as="image">
   <link rel="preload" href="code rom.png" as="image">
   <link rel="preload" href="food.png" as="image">
-  <link rel="preload" href="games room.png" as="image">
-
-  <style>
+  <link rel="preload" href="games room.png" as="image">  <style>
     html, body {
       margin: 0; padding: 0;
       width: 100%; height: 100%;
@@ -160,15 +154,6 @@
       align-items: center;
     }
 
-    video {
-      max-width: 90vw;
-      max-height: 90vh;
-      object-fit: contain;
-      border: 2px solid #00ccff;
-      box-shadow: 0 0 20px #00ccff;
-      border-radius: 12px;
-    }
-
     .scene-section {
       width: 275px;
       height: 275px;
@@ -185,6 +170,7 @@
       transform-style: preserve-3d;
       transition: transform 0.5s ease;
       transform: rotateX(-18deg) rotateY(0deg);
+      position: relative;
     }
 
     .section-face {
@@ -195,37 +181,15 @@
       background-size: contain;
       background-position: center;
       background-repeat: no-repeat;
+      transition: transform 0.6s ease;
     }
 
     .front-sec  { transform: rotateY(0deg) translateZ(137.5px); background-image: url('sho.png'); }
     .back-sec   { transform: rotateY(180deg) translateZ(137.5px); background-image: url('code rom.png'); }
     .right-sec  { transform: rotateY(90deg) translateZ(137.5px); background-image: url('food.png'); }
     .left-sec   { transform: rotateY(-90deg) translateZ(137.5px); background-image: url('games room.png'); }
-  </style>
-</head>
+  </style></head>
 <body>
-  <div id="start" class="centered">
-    <img src="logo.png" alt="HELPAR Logo" class="helpar-logo" />
-    <div class="helpar-title">HELPAR</div>
-    <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
-  </div>
-
-  <div class="scene" id="sceneLang">
-    <div class="cube" id="cubeLang">
-      <div class="face front">🇬🇧<span class="lang-label">English</span></div>
-      <div class="face back">🇸🇦<span class="lang-label">العربية</span></div>
-      <div class="face right">🇪🇸<span class="lang-label">Español</span></div>
-      <div class="face left">🇫🇷<span class="lang-label">Français</span></div>
-      <div class="glow-core"></div>
-    </div>
-  </div>
-
-  <div id="videoSection">
-    <video id="introVideo" autoplay playsinline>
-      <source src="HELBERpro.mp4" type="video/mp4">
-    </video>
-  </div>
-
   <div id="sectionCubeContainer">
     <div class="scene-section">
       <div class="cube-section" id="cubeSection">
@@ -235,51 +199,15 @@
         <div class="section-face left-sec"></div>
       </div>
     </div>
-  </div>
-
-  <script>
-    const sceneLang = document.getElementById("sceneLang");
-    const cubeLang = document.getElementById("cubeLang");
-    const start = document.getElementById("start");
-    const videoSection = document.getElementById("videoSection");
-    const introVideo = document.getElementById("introVideo");
-    const sectionCubeContainer = document.getElementById("sectionCubeContainer");
+  </div>  <script>
     const cubeSection = document.getElementById("cubeSection");
-
-    let angleSec = 0;
     let rotating = true;
-    let autoRotateInterval;
+    let angleSec = 0;
     let startX = 0;
-
-    function showLanguages() {
-      sceneLang.style.display = "block";
-      cubeLang.classList.add("rotating");
-    }
-
-    document.querySelectorAll("#cubeLang .face").forEach(face => {
-      face.addEventListener("click", () => {
-        const selectedLang = face.querySelector(".lang-label").textContent;
-        localStorage.setItem("language", selectedLang);
-        cubeLang.classList.remove("rotating");
-        start.style.display = "none";
-        sceneLang.style.display = "none";
-        videoSection.style.display = "flex";
-        introVideo.play();
-      });
-    });
-
-    introVideo.onended = () => {
-      videoSection.style.display = "none";
-      sectionCubeContainer.style.display = "block";
-      startCubeSection();
-    };
-
-    function startCubeSection() {
-      autoRotateInterval = setInterval(() => {
-        angleSec += 1;
-        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
-      }, 30);
-    }
+    let autoRotateInterval = setInterval(() => {
+      angleSec += 1;
+      cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
+    }, 30);
 
     cubeSection.addEventListener("touchstart", e => {
       if (rotating) {
@@ -291,32 +219,22 @@
       startX = e.touches[0].clientX;
     });
 
-    cubeSection.addEventListener("touchmove", e => {
-      if (!rotating) {
-        let deltaX = e.touches[0].clientX - startX;
-        let rotateBy = deltaX * 0.6;
-        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec + rotateBy}deg)`;
-      }
-    });
-
     cubeSection.addEventListener("touchend", e => {
       if (!rotating) {
-        let deltaX = e.changedTouches[0].clientX - startX;
+        const deltaX = e.changedTouches[0].clientX - startX;
         angleSec += Math.round(deltaX * 0.6 / 90) * 90;
         cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
       }
     });
 
-    window.onpopstate = function (event) {
-      if (videoSection.style.display === 'flex') {
-        videoSection.style.display = 'none';
-        sceneLang.style.display = 'none';
-        start.style.display = 'block';
-      } else if (sectionCubeContainer.style.display === 'block') {
-        sectionCubeContainer.style.display = 'none';
-        videoSection.style.display = 'flex';
-      }
-    };
-  </script>
-</body>
+    document.querySelectorAll(".section-face").forEach(face => {
+      face.addEventListener("click", () => {
+        cubeSection.querySelector(".front-sec").style.transform = "rotateY(0deg) translateZ(300px)";
+        cubeSection.querySelector(".back-sec").style.transform = "rotateY(180deg) translateZ(300px)";
+        cubeSection.querySelector(".right-sec").style.transform = "rotateY(90deg) translateX(150px) translateZ(150px)";
+        cubeSection.querySelector(".left-sec").style.transform = "rotateY(-90deg) translateX(-150px) translateZ(150px)";
+        face.style.transform += " translateZ(-150px) scale(1.05)";
+      });
+    });
+  </script></body>
 </html>
