@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Flo Cube - Merged Edges</title>
+  <title>Flo Cube - Merged</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       width: 100vw;
       height: 100vh;
-      background: radial-gradient(ellipse at center, #2e2e2e 0%, #111 100%);
+      background: radial-gradient(circle at center, #1b1b1b 0%, #000 100%);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -27,21 +27,22 @@
     .cube {
       width: 75px;
       height: 75px;
-      position: relative;
       transform-style: preserve-3d;
-      animation: rotate 9s linear infinite;
+      animation: rotate 10s linear infinite;
+      position: relative;
     }
 
     .face {
       position: absolute;
       width: 75px;
       height: 75px;
-      background: linear-gradient(145deg, #ffffff, #eaeaea);
-      border-radius: 12px;
+      background: linear-gradient(135deg, #ffffff, #f0f0f0);
+      border-radius: 18px;
+      filter: blur(0.3px);
       box-shadow:
-        0 0 12px #00ccffaa,
-        inset 0 0 10px #00ccff44,
-        0 0 3px #00ccff88;
+        0 0 24px #00ccffcc,
+        0 0 32px #00ccff66,
+        inset 0 0 12px #00ccff44;
     }
 
     .face:nth-child(1) { transform: rotateY(0deg) translateZ(37.5px); }
