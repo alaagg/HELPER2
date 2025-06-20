@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>HELPAR Free-Floating Cube</title>
+  <title>HELPAR — Small Neon Cube</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <style>
     html, body {
@@ -22,8 +22,8 @@
     }
 
     .cube {
-      width: 100px;
-      height: 100px;
+      width: 70px;
+      height: 70px;
       position: absolute;
       transform-style: preserve-3d;
       transform: rotateX(20deg) rotateY(25deg);
@@ -32,26 +32,28 @@
 
     .face {
       position: absolute;
-      width: 100px;
-      height: 100px;
-      background: linear-gradient(135deg, #00caff, #007acc);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: inset 0 0 12px #00ccff66;
+      width: 70px;
+      height: 70px;
+      background: #000;
+      border: 1px solid #00ccff;
+      box-shadow:
+        0 0 8px #00ccff88,
+        inset 0 0 6px #00ccff44;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
-      color: white;
+      font-size: 16px;
+      color: #00ccff;
       font-family: sans-serif;
       font-weight: bold;
     }
 
-    .front  { transform: translateZ(50px); }
-    .back   { transform: rotateY(180deg) translateZ(50px); }
-    .right  { transform: rotateY(90deg) translateZ(50px); }
-    .left   { transform: rotateY(-90deg) translateZ(50px); }
-    .top    { transform: rotateX(90deg) translateZ(50px); }
-    .bottom { transform: rotateX(-90deg) translateZ(50px); }
+    .front  { transform: translateZ(35px); }
+    .back   { transform: rotateY(180deg) translateZ(35px); }
+    .right  { transform: rotateY(90deg) translateZ(35px); }
+    .left   { transform: rotateY(-90deg) translateZ(35px); }
+    .top    { transform: rotateX(90deg) translateZ(35px); }
+    .bottom { transform: rotateX(-90deg) translateZ(35px); }
   </style>
 </head>
 <body>
@@ -71,16 +73,13 @@
   const cube = document.getElementById('helparCube');
 
   function moveCube() {
-    const cubeWidth = 100;
-    const cubeHeight = 100;
+    const cubeSize = 70;
 
-    // تحديد المنطقة المركزية: من 20% إلى 80% من الشاشة
     const centerX = window.innerWidth * 0.2;
     const centerY = window.innerHeight * 0.2;
-    const maxX = window.innerWidth * 0.8 - cubeWidth;
-    const maxY = window.innerHeight * 0.8 - cubeHeight;
+    const maxX = window.innerWidth * 0.8 - cubeSize;
+    const maxY = window.innerHeight * 0.8 - cubeSize;
 
-    // موقع عشوائي داخل هذا النطاق
     const x = Math.random() * (maxX - centerX) + centerX;
     const y = Math.random() * (maxY - centerY) + centerY;
 
@@ -88,10 +87,7 @@
     cube.style.top = `${y}px`;
   }
 
-  // أول حركة بعد ثانية
   setTimeout(moveCube, 1000);
-
-  // يتحرك كل 6 ثواني
   setInterval(moveCube, 6000);
 </script>
 
