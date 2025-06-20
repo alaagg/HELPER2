@@ -15,26 +15,26 @@
       background: #000;
     }/* 3D scene container */
 .scene {
-  width: 200px;
-  height: 200px;
+  width: 300px;
+  height: 300px;
   perspective: 600px;
 }
 
 /* The cube itself */
 #cubeFlo {
-  width: 30px;
-  height: 30px;
+  width: 100px;
+  height: 100px;
   position: relative;
   transform-style: preserve-3d;
-  /* Tilt on X to look from top and on Y to the left */
-  transform: rotateX(25deg) rotateY(-30deg);
+  /* Tilt downward on X axis */
+  transform: rotateX(45deg) rotateY(0deg);
 }
 
 /* Each face of the cube */
 #cubeFlo div {
   position: absolute;
-  width: 30px;
-  height: 30px;
+  width: 100px;
+  height: 100px;
   background: #fff;
   border: 2px solid #00ccff;
   box-shadow:
@@ -43,12 +43,12 @@
 }
 
 /* Position the faces */
-#cubeFlo .front  { transform: translateZ(15px); }
-#cubeFlo .back   { transform: rotateY(180deg) translateZ(15px); }
-#cubeFlo .right  { transform: rotateY(90deg) translateZ(15px); }
-#cubeFlo .left   { transform: rotateY(-90deg) translateZ(15px); }
-#cubeFlo .top    { transform: rotateX(90deg) translateZ(15px); }
-#cubeFlo .bottom { transform: rotateX(-90deg) translateZ(15px); }
+#cubeFlo .front  { transform: translateZ(50px); }
+#cubeFlo .back   { transform: rotateY(180deg) translateZ(50px); }
+#cubeFlo .right  { transform: rotateY(90deg) translateZ(50px); }
+#cubeFlo .left   { transform: rotateY(-90deg) translateZ(50px); }
+#cubeFlo .top    { transform: rotateX(90deg) translateZ(50px); }
+#cubeFlo .bottom { transform: rotateX(-90deg) translateZ(50px); }
 
   </style>
 </head>
