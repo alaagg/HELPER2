@@ -3,89 +3,116 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pulsing Cube</title>
+  <title>FloBot AI</title>
   <style>
     html, body {
       margin: 0; padding: 0;
-      width: 100vw; height: 100vh;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle at center, #02040a 0%, #000 100%);
       overflow: hidden;
-      background: #000;
+      font-family: 'Segoe UI', sans-serif;
     }
 
-    body {
-      background-image: url('tebel-cup.png');
-      background-size: 100% 100%;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-
-    .scene {
-      width: 115px;
-      height: 115px;
+    .robot-container {
       position: absolute;
-      left: 44.43vw;   /* 455 / 1024 * 100 */
-      top: 74.87vh;    /* 1150 / 1536 * 100 */
-      perspective: 800px;
+      bottom: 120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 100px;
+      animation: floatBot 3s ease-in-out infinite;
     }
 
-    .cube {
-      width: 115px;
-      height: 115px;
-      position: relative;
-      transform-style: preserve-3d;
-      transform: rotateX(20deg) rotateY(30deg);
-    }
-
-    .face {
-      position: absolute;
-      width: 115px;
-      height: 115px;
-      background: transparent;
-      border: 1px solid rgba(0, 255, 255, 0.2);
+    .robot-head {
+      width: 100%;
+      height: 100%;
+      background: #141414;
+      border: 3px solid #00ccff;
+      border-radius: 16px;
       box-shadow:
-        0 0 6px rgba(0, 255, 255, 0.15),
-        0 0 14px rgba(0, 255, 255, 0.25),
-        0 0 36px rgba(0, 255, 255, 0.35),
-        inset 0 0 10px rgba(0, 255, 255, 0.05);
-      border-radius: 1px;
-      animation: pulseGlow 2.5s infinite ease-in-out;
+        0 0 16px #00ccff88,
+        0 0 32px #00ccff55,
+        inset 0 0 8px #00ccff33;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
     }
 
-    .front  { transform: translateZ(57.5px); }
-    .back   { transform: rotateY(180deg) translateZ(57.5px); }
-    .right  { transform: rotateY(90deg)  translateZ(57.5px); }
-    .left   { transform: rotateY(-90deg) translateZ(57.5px); }
-    .top    { transform: rotateX(90deg)  translateZ(57.5px); }
-    .bottom { transform: rotateX(-90deg) translateZ(57.5px); }
+    .eye {
+      width: 12px;
+      height: 12px;
+      background: #00ccff;
+      border-radius: 50%;
+      margin: 0 10px;
+      animation: blink 4s infinite;
+    }
 
-    @keyframes pulseGlow {
-      0%, 100% {
-        box-shadow:
-          0 0 6px rgba(0, 255, 255, 0.15),
-          0 0 14px rgba(0, 255, 255, 0.25),
-          0 0 36px rgba(0, 255, 255, 0.35),
-          inset 0 0 10px rgba(0, 255, 255, 0.05);
-      }
-      50% {
-        box-shadow:
-          0 0 16px rgba(0, 255, 255, 0.4),
-          0 0 36px rgba(0, 255, 255, 0.5),
-          0 0 64px rgba(0, 255, 255, 0.7),
-          inset 0 0 22px rgba(0, 255, 255, 0.1);
-      }
+    .eyes {
+      position: absolute;
+      top: 25px;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .mouth {
+      position: absolute;
+      bottom: 20px;
+      width: 32px;
+      height: 6px;
+      background: #00ccff;
+      border-radius: 3px;
+      opacity: 0.8;
+    }
+
+    @keyframes floatBot {
+      0%, 100% { transform: translate(-50%, 0) scale(1); }
+      50% { transform: translate(-50%, -12px) scale(1.05); }
+    }
+
+    @keyframes blink {
+      0%, 92%, 100% { opacity: 1; }
+      95% { opacity: 0; }
+    }
+
+    .speech-bubble {
+      position: absolute;
+      bottom: 230px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.75);
+      border: 2px solid #00ccff;
+      border-radius: 12px;
+      padding: 12px 18px;
+      color: white;
+      font-size: 14px;
+      max-width: 240px;
+      box-shadow: 0 0 10px #00ccff44;
+      animation: showBubble 1.5s ease-in-out;
+    }
+
+    @keyframes showBubble {
+      from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
   </style>
 </head>
 <body>
-  <div class="scene">
-    <div class="cube">
-      <div class="face front"></div>
-      <div class="face back"></div>
-      <div class="face right"></div>
-      <div class="face left"></div>
-      <div class="face top"></div>
-      <div class="face bottom"></div>
+
+  <!-- روبوت -->
+  <div class="robot-container">
+    <div class="robot-head">
+      <div class="eyes">
+        <div class="eye"></div>
+        <div class="eye"></div>
+      </div>
+      <div class="mouth"></div>
     </div>
   </div>
+
+  <!-- فقاعة حوار -->
+  <div class="speech-bubble">Hello! I'm FloBot — your AI assistant 👋</div>
+
 </body>
 </html>
