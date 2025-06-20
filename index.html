@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html><html lang="en">
+<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HELPAR Full Project</title>
@@ -18,181 +19,180 @@
       transform: translate(-50%, -50%);
       text-align: center;
       color: #00ccff;
-    }.helpar-logo {
-  width: 100px;
-  height: auto;
-  margin-bottom: 10px;
-  animation: pulseGlowLogo 2s infinite;
-}
+    }
 
-.helpar-title {
-  font-size: 2.5em;
-  font-weight: bold;
-  color: #00ccff;
-  text-shadow: 0 0 4px #00ccff, 0 0 8px #00e7ff;
-}
+    .helpar-logo {
+      width: 100px;
+      height: auto;
+      margin-bottom: 10px;
+      animation: pulseGlowLogo 2s infinite;
+    }
 
-.lang-btn {
-  padding: 12px 24px;
-  font-size: 18px;
-  background: transparent;
-  border: 2px solid #00ccff;
-  border-radius: 10px;
-  color: #00ccff;
-  cursor: pointer;
-  margin-top: 70px;
-}
+    .helpar-title {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #00ccff;
+      text-shadow: 0 0 4px #00ccff, 0 0 8px #00e7ff;
+    }
 
-@keyframes pulseGlowLogo {
-  0%, 100% {
-    filter: drop-shadow(0 0 12px #00e7ff) drop-shadow(0 0 24px #00ccff);
-    transform: scale(1);
-  }
-  50% {
-    filter: drop-shadow(0 0 20px #00e7ff) drop-shadow(0 0 40px #00ccff);
-    transform: scale(1.07);
-  }
-}
+    .lang-btn {
+      padding: 12px 24px;
+      font-size: 18px;
+      background: transparent;
+      border: 2px solid #00ccff;
+      border-radius: 10px;
+      color: #00ccff;
+      cursor: pointer;
+      margin-top: 70px;
+    }
 
-.scene {
-  width: 150px;
-  height: 150px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  perspective: 800px;
-  display: none;
-}
+    @keyframes pulseGlowLogo {
+      0%, 100% {
+        filter: drop-shadow(0 0 12px #00e7ff) drop-shadow(0 0 24px #00ccff);
+        transform: scale(1);
+      }
+      50% {
+        filter: drop-shadow(0 0 20px #00e7ff) drop-shadow(0 0 40px #00ccff);
+        transform: scale(1.07);
+      }
+    }
 
-.cube {
-  width: 100%; height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.5s ease;
-  position: relative;
-}
+    .scene {
+      width: 150px;
+      height: 150px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      perspective: 800px;
+      display: none;
+    }
 
-@keyframes rotateCubeLang {
-  from { transform: rotateX(-10deg) rotateY(0deg); }
-  to { transform: rotateX(-10deg) rotateY(360deg); }
-}
+    .cube {
+      width: 100%; height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+      position: relative;
+    }
 
-#cubeLang.rotating {
-  animation: rotateCubeLang 6s linear infinite;
-}
+    @keyframes rotateCubeLang {
+      from { transform: rotateX(-10deg) rotateY(0deg); }
+      to { transform: rotateX(-10deg) rotateY(360deg); }
+    }
 
-.face {
-  position: absolute;
-  width: 150px; height: 150px;
-  border: 2px solid #00ccff;
-  background: rgba(0, 0, 0, 0.5);
-  color: #00ccff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 2.5rem;
-}
+    #cubeLang.rotating {
+      animation: rotateCubeLang 6s linear infinite;
+    }
 
-.lang-label {
-  font-size: 1rem;
-  margin-top: 8px;
-  color: #00ccff;
-}
+    .face {
+      position: absolute;
+      width: 150px; height: 150px;
+      border: 2px solid #00ccff;
+      background: rgba(0, 0, 0, 0.5);
+      color: #00ccff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.5rem;
+    }
 
-.front  { transform: rotateY(0deg) translateZ(75px); }
-.back   { transform: rotateY(180deg) translateZ(75px); }
-.right  { transform: rotateY(90deg) translateZ(75px); }
-.left   { transform: rotateY(-90deg) translateZ(75px); }
+    .lang-label {
+      font-size: 1rem;
+      margin-top: 8px;
+      color: #00ccff;
+    }
 
-.glow-core {
-  position: absolute;
-  width: 10px; height: 10px;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  background: #00ccff;
-  border-radius: 50%;
-  pointer-events: none;
-  animation: pulseCore 1.8s infinite;
-  box-shadow:
-    0 0 6px #00ccff,
-    0 0 12px #00ccff,
-    0 0 18px #00e7ff,
-    0 0 32px #00e7ff;
-}
+    .front  { transform: rotateY(0deg) translateZ(75px); }
+    .back   { transform: rotateY(180deg) translateZ(75px); }
+    .right  { transform: rotateY(90deg) translateZ(75px); }
+    .left   { transform: rotateY(-90deg) translateZ(75px); }
 
-@keyframes pulseCore {
-  0%, 100% {
-    transform: translate(-50%, -50%) scale(1);
-    box-shadow:
-      0 0 6px #00ccff,
-      0 0 12px #00ccff,
-      0 0 18px #00e7ff,
-      0 0 32px #00e7ff;
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1.2);
-    box-shadow:
-      0 0 10px #00e7ff,
-      0 0 18px #00e7ff,
-      0 0 26px #00ccff,
-      0 0 42px #00ccff;
-  }
-}
+    .glow-core {
+      position: absolute;
+      width: 10px; height: 10px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: #00ccff;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: pulseCore 1.8s infinite;
+      box-shadow:
+        0 0 6px #00ccff,
+        0 0 12px #00ccff,
+        0 0 18px #00e7ff,
+        0 0 32px #00e7ff;
+    }
 
-#videoSection, #sectionCubeContainer {
-  display: none;
-  position: absolute;
-  width: 100vw; height: 100vh;
-  top: 0; left: 0;
-  justify-content: center;
-  align-items: center;
-}
+    @keyframes pulseCore {
+      0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        box-shadow:
+          0 0 6px #00ccff,
+          0 0 12px #00ccff,
+          0 0 18px #00e7ff,
+          0 0 32px #00e7ff;
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.2);
+        box-shadow:
+          0 0 10px #00e7ff,
+          0 0 18px #00e7ff,
+          0 0 26px #00ccff,
+          0 0 42px #00ccff;
+      }
+    }
 
-video {
-  max-width: 90vw;
-  max-height: 90vh;
-  object-fit: contain;
-  border: 2px solid #00ccff;
-  box-shadow: 0 0 20px #00ccff;
-  border-radius: 12px;
-}
+    #videoSection, #sectionCubeContainer {
+      display: none;
+      position: absolute;
+      width: 100vw; height: 100vh;
+      top: 0; left: 0;
+      justify-content: center;
+      align-items: center;
+    }
 
-.scene-section {
-  width: 200px;
-  height: 200px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  perspective: 1000px;
-}
+    video {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border: 2px solid #00ccff;
+      box-shadow: 0 0 20px #00ccff;
+      border-radius: 12px;
+    }
 
-.cube-section {
-  width: 200px;
-  height: 200px;
-  transform-style: preserve-3d;
-  transition: transform 0.5s ease;
-  transform: rotateX(-18deg) rotateY(0deg);
-}
+    .scene-section {
+      width: 200px;
+      height: 200px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      perspective: 1000px;
+    }
 
-.section-face {
-  position: absolute;
-  width: 200px; height: 200px;
-  background: rgba(0, 0, 0, 0.6);
-  border: 2px solid #00ccff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  color: #00ccff;
-}
+    .cube-section {
+      width: 200px;
+      height: 200px;
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+      transform: rotateX(-18deg) rotateY(0deg);
+    }
 
-.front-sec  { transform: rotateY(0deg) translateZ(100px); }
-.back-sec   { transform: rotateY(180deg) translateZ(100px); }
-.right-sec  { transform: rotateY(90deg) translateZ(100px); }
-.left-sec   { transform: rotateY(-90deg) translateZ(100px); }
+    .section-face {
+      position: absolute;
+      width: 200px; height: 200px;
+      border: 2px solid #00ccff;
+      background-color: #000;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
 
+    .front-sec  { transform: rotateY(0deg) translateZ(100px); background-image: url('sho.png'); }
+    .back-sec   { transform: rotateY(180deg) translateZ(100px); background-image: url('code rom.png'); }
+    .right-sec  { transform: rotateY(90deg) translateZ(100px); background-image: url('food.png'); }
+    .left-sec   { transform: rotateY(-90deg) translateZ(100px); background-image: url('games room.png'); }
   </style>
 </head>
 <body>
@@ -201,6 +201,7 @@ video {
     <div class="helpar-title">HELPAR</div>
     <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
   </div>
+
   <div class="scene" id="sceneLang">
     <div class="cube" id="cubeLang">
       <div class="face front">🇬🇧<span class="lang-label">English</span></div>
@@ -210,21 +211,25 @@ video {
       <div class="glow-core"></div>
     </div>
   </div>
+
   <div id="videoSection">
     <video id="introVideo" autoplay playsinline>
       <source src="HELBERpro.mp4" type="video/mp4">
     </video>
   </div>
+
+  <!-- ✅ cubeSection المعدل هنا فقط -->
   <div id="sectionCubeContainer">
     <div class="scene-section">
       <div class="cube-section" id="cubeSection">
-        <div class="section-face front-sec">🛍️</div>
-        <div class="section-face back-sec">👨‍💻</div>
-        <div class="section-face right-sec">🍽️</div>
-        <div class="section-face left-sec">🎮</div>
+        <div class="section-face front-sec"></div>
+        <div class="section-face back-sec"></div>
+        <div class="section-face right-sec"></div>
+        <div class="section-face left-sec"></div>
       </div>
     </div>
   </div>
+
   <script>
     const sceneLang = document.getElementById("sceneLang");
     const cubeLang = document.getElementById("cubeLang");
@@ -232,78 +237,79 @@ video {
     const videoSection = document.getElementById("videoSection");
     const introVideo = document.getElementById("introVideo");
     const sectionCubeContainer = document.getElementById("sectionCubeContainer");
-    const cubeSection = document.getElementById("cubeSection");let angleSec = 0;
-let rotating = true;
-let autoRotateInterval;
-let startX = 0;
+    const cubeSection = document.getElementById("cubeSection");
 
-function showLanguages() {
-  sceneLang.style.display = "block";
-  cubeLang.classList.add("rotating");
-}
+    let angleSec = 0;
+    let rotating = true;
+    let autoRotateInterval;
+    let startX = 0;
 
-document.querySelectorAll("#cubeLang .face").forEach(face => {
-  face.addEventListener("click", () => {
-    const selectedLang = face.querySelector(".lang-label").textContent;
-    localStorage.setItem("language", selectedLang);
-    cubeLang.classList.remove("rotating");
-    start.style.display = "none";
-    sceneLang.style.display = "none";
-    videoSection.style.display = "flex";
-    introVideo.play();
-  });
-});
+    function showLanguages() {
+      sceneLang.style.display = "block";
+      cubeLang.classList.add("rotating");
+    }
 
-introVideo.onended = () => {
-  videoSection.style.display = "none";
-  sectionCubeContainer.style.display = "block";
-  startCubeSection();
-};
+    document.querySelectorAll("#cubeLang .face").forEach(face => {
+      face.addEventListener("click", () => {
+        const selectedLang = face.querySelector(".lang-label").textContent;
+        localStorage.setItem("language", selectedLang);
+        cubeLang.classList.remove("rotating");
+        start.style.display = "none";
+        sceneLang.style.display = "none";
+        videoSection.style.display = "flex";
+        introVideo.play();
+      });
+    });
 
-function startCubeSection() {
-  autoRotateInterval = setInterval(() => {
-    angleSec += 1;
-    cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
-  }, 30);
-}
+    introVideo.onended = () => {
+      videoSection.style.display = "none";
+      sectionCubeContainer.style.display = "block";
+      startCubeSection();
+    };
 
-cubeSection.addEventListener("touchstart", e => {
-  if (rotating) {
-    clearInterval(autoRotateInterval);
-    rotating = false;
-    angleSec = Math.round(angleSec / 90) * 90;
-    cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
-  }
-  startX = e.touches[0].clientX;
-});
+    function startCubeSection() {
+      autoRotateInterval = setInterval(() => {
+        angleSec += 1;
+        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
+      }, 30);
+    }
 
-cubeSection.addEventListener("touchmove", e => {
-  if (!rotating) {
-    let deltaX = e.touches[0].clientX - startX;
-    let rotateBy = deltaX * 0.6;
-    cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec + rotateBy}deg)`;
-  }
-});
+    cubeSection.addEventListener("touchstart", e => {
+      if (rotating) {
+        clearInterval(autoRotateInterval);
+        rotating = false;
+        angleSec = Math.round(angleSec / 90) * 90;
+        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
+      }
+      startX = e.touches[0].clientX;
+    });
 
-cubeSection.addEventListener("touchend", e => {
-  if (!rotating) {
-    let deltaX = e.changedTouches[0].clientX - startX;
-    angleSec += Math.round(deltaX * 0.6 / 90) * 90;
-    cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
-  }
-});
+    cubeSection.addEventListener("touchmove", e => {
+      if (!rotating) {
+        let deltaX = e.touches[0].clientX - startX;
+        let rotateBy = deltaX * 0.6;
+        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec + rotateBy}deg)`;
+      }
+    });
 
-window.onpopstate = function (event) {
-  if (videoSection.style.display === 'flex') {
-    videoSection.style.display = 'none';
-    sceneLang.style.display = 'none';
-    start.style.display = 'block';
-  } else if (sectionCubeContainer.style.display === 'block') {
-    sectionCubeContainer.style.display = 'none';
-    videoSection.style.display = 'flex';
-  }
-};
+    cubeSection.addEventListener("touchend", e => {
+      if (!rotating) {
+        let deltaX = e.changedTouches[0].clientX - startX;
+        angleSec += Math.round(deltaX * 0.6 / 90) * 90;
+        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
+      }
+    });
 
+    window.onpopstate = function (event) {
+      if (videoSection.style.display === 'flex') {
+        videoSection.style.display = 'none';
+        sceneLang.style.display = 'none';
+        start.style.display = 'block';
+      } else if (sectionCubeContainer.style.display === 'block') {
+        sectionCubeContainer.style.display = 'none';
+        videoSection.style.display = 'flex';
+      }
+    };
   </script>
 </body>
 </html>
