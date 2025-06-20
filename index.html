@@ -1,8 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>HELPAR — Laser Message</title>
+  <title>HELPAR — Neon Sheet</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     html, body {
@@ -12,111 +11,111 @@
       width: 100vw;
       height: 100vh;
       overflow: hidden;
-    }
+    }.scene {
+  width: 100vw;
+  height: 100vh;
+  perspective: 1000px;
+  position: relative;
+}
 
-    .scene {
-      width: 100vw;
-      height: 100vh;
-      perspective: 1000px;
-      position: relative;
-    }
+.cube {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  transform-style: preserve-3d;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateX(-90deg);
+  z-index: 2;
+}
 
-    .cube {
-      width: 70px;
-      height: 70px;
-      position: absolute;
-      transform-style: preserve-3d;
-      transform: rotateX(-90deg) rotateZ(0deg);
-      top: 40%;
-      left: 50%;
-      transform-origin: center center;
-      transform: translate(-50%, -50%) rotateX(-90deg) rotateZ(0deg);
-      z-index: 2;
-    }
+.face {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  background: #000;
+  border: 1px solid #00ccff;
+  box-shadow: 0 0 8px #00ccff88, inset 0 0 6px #00ccff44;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #00ccff;
+  font-family: sans-serif;
+  font-weight: bold;
+}
 
-    .face {
-      position: absolute;
-      width: 70px;
-      height: 70px;
-      background: #000;
-      border: 1px solid #00ccff;
-      box-shadow: 0 0 8px #00ccff88, inset 0 0 6px #00ccff44;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      color: #00ccff;
-      font-family: sans-serif;
-      font-weight: bold;
-    }
+.front  { transform: translateZ(35px); }
+.back   { transform: rotateY(180deg) translateZ(35px); }
+.right  { transform: rotateY(90deg) translateZ(35px); }
+.left   { transform: rotateY(-90deg) translateZ(35px); }
+.top    { transform: rotateX(90deg) translateZ(35px); }
+.bottom { transform: rotateX(-90deg) translateZ(35px); }
 
-    .front  { transform: translateZ(35px); }
-    .back   { transform: rotateY(180deg) translateZ(35px); }
-    .right  { transform: rotateY(90deg) translateZ(35px); }
-    .left   { transform: rotateY(-90deg) translateZ(35px); }
-    .top    { transform: rotateX(90deg) translateZ(35px); }
-    .bottom { transform: rotateX(-90deg) translateZ(35px); }
+.neon-sheet {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.5);
+  padding: 20px 30px;
+  border: 2px solid #00ccff;
+  background: rgba(0, 0, 0, 0.2);
+  color: #00ccff;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  box-shadow: 0 0 15px #00ccff88;
+  text-shadow: 0 0 6px #00ccff;
+  border-radius: 10px;
+  white-space: pre-wrap;
+  backdrop-filter: blur(4px);
+  animation: enterSheet 2s ease-out forwards, pulseSheet 4s infinite ease-in-out;
+  opacity: 0;
+  max-width: 80vw;
+  z-index: 1;
+}
 
-    .laser {
-      position: absolute;
-      width: 2px;
-      height: 100px;
-      background: linear-gradient(to top, #00ccff, transparent);
-      left: 50%;
-      top: -100px;
-      transform: translateX(-50%);
-      animation: laserGlow 1s infinite alternate;
-      z-index: 0;
-    }
+@keyframes enterSheet {
+  0% { transform: translate(-50%, 20%) scale(0.4); opacity: 0; }
+  60% { transform: translate(-50%, -10%) scale(1.2); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
 
-    @keyframes laserGlow {
-      0% { opacity: 0.4; }
-      100% { opacity: 1; }
-    }
+@keyframes pulseSheet {
+  0%, 100% { box-shadow: 0 0 12px #00ccff66; }
+  50% { box-shadow: 0 0 22px #00e7ffcc; }
+}
 
-    .laser-text {
-      position: absolute;
-      top: -130px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: #00ccff;
-      font-size: 13px;
-      font-family: 'Courier New', monospace;
-      text-shadow: 0 0 6px #00ccff;
-      white-space: nowrap;
-    }
   </style>
 </head>
 <body>
+  <div class="scene">
+    <div class="cube">
+      <div class="face front">H</div>
+      <div class="face back">E</div>
+      <div class="face right">L</div>
+      <div class="face left">P</div>
+      <div class="face top">A</div>
+      <div class="face bottom">R</div>
+    </div>
+    <div class="neon-sheet" id="neonMessage"></div>
+  </div>  <script>
+    const message = "WELCOME TO HELPAR\nAI IS HERE TO ASSIST YOU";
+    const messageBox = document.getElementById("neonMessage");
 
-<div class="scene">
-  <div class="cube" id="helparCube">
-    <div class="laser"></div>
-    <div class="laser-text" id="laserText"></div>
-    <div class="face front">H</div>
-    <div class="face back">E</div>
-    <div class="face right">L</div>
-    <div class="face left">P</div>
-    <div class="face top">A</div>
-    <div class="face bottom">R</div>
-  </div>
-</div>
-
-<script>
-  const text = "HELPAR IS HERE";
-  const laserText = document.getElementById("laserText");
-  let index = 0;
-
-  function writeLaserText() {
-    if (index <= text.length) {
-      laserText.textContent = text.substring(0, index);
-      index++;
-      setTimeout(writeLaserText, 100); // سرعة الكتابة
+    let i = 0;
+    function typeNeonText() {
+      if (i <= message.length) {
+        messageBox.textContent = message.substring(0, i);
+        i++;
+        let speed = i < 10 ? 120 : 25;
+        setTimeout(typeNeonText, speed);
+      }
     }
-  }
 
-  writeLaserText(); // ابدأ الكتابة مباشرة
-</script>
-
-</body>
+    // بدء العرض بعد استقرار المكعب
+    setTimeout(() => {
+      messageBox.style.opacity = '1';
+      typeNeonText();
+    }, 1500);
+  </script></body>
 </html>
