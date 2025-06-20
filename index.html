@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HELPAR — Section Cube</title>
+  <title>HELPAR Face Expand</title>
   <style>
     html, body {
       margin: 0; padding: 0;
@@ -12,51 +11,48 @@
       font-family: Arial, sans-serif;
       overflow: hidden;
       touch-action: none;
-    }
+    }.scene-section {
+  width: 275px;
+  height: 275px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  perspective: 1000px;
+}
 
-    .scene-section {
-      width: 275px;
-      height: 275px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      perspective: 1000px;
-    }
+.cube-section {
+  width: 275px;
+  height: 275px;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+  transform: rotateX(-18deg) rotateY(0deg);
+  position: relative;
+}
 
-    .cube-section {
-      width: 275px;
-      height: 275px;
-      transform-style: preserve-3d;
-      transition: transform 0.5s ease;
-      transform: rotateX(-18deg) rotateY(0deg);
-      position: relative;
-    }
+.section-face {
+  position: absolute;
+  width: 275px;
+  height: 275px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition:
+    transform 0.6s ease,
+    width 0.6s ease,
+    height 0.6s ease;
+  transform-origin: bottom center;
+  cursor: pointer;
+}
 
-    .section-face {
-      position: absolute;
-      width: 275px;
-      height: 275px;
-      border: 2px solid #00ccff;
-      background-color: #000;
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat;
-      transition: transform 0.6s ease, opacity 0.4s ease;
-      cursor: pointer;
-      transform-origin: bottom center; /* ✅ النقطة الأساسية */
-    }
+.front-sec  { transform: rotateY(0deg) translateZ(137.5px); background-image: url('sho.png'); }
+.back-sec   { transform: rotateY(180deg) translateZ(137.5px); background-image: url('code rom.png'); }
+.right-sec  { transform: rotateY(90deg) translateZ(137.5px); background-image: url('food.png'); }
+.left-sec   { transform: rotateY(-90deg) translateZ(137.5px); background-image: url('games room.png'); }
 
-    .front-sec  { transform: rotateY(0deg) translateZ(137.5px); background-image: url('sho.png'); }
-    .back-sec   { transform: rotateY(180deg) translateZ(137.5px); background-image: url('code rom.png'); }
-    .right-sec  { transform: rotateY(90deg) translateZ(137.5px); background-image: url('food.png'); }
-    .left-sec   { transform: rotateY(-90deg) translateZ(137.5px); background-image: url('games room.png'); }
   </style>
 </head>
 <body>
-
-  <audio id="clickSound" src="open.mp3" preload="auto"></audio>
-
   <div id="sectionCubeContainer">
     <div class="scene-section">
       <div class="cube-section" id="cubeSection">
@@ -66,9 +62,7 @@
         <div class="section-face left-sec"></div>
       </div>
     </div>
-  </div>
-
-  <script>
+  </div>  <script>
     const cubeSection = document.getElementById("cubeSection");
     let angleSec = 0;
     let rotating = true;
@@ -113,52 +107,11 @@
         clearInterval(autoRotateInterval);
         rotating = false;
 
-        const sound = document.getElementById("clickSound");
-        if (sound) sound.play();
-
-        const isFront = face.classList.contains("front-sec");
-        const isBack  = face.classList.contains("back-sec");
-        const isRight = face.classList.contains("right-sec");
-        const isLeft  = face.classList.contains("left-sec");
-
-        // ✅ تكبير للأعلى فقط مع الحفاظ على أسفل الصورة
-        if (isFront)  face.style.transform = "rotateY(0deg) translateZ(-120px) scale(1.2)";
-        if (isBack)   face.style.transform = "rotateY(180deg) translateZ(-120px) scale(1.2)";
-        if (isRight)  face.style.transform = "rotateY(90deg) translateZ(-120px) scale(1.2)";
-        if (isLeft)   face.style.transform = "rotateY(-90deg) translateZ(-120px) scale(1.2)";
-
-        if (isFront)  document.querySelector(".back-sec").style.opacity = "0";
-        if (isBack)   document.querySelector(".front-sec").style.opacity = "0";
-        if (isRight)  document.querySelector(".left-sec").style.opacity = "0";
-        if (isLeft)   document.querySelector(".right-sec").style.opacity = "0";
-
-        document.querySelectorAll(".section-face").forEach(other => {
-          if (other !== face && other.style.opacity !== "0") {
-            if (other.classList.contains("front-sec"))
-              other.style.transform = "rotateY(0deg) translateX(-200px) translateZ(150px) rotateZ(15deg)";
-            if (other.classList.contains("back-sec"))
-              other.style.transform = "rotateY(180deg) translateX(200px) translateZ(150px) rotateZ(-15deg)";
-            if (other.classList.contains("right-sec"))
-              other.style.transform = "rotateY(90deg) translateX(200px) translateZ(150px) rotateZ(20deg)";
-            if (other.classList.contains("left-sec"))
-              other.style.transform = "rotateY(-90deg) translateX(-200px) translateZ(150px) rotateZ(-20deg)";
-          }
-        });
-
-        const target =
-          isFront ? "shop.html" :
-          isBack  ? "code.html" :
-          isRight ? "food.html" :
-          isLeft  ? "games.html" : null;
-
-        if (target) {
-          setTimeout(() => {
-            window.location.href = target;
-          }, 1000);
-        }
+        // انسحاب للخلف وتكبير انسيابي للأعلى
+        face.style.height = "100vh";
+        face.style.width = "275px";
+        face.style.transform = "rotateY(0deg) translateZ(-120px) scale(1)";
       });
     });
-  </script>
-
-</body>
+  </script></body>
 </html>
