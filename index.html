@@ -2,103 +2,93 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>HELPAR — Eye Cube</title>
-  <script src="https://webgazer.cs.brown.edu/webgazer.js"></script>
+  <title>HELPAR Box Launch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <style>
     html, body {
       margin: 0;
-      background: black;
+      padding: 0;
+      background: radial-gradient(circle at center, #010308 0%, #000 100%);
+      width: 100vw;
+      height: 100vh;
       overflow: hidden;
-      height: 100%;
     }
 
-    .scene {
-      width: 275px;
-      height: 275px;
+    /* العلبة المفتوحة */
+    .helparBox {
       position: absolute;
       top: 50%;
       left: 50%;
+      width: 160px;
+      height: 160px;
+      background-image: url('box-open.png'); /* 🔁 استبدلها بصورة العلبة */
+      background-size: cover;
+      background-repeat: no-repeat;
       transform: translate(-50%, -50%);
-      perspective: 1000px;
+      z-index: 2;
+      cursor: pointer;
     }
 
-    .cube {
-      width: 275px;
-      height: 275px;
-      position: relative;
-      transform-style: preserve-3d;
-      transition: transform 0.6s ease;
-    }
-
-    .face {
+    /* HELPAR الطائر */
+    .helparFloatingCube {
+      width: 60px;
+      height: 60px;
+      background-image: url('helpar-floating-cube.png'); /* 🔁 صورة HELPAR */
+      background-size: cover;
+      background-repeat: no-repeat;
       position: absolute;
-      width: 275px;
-      height: 275px;
-      background: rgba(0, 255, 255, 0.15);
-      border: 1px solid #00ccff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 30px;
-      color: white;
-    }
-
-    .front  { transform: rotateY(0deg) translateZ(137.5px); }
-    .back   { transform: rotateY(180deg) translateZ(137.5px); }
-    .right  { transform: rotateY(90deg) translateZ(137.5px); }
-    .left   { transform: rotateY(-90deg) translateZ(137.5px); }
-    .top    { transform: rotateX(90deg) translateZ(137.5px); }
-    .bottom { transform: rotateX(-90deg) translateZ(137.5px); }
-
-    .message {
-      position: absolute;
-      bottom: 20px;
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%);
-      color: #00ccff;
-      font-size: 20px;
+      transform: translate(-50%, -50%) scale(0.1);
+      border-radius: 15px;
+      opacity: 0;
+      z-index: 3;
+      transition: transform 1.5s ease-out, opacity 1.5s;
+    }
+
+    /* عند الإطلاق */
+    .launch {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
     }
   </style>
 </head>
 <body>
-  <div class="scene">
-    <div class="cube" id="cube">
-      <div class="face front">FRONT</div>
-      <div class="face back">BACK</div>
-      <div class="face right">RIGHT</div>
-      <div class="face left">LEFT</div>
-      <div class="face top">TOP</div>
-      <div class="face bottom">BOTTOM</div>
-    </div>
-  </div>
 
-  <div class="message">👁 انظر يمينًا أو يسارًا لتحريك المكعب</div>
+  <!-- العلبة -->
+  <div class="helparBox" id="helparBox"></div>
+
+  <!-- HELPAR المختبئ -->
+  <div class="helparFloatingCube" id="helparFloatingCube"></div>
 
   <script>
-    let rotationY = 0;
-    const cube = document.getElementById("cube");
-    let lastMoveTime = Date.now();
+    const box = document.getElementById('helparBox');
+    const cube = document.getElementById('helparFloatingCube');
 
-    webgazer.setGazeListener((data, timestamp) => {
-      if (!data) return;
-      const x = data.x;
-      const screenW = window.innerWidth;
+    function moveCubeRandomly() {
+      const maxX = window.innerWidth - 60;
+      const maxY = window.innerHeight - 60;
 
-      const now = Date.now();
-      if (now - lastMoveTime < 1200) return;
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
 
-      if (x < screenW * 0.3) {
-        rotationY += 90;
-        cube.style.transform = `rotateY(${rotationY}deg)`;
-        lastMoveTime = now;
-      } else if (x > screenW * 0.7) {
-        rotationY -= 90;
-        cube.style.transform = `rotateY(${rotationY}deg)`;
-        lastMoveTime = now;
-      }
-    }).begin();
+      cube.style.transition = 'transform 4s ease-in-out';
+      cube.style.transform = `translate(${x}px, ${y}px)`;
+    }
 
-    webgazer.showVideo(false).showPredictionPoints(false);
+    box.addEventListener('click', () => {
+      // إطلاق HELPAR من العلبة
+      cube.classList.add('launch');
+
+      // بدء الطيران بعد الإطلاق
+      setTimeout(() => {
+        setInterval(moveCubeRandomly, 5000);
+      }, 1500);
+
+      // منع التكرار عند إعادة الضغط
+      box.style.pointerEvents = 'none';
+    });
   </script>
+
 </body>
 </html>
