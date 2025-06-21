@@ -1,115 +1,60 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FloBot Living 3D</title>
+  <title>Seamless Glowing Cube</title>
   <style>
     html, body {
-      margin: 0; padding: 0;
-      width: 100%; height: 100%;
-      background: radial-gradient(circle at center, #010308, #000);
-      overflow: hidden;
+      margin: 0;
+      height: 100%;
+      background: #000;
       display: flex;
       justify-content: center;
       align-items: center;
-    }.scene {
-  width: 200px;
-  height: 200px;
-  perspective: 800px;
-}
+      perspective: 600px;
+    }
 
-.cube {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-  animation: slowRotate 12s infinite linear;
-}
+    .scene {
+      width: 50px;
+      height: 50px;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: rotate 6s linear infinite;
+    }
 
-.face {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  background: #111;
-  border-radius: 24px;
-  box-shadow: 0 0 24px white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 32px;
-  color: white;
-}
+    .face {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background: #000;
+      border-radius: 6px;
+      box-shadow:
+        0 0 6px #00ccff,
+        0 0 12px #00ccff,
+        inset 0 0 4px #00ccff;
+    }
 
-.front  { transform: rotateY(0deg) translateZ(100px); }
-.back   { transform: rotateY(180deg) translateZ(100px); }
-.right  { transform: rotateY(90deg) translateZ(100px); }
-.left   { transform: rotateY(-90deg) translateZ(100px); }
-.top    { transform: rotateX(90deg) translateZ(100px); }
-.bottom { transform: rotateX(-90deg) translateZ(100px); }
+    .front  { transform: translateZ(25px); }
+    .back   { transform: rotateY(180deg) translateZ(25px); }
+    .right  { transform: rotateY(90deg)  translateZ(25px); }
+    .left   { transform: rotateY(-90deg) translateZ(25px); }
+    .top    { transform: rotateX(90deg)  translateZ(25px); }
+    .bottom { transform: rotateX(-90deg) translateZ(25px); }
 
-@keyframes slowRotate {
-  0%   { transform: rotateX(0deg) rotateY(0deg); }
-  50%  { transform: rotateX(15deg) rotateY(180deg); }
-  100% { transform: rotateX(0deg) rotateY(360deg); }
-}
-
-.eyes {
-  position: absolute;
-  top: 60px;
-  display: flex;
-  gap: 40px;
-}
-
-.eye {
-  width: 20px;
-  height: 20px;
-  background: white;
-  border-radius: 50%;
-  box-shadow: 0 0 6px white;
-  animation: eyeLook 4s infinite ease-in-out;
-}
-
-.mouth {
-  position: absolute;
-  bottom: 50px;
-  width: 50px;
-  height: 20px;
-  background: white;
-  border-radius: 0 0 25px 25px;
-  animation: mouthBreathe 2.5s infinite ease-in-out;
-  box-shadow: 0 0 6px white;
-}
-
-@keyframes mouthBreathe {
-  0%, 100% { transform: scaleY(1); }
-  50%      { transform: scaleY(1.5); }
-}
-
-@keyframes eyeLook {
-  0%, 100% { transform: translateX(0); }
-  25%      { transform: translateX(-5px); }
-  50%      { transform: translateX(5px); }
-  75%      { transform: translateX(-3px); }
-}
-
+    @keyframes rotate {
+      0%   { transform: rotateX(0deg) rotateY(0deg); }
+      100% { transform: rotateX(360deg) rotateY(360deg); }
+    }
   </style>
 </head>
 <body>
   <div class="scene">
-    <div class="cube">
-      <div class="face front">
-        <div class="eyes">
-          <div class="eye"></div>
-          <div class="eye"></div>
-        </div>
-        <div class="mouth"></div>
-      </div>
-      <div class="face back">😴</div>
-      <div class="face right">🤖</div>
-      <div class="face left">💡</div>
-      <div class="face top">🔍</div>
-      <div class="face bottom">⚡</div>
-    </div>
+    <div class="face front"></div>
+    <div class="face back"></div>
+    <div class="face right"></div>
+    <div class="face left"></div>
+    <div class="face top"></div>
+    <div class="face bottom"></div>
   </div>
 </body>
 </html>
