@@ -189,6 +189,11 @@
         cubeLang.style.transform = `rotateX(-10deg) rotateY(${langAngle}deg)`;
 
         applyLanguage(selectedLang);
+
+        // 🔁 الانتقال للصفحة التالية بعد اختيار اللغة
+        setTimeout(() => {
+          window.location.href = "video.html"; // ✨ غيّر حسب المرحلة التالية في مشروعك
+        }, 1000);
       });
     });
 
