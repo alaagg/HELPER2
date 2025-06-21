@@ -29,13 +29,13 @@ pointLight.position.set(100, 150, 200);
 scene.add(pointLight);
 
 const categories = [
-  { name: '🛍️ Shopping', offsetX: -90, offsetY: 90 },
-  { name: '🎮 Games', offsetX: 90, offsetY: 90 },
-  { name: '🍔 Food', offsetX: -90, offsetY: -90 },
-  { name: '💻 Tech', offsetX: 90, offsetY: -90 }
+  { name: '🛍️ Shopping', offsetX: -90, offsetY: 90, delay: 0 },
+  { name: '🎮 Games', offsetX: 90, offsetY: 90, delay: 0.2 },
+  { name: '🍔 Food', offsetX: -90, offsetY: -90, delay: 0.4 },
+  { name: '💻 Tech', offsetX: 90, offsetY: -90, delay: 0.6 }
 ];
 
-function createPlanetWithText(text, radius = 50) {
+function createPlanetWithText(text, radius = 50, delay = 0) {
   const canvas = document.createElement('canvas');
   canvas.width = 512;
   canvas.height = 256;
@@ -59,32 +59,36 @@ function createPlanetWithText(text, radius = 50) {
     map: texture,
     color: 0x001122,
     emissive: 0x00f0ff,
-    emissiveIntensity: 0.3,
+    emissiveIntensity: 0.8,
     transparent: true,
-    opacity: 0.7
+    opacity: 0.75
   });
 
   const geometry = new THREE.SphereGeometry(radius, 64, 64);
   const planet = new THREE.Mesh(geometry, material);
 
-  // إضافة حلقة نيون زرقاء حول الكوكب
-  const ringGeo = new THREE.RingGeometry(radius * 1.05, radius * 1.15, 64);
-  const ringMat = new THREE.MeshBasicMaterial({
+  // إضافة توهج حول الكوكب نفسه
+  const glowGeo = new THREE.SphereGeometry(radius * 1.05, 64, 64);
+  const glowMat = new THREE.MeshBasicMaterial({
     color: 0x00f0ff,
-    side: THREE.DoubleSide,
     transparent: true,
-    opacity: 0.3
+    opacity: 0.15,
+    blending: THREE.AdditiveBlending,
+    side: THREE.BackSide
   });
-  const ring = new THREE.Mesh(ringGeo, ringMat);
-  ring.rotation.x = Math.PI / 2;
-  planet.add(ring);
+  const glow = new THREE.Mesh(glowGeo, glowMat);
+  planet.add(glow);
+
+  planet.userData.delay = delay;
+  planet.rotation.x = -0.3;
+  planet.rotation.y = delay * 2; // لتكون البداية مختلفة
 
   return planet;
 }
 
 const planets = [];
 categories.forEach(cat => {
-  const planet = createPlanetWithText(cat.name);
+  const planet = createPlanetWithText(cat.name, 50, cat.delay);
   planet.position.set(cat.offsetX, cat.offsetY, 0);
   planets.push(planet);
   scene.add(planet);
@@ -101,9 +105,12 @@ const starsMaterial = new THREE.PointsMaterial({ color: 0x88ccff, size: 1 });
 const stars = new THREE.Points(starsGeometry, starsMaterial);
 scene.add(stars);
 
-function animate() {
+function animate(time) {
   requestAnimationFrame(animate);
-  planets.forEach(p => p.rotation.y += 0.004); // زيادة السرعة
+  planets.forEach(p => {
+    const speed = 0.006;
+    p.rotation.y += speed;
+  });
   stars.rotation.y += 0.0002;
   stars.rotation.x += 0.0001;
   renderer.render(scene, camera);
