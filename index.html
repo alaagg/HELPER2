@@ -41,7 +41,6 @@ function createPlanetWithText(text, radius = 50) {
   canvas.height = 256;
   const ctx = canvas.getContext('2d');
 
-  // خلفية شفافة + توهج نيون للنص
   ctx.fillStyle = 'rgba(0,0,0,0)';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -66,7 +65,21 @@ function createPlanetWithText(text, radius = 50) {
   });
 
   const geometry = new THREE.SphereGeometry(radius, 64, 64);
-  return new THREE.Mesh(geometry, material);
+  const planet = new THREE.Mesh(geometry, material);
+
+  // إضافة حلقة نيون زرقاء حول الكوكب
+  const ringGeo = new THREE.RingGeometry(radius * 1.05, radius * 1.15, 64);
+  const ringMat = new THREE.MeshBasicMaterial({
+    color: 0x00f0ff,
+    side: THREE.DoubleSide,
+    transparent: true,
+    opacity: 0.3
+  });
+  const ring = new THREE.Mesh(ringGeo, ringMat);
+  ring.rotation.x = Math.PI / 2;
+  planet.add(ring);
+
+  return planet;
 }
 
 const planets = [];
@@ -90,7 +103,7 @@ scene.add(stars);
 
 function animate() {
   requestAnimationFrame(animate);
-  planets.forEach(p => p.rotation.y += 0.002);
+  planets.forEach(p => p.rotation.y += 0.004); // زيادة السرعة
   stars.rotation.y += 0.0002;
   stars.rotation.x += 0.0001;
   renderer.render(scene, camera);
