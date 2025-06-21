@@ -29,7 +29,7 @@
       font-size: 1.24em;
       text-align: center;
       margin-bottom: 20px;
-      box-shadow: 0 0 18px #03faff66, 0 0 0px #00e7ff;
+      box-shadow: 0 0 18px #03faff66;
       text-shadow: 0 0 6px #03faff99;
       font-family: 'Segoe UI', monospace;
       letter-spacing: 0.5px;
@@ -43,27 +43,14 @@
       width: 130px; height: 130px;
       background: #181c23;
       border: 4px solid #03faff;
-      border-radius: 23px;
-      display: flex; flex-direction: column;
+      border-radius: 12px;
+      display: flex;
       align-items: center; justify-content: center;
       box-shadow: 0 0 36px #00e7ffcc, 0 0 44px #000 inset;
       position: relative;
       margin: 0 auto;
-      animation: facePulse 2.1s infinite alternate, headWobble 3.7s infinite;
-      transition: border 0.25s, box-shadow 0.25s;
-    }
-    @keyframes facePulse {
-      0% { box-shadow: 0 0 22px #00e7ff88, 0 0 36px #001 inset; }
-      100% { box-shadow: 0 0 42px #00e7ffcc, 0 0 54px #00e7ff0d inset; }
-    }
-    @keyframes headWobble {
-      0%   { transform: rotate(-3deg);}
-      13%  { transform: rotate(2deg);}
-      27%  { transform: rotate(-2deg);}
-      44%  { transform: rotate(1.7deg);}
-      59%  { transform: rotate(-1deg);}
-      78%  { transform: rotate(2deg);}
-      100% { transform: rotate(-3deg);}
+      transform-style: preserve-3d;
+      transition: transform 0.3s ease;
     }
     .flobot-eye {
       width: 19px; height: 19px;
@@ -122,9 +109,10 @@
     </div>
   </div>
   <script>
-    // تعبير وجه متغير تلقائياً (سعيد/زعلان/مفاجئ/عادي)
     const face = document.getElementById('flo-face');
     const msg = document.getElementById('flo-msg');
+    const eyeL = document.getElementById('eye-l');
+    const eyeR = document.getElementById('eye-r');
     let moods = ['','happy','sad','surprised'];
     let moodMsgs = [
       "Hello! I'm FloBot —<br>your AI assistant 👋",
@@ -133,28 +121,34 @@
       "Wow! Did you call me? 👀"
     ];
     let mood = 0;
-    setInterval(()=>{
+
+    setInterval(() => {
       face.className = 'flobot-face ' + moods[mood%4];
       msg.innerHTML = moodMsgs[mood%4];
       mood++;
     }, 3500);
 
-    // تتبع المؤشر للعيون (عينان تتابع حركة الماوس)
-    const eyeL = document.getElementById('eye-l');
-    const eyeR = document.getElementById('eye-r');
+    // تتبع العين للماوس
     document.onmousemove = function(e){
       let x = e.clientX / window.innerWidth;
       eyeL.style.left = (37+12*x)+'px';
       eyeR.style.right = (37+12*(1-x))+'px';
+
+      // دوران خفيف حسب حركة الماوس (يمين/يسار فقط)
+      let rotateY = (x - 0.5) * 20; // من -10 إلى +10 درجة
+      face.style.transform = `rotateY(${rotateY}deg)`;
     };
-    // للموبايل (تتبع لمس)
+
     document.ontouchmove = function(e){
       let x = e.touches[0].clientX / window.innerWidth;
       eyeL.style.left = (37+12*x)+'px';
       eyeR.style.right = (37+12*(1-x))+'px';
+
+      let rotateY = (x - 0.5) * 20;
+      face.style.transform = `rotateY(${rotateY}deg)`;
     };
 
-    // رمش تلقائي للعيون
+    // رمش تلقائي
     function blink(){
       eyeL.classList.add('blink');
       eyeR.classList.add('blink');
@@ -162,11 +156,9 @@
         eyeL.classList.remove('blink');
         eyeR.classList.remove('blink');
       }, 120);
-      setTimeout(blink, Math.random()*4000+1800); // رمشة عشوائية كل 2-6 ثواني
+      setTimeout(blink, Math.random()*4000+1800);
     }
     setTimeout(blink, 2300);
-
-    // ملاحظة: إذا تريد حركة فم عند الكلام أو تدوير/اهتزاز أكثر — ممكن أضيفه فوراً!
   </script>
 </body>
 </html>
