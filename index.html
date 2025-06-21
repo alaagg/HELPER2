@@ -65,18 +65,33 @@
       height: 4px;
       background-color: red;
       border-radius: 50%;
-      box-shadow: 0 0 5px red;
-      opacity: 0.95;
+      animation: redPulse 2s infinite ease-in-out;
+      opacity: 0.9;
     }
 
-    .star:nth-child(2)  { top: 0px;   left: 50%; transform: translateX(-50%); }
-    .star:nth-child(3)  { top: 15px;  left: 15px; }
-    .star:nth-child(4)  { top: 15px;  right: 15px; }
-    .star:nth-child(5)  { top: 50%;  left: 0px; transform: translateY(-50%); }
-    .star:nth-child(6)  { bottom: 0; left: 50%; transform: translateX(-50%); }
-    .star:nth-child(7)  { bottom: 15px; left: 15px; }
-    .star:nth-child(8)  { bottom: 15px; right: 15px; }
-    .star:nth-child(9)  { top: 50%;  right: 0px; transform: translateY(-50%); }
+    /* النجمتين لكل ضلع – وسط الحافة */
+    .star:nth-child(2) { top: 12px; left: 45px; }
+    .star:nth-child(3) { top: 12px; left: 75px; }
+
+    .star:nth-child(4) { top: 45px; left: 12px; }
+    .star:nth-child(5) { top: 75px; left: 12px; }
+
+    .star:nth-child(6) { top: 45px; left: 114px; }
+    .star:nth-child(7) { top: 75px; left: 114px; }
+
+    .star:nth-child(8) { top: 114px; left: 45px; }
+    .star:nth-child(9) { top: 114px; left: 75px; }
+
+    @keyframes redPulse {
+      0%, 100% {
+        box-shadow: 0 0 6px red, 0 0 10px red;
+        transform: scale(1);
+      }
+      50% {
+        box-shadow: 0 0 14px red, 0 0 22px red;
+        transform: scale(1.4);
+      }
+    }
 
     .text {
       margin-top: 20px;
@@ -90,6 +105,7 @@
 <body>
   <div class="wrapper">
     <div class="cube"></div>
+    <!-- النجوم الثمانية -->
     <span class="star"></span>
     <span class="star"></span>
     <span class="star"></span>
