@@ -3,103 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Helper Pren – AI</title>
+  <title>CSS 3D Sphere 50×50×50</title>
   <style>
     body {
       margin: 0;
-      padding: 0;
-      font-family: sans-serif;
-      background: #000;
-      color: #fff;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
       height: 100vh;
-    }
-
-    h1 {
-      font-size: 2.5em;
-      color: #00ccff;
-      text-shadow: 0 0 12px #00ccff;
-    }
-
-    input {
-      padding: 15px;
-      width: 70%;
-      max-width: 300px;
-      margin: 20px auto;
-      font-size: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       background: #111;
-      color: #0ff;
-      border: 2px solid #00ccff;
-      border-radius: 10px;
+      perspective: 400px; /* لإبراز العمق ثلاثي الأبعاد */
+    }
+    .sphere {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fafafa, #888 80%);
+      box-shadow:
+        inset -5px -5px 8px rgba(0,0,0,0.6),
+        5px 5px 10px rgba(0,0,0,0.4);
+      transform-style: preserve-3d;
+      animation: spinY 4s linear infinite;
     }
 
-    button {
-      background: #00ccff;
-      color: black;
-      border: none;
-      padding: 12px 24px;
-      font-size: 18px;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    .output {
-      margin-top: 30px;
-      padding: 20px;
-      background: #111;
-      border: 1px solid #00ccff;
-      width: 80%;
-      margin-inline: auto;
-      border-radius: 10px;
-    }
-
-    a {
-      color: #0ff;
-      word-wrap: break-word;
+    @keyframes spinY {
+      from { transform: rotateX(20deg) rotateY(0deg); }
+      to   { transform: rotateX(20deg) rotateY(360deg); }
     }
   </style>
 </head>
 <body>
-  <h1>Helper Pren</h1>
-  <input type="text" id="input" placeholder="اكتب ما تريد...">
-  <button onclick="analyze()">Send</button>
-  <div class="output" id="output"></div>
-
-  <script>
-    function analyze() {
-      const query = document.getElementById("input").value.trim();
-      const output = document.getElementById("output");
-
-      if (query === "") {
-        output.innerHTML = "🧠 الرجاء كتابة استفسارك...";
-        return;
-      }
-
-      if (query.includes("اكل") || query.includes("جوعان") || query.includes("مطاعم")) {
-        output.innerHTML = "🍔 يبحث عن أقرب مطاعم...";
-        navigator.geolocation.getCurrentPosition(success, error);
-      } else {
-        output.innerHTML = "🤖 Helper Pren يفكر... جاري تجهيز الرد المناسب.";
-      }
-
-      function success(position) {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
-        const url = `https://www.google.com/maps/search/مطاعم/@${lat},${lon},15z`;
-        output.innerHTML = `
-          🍔 أقرب مطاعم مقترحة بناءً على موقعك:<br>
-          📍 افتح: <br>
-          <a href="${url}" target="_blank">${url}</a>
-        `;
-      }
-
-      function error() {
-        output.innerHTML = "⚠️ تعذر الحصول على موقعك. يرجى تفعيل GPS والمحاولة مجددًا.";
-      }
-    }
-  </script>
+  <div class="sphere"></div>
 </body>
 </html>
