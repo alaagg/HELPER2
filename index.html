@@ -2,18 +2,68 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Language Cube</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HELPAR Full Project</title>
+
+  <!-- ✅ تحميل مسبق للصور -->
+  <link rel="preload" href="sho.png" as="image">
+  <link rel="preload" href="code rom.png" as="image">
+  <link rel="preload" href="food.png" as="image">
+  <link rel="preload" href="games room.png" as="image">
+
   <style>
     html, body {
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
+      width: 100%; height: 100%;
       background: radial-gradient(circle at center, #010308 0%, #000 100%);
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
       font-family: Arial, sans-serif;
+      overflow: hidden;
       touch-action: none;
+    }
+
+    .centered {
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #00ccff;
+    }
+
+    .helpar-logo {
+      width: 100px;
+      height: auto;
+      margin-bottom: 10px;
+      animation: pulseGlowLogo 2s infinite;
+    }
+
+    .helpar-title {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #00ccff;
+      text-shadow: 0 0 4px #00ccff, 0 0 8px #00e7ff;
+    }
+
+    .lang-btn {
+      padding: 12px 24px;
+      font-size: 18px;
+      background: transparent;
+      border: 2px solid #00ccff;
+      border-radius: 10px;
+      color: #00ccff;
+      cursor: pointer;
+      margin-top: 70px;
+    }
+
+    @keyframes pulseGlowLogo {
+      0%, 100% {
+        filter: drop-shadow(0 0 12px #00e7ff) drop-shadow(0 0 24px #00ccff);
+        transform: scale(1);
+      }
+      50% {
+        filter: drop-shadow(0 0 20px #00e7ff) drop-shadow(0 0 40px #00ccff);
+        transform: scale(1.07);
+      }
     }
 
     .scene {
@@ -24,11 +74,11 @@
       left: 50%;
       transform: translate(-50%, -50%);
       perspective: 800px;
+      display: none;
     }
 
     .cube {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       transform-style: preserve-3d;
       transition: transform 0.5s ease;
       position: relative;
@@ -36,8 +86,7 @@
 
     .face {
       position: absolute;
-      width: 150px;
-      height: 150px;
+      width: 150px; height: 150px;
       border: 2px solid #00ccff;
       background: rgba(0, 0, 0, 0.5);
       color: #00ccff;
@@ -76,30 +125,71 @@
       50% { transform: translate(-50%, -50%) scale(1.2); }
     }
 
-    .content {
+    #videoSection, #sectionCubeContainer {
+      display: none;
       position: absolute;
-      top: 15%;
-      width: 100%;
-      text-align: center;
-      color: #00ccff;
+      width: 100vw; height: 100vh;
+      top: 0; left: 0;
+      justify-content: center;
+      align-items: center;
     }
 
-    h1, button {
-      margin: 10px;
-      font-size: 20px;
-    }
-
-    button {
-      padding: 10px 20px;
-      background: transparent;
+    video {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
       border: 2px solid #00ccff;
-      border-radius: 8px;
-      color: #00ccff;
+      box-shadow: 0 0 20px #00ccff;
+      border-radius: 12px;
+    }
+
+    .scene-section {
+      width: 275px;
+      height: 275px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      perspective: 1000px;
+    }
+
+    .cube-section {
+      width: 275px;
+      height: 275px;
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+      transform: rotateX(-18deg) rotateY(0deg);
+      position: relative;
+    }
+
+    .section-face {
+      position: absolute;
+      width: 275px; height: 275px;
+      border: 2px solid #00ccff;
+      background-color: #000;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: transform 0.6s ease;
       cursor: pointer;
     }
+
+    .front-sec  { transform: rotateY(0deg) translateZ(137.5px); background-image: url('sho.png'); }
+    .back-sec   { transform: rotateY(180deg) translateZ(137.5px); background-image: url('code rom.png'); }
+    .right-sec  { transform: rotateY(90deg) translateZ(137.5px); background-image: url('food.png'); }
+    .left-sec   { transform: rotateY(-90deg) translateZ(137.5px); background-image: url('games room.png'); }
   </style>
 </head>
 <body>
+
+  <!-- شاشة الترحيب -->
+  <div id="start" class="centered">
+    <img src="logo.png" alt="HELPAR Logo" class="helpar-logo" />
+    <div class="helpar-title">HELPAR</div>
+    <button class="lang-btn" onclick="showLanguages()" data-i18n="selectLang">Choose Language</button>
+  </div>
+
+  <!-- مكعب اللغة -->
   <div class="scene" id="sceneLang">
     <div class="cube" id="cubeLang">
       <div class="face front">🇬🇧<span class="lang-label">English</span></div>
@@ -110,36 +200,45 @@
     </div>
   </div>
 
-  <div class="content">
-    <h1 data-i18n="greeting">Welcome</h1>
-    <button data-i18n="selectLang">Choose Language</button>
+  <!-- الفيديو -->
+  <div id="videoSection">
+    <video id="introVideo" autoplay playsinline>
+      <source src="HELBERpro.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <!-- مكعب الأقسام -->
+  <div id="sectionCubeContainer">
+    <div class="scene-section">
+      <div class="cube-section" id="cubeSection">
+        <div class="section-face front-sec"></div>
+        <div class="section-face back-sec"></div>
+        <div class="section-face right-sec"></div>
+        <div class="section-face left-sec"></div>
+      </div>
+    </div>
   </div>
 
   <script>
+    // ترجمات
+    const translations = {
+      English: { selectLang: "Choose Language" },
+      العربية: { selectLang: "اختر اللغة" },
+      Français: { selectLang: "Choisir la langue" },
+      Türkçe: { selectLang: "Dil Seç" }
+    };
+
     const cubeLang = document.getElementById("cubeLang");
     let langAngle = 0;
     let langRotating = true;
     let langAutoRotate;
     let startX = 0;
 
-    const translations = {
-      English: {
-        greeting: "Welcome",
-        selectLang: "Choose Language",
-      },
-      العربية: {
-        greeting: "أهلاً بك",
-        selectLang: "اختر اللغة",
-      },
-      Français: {
-        greeting: "Bienvenue",
-        selectLang: "Choisir la langue",
-      },
-      Türkçe: {
-        greeting: "Hoşgeldiniz",
-        selectLang: "Dil Seç",
-      }
-    };
+    function showLanguages() {
+      document.getElementById("sceneLang").style.display = "block";
+      document.getElementById("start").style.display = "none";
+      startAutoRotateLang();
+    }
 
     function startAutoRotateLang() {
       langAutoRotate = setInterval(() => {
@@ -153,23 +252,15 @@
       langRotating = false;
     }
 
-    startAutoRotateLang();
-
     cubeLang.addEventListener("touchstart", (e) => {
       if (langRotating) stopAutoRotateLang();
       startX = e.touches[0].clientX;
     });
 
     cubeLang.addEventListener("touchend", (e) => {
-      const endX = e.changedTouches[0].clientX;
-      const deltaX = endX - startX;
-
+      const deltaX = e.changedTouches[0].clientX - startX;
       if (Math.abs(deltaX) > 30) {
-        if (deltaX > 0) {
-          langAngle += 90;
-        } else {
-          langAngle -= 90;
-        }
+        langAngle += deltaX > 0 ? 90 : -90;
         cubeLang.style.transform = `rotateX(-10deg) rotateY(${langAngle}deg)`;
       }
     });
@@ -179,20 +270,17 @@
         stopAutoRotateLang();
         const selectedLang = face.querySelector(".lang-label").textContent;
         localStorage.setItem("language", selectedLang);
-
         let direction = face.classList.contains("front") ? 0 :
                         face.classList.contains("right") ? 90 :
                         face.classList.contains("back") ? 180 :
                         face.classList.contains("left") ? -90 : 0;
-
         langAngle = direction;
         cubeLang.style.transform = `rotateX(-10deg) rotateY(${langAngle}deg)`;
-
         applyLanguage(selectedLang);
-
-        // 🔁 الانتقال للصفحة التالية بعد اختيار اللغة
         setTimeout(() => {
-          window.location.href = "video.html"; // ✨ غيّر حسب المرحلة التالية في مشروعك
+          document.getElementById("sceneLang").style.display = "none";
+          document.getElementById("videoSection").style.display = "flex";
+          document.getElementById("introVideo").play();
         }, 1000);
       });
     });
@@ -208,6 +296,74 @@
     window.onload = () => {
       const savedLang = localStorage.getItem("language") || "English";
       applyLanguage(savedLang);
+    };
+
+    const cubeSection = document.getElementById("cubeSection");
+    let angleSec = 0;
+    let rotating = true;
+    let autoRotateInterval;
+
+    function startCubeSection() {
+      autoRotateInterval = setInterval(() => {
+        angleSec += 1;
+        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
+      }, 30);
+    }
+
+    document.getElementById("introVideo").onended = () => {
+      document.getElementById("videoSection").style.display = "none";
+      document.getElementById("sectionCubeContainer").style.display = "block";
+      startCubeSection();
+    };
+
+    cubeSection.addEventListener("touchstart", e => {
+      if (rotating) {
+        clearInterval(autoRotateInterval);
+        rotating = false;
+        angleSec = Math.round(angleSec / 90) * 90;
+        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
+      }
+      startX = e.touches[0].clientX;
+    });
+
+    cubeSection.addEventListener("touchmove", e => {
+      if (!rotating) {
+        let deltaX = e.touches[0].clientX - startX;
+        let rotateBy = deltaX * 0.6;
+        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec + rotateBy}deg)`;
+      }
+    });
+
+    cubeSection.addEventListener("touchend", e => {
+      if (!rotating) {
+        let deltaX = e.changedTouches[0].clientX - startX;
+        angleSec += Math.round(deltaX * 0.6 / 90) * 90;
+        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
+      }
+    });
+
+    // بوابة القسم عند الضغط
+    document.querySelectorAll(".section-face").forEach(face => {
+      face.addEventListener("click", () => {
+        clearInterval(autoRotateInterval);
+        rotating = false;
+        document.querySelector(".front-sec").style.transform = "rotateY(0deg) translateZ(137.5px)";
+        document.querySelector(".back-sec").style.transform = "rotateY(180deg) translateZ(137.5px)";
+        document.querySelector(".right-sec").style.transform = "rotateY(90deg) translateZ(137.5px)";
+        document.querySelector(".left-sec").style.transform = "rotateY(-90deg) translateZ(137.5px)";
+        face.style.transform += " translateZ(-150px) scale(1.05)";
+      });
+    });
+
+    window.onpopstate = function () {
+      if (document.getElementById("videoSection").style.display === 'flex') {
+        document.getElementById("videoSection").style.display = 'none';
+        document.getElementById("sceneLang").style.display = 'none';
+        document.getElementById("start").style.display = 'block';
+      } else if (document.getElementById("sectionCubeContainer").style.display === 'block') {
+        document.getElementById("sectionCubeContainer").style.display = 'none';
+        document.getElementById("videoSection").style.display = 'flex';
+      }
     };
   </script>
 </body>
