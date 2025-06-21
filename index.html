@@ -2,163 +2,218 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>FloBot — AI assistant</title>
+  <title>FloBot — Funny AI</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <style>
     html, body {
-      height: 100%; margin: 0; padding: 0;
+      margin: 0; padding: 0;
+      width: 100%; height: 100%;
       background: radial-gradient(circle at 60% 50%, #10131d 45%, #000 100%);
       font-family: 'Segoe UI', Arial, monospace;
       overflow: hidden;
     }
-    body {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      height: 100vh;
+
+    body.laughing {
+      animation: bgShake 0.15s infinite;
     }
+
+    @keyframes bgShake {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(2px, -2px); }
+      50% { transform: translate(-2px, 2px); }
+      75% { transform: translate(1px, -1px); }
+      100% { transform: translate(0, 0); }
+    }
+
     .flobot-container {
-      display: flex; flex-direction: column; align-items: center; gap: 20px;
-      justify-content: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
     }
+
     .flobot-message {
       padding: 16px 28px;
       border: 2.5px solid #03faff;
       border-radius: 14px;
       background: rgba(0,0,0,0.87);
       color: #fff;
-      font-size: 1.24em;
+      font-size: 1.2em;
       text-align: center;
-      margin-bottom: 20px;
       box-shadow: 0 0 18px #03faff66;
       text-shadow: 0 0 6px #03faff99;
-      font-family: 'Segoe UI', monospace;
-      letter-spacing: 0.5px;
-      animation: msgPulse 1.7s infinite alternate;
+      animation: msgPulse 1.6s infinite alternate;
     }
+
     @keyframes msgPulse {
-      from { box-shadow: 0 0 8px #00e7ff66; }
-      to   { box-shadow: 0 0 28px #00e7ffbb; }
+      0% { box-shadow: 0 0 8px #00e7ff66; }
+      100% { box-shadow: 0 0 28px #00e7ffbb; }
     }
+
     .flobot-face {
       width: 130px; height: 130px;
       background: #181c23;
       border: 4px solid #03faff;
-      border-radius: 12px;
+      border-radius: 14px;
       display: flex;
-      align-items: center; justify-content: center;
-      box-shadow: 0 0 36px #00e7ffcc, 0 0 44px #000 inset;
+      align-items: center;
+      justify-content: center;
       position: relative;
-      margin: 0 auto;
+      box-shadow: 0 0 36px #00e7ffcc, 0 0 44px #000 inset;
       transform-style: preserve-3d;
-      transition: transform 0.3s ease;
+      transition: transform 0.2s ease;
     }
+
+    .flobot-face.happy .flobot-mouth {
+      height: 20px;
+      border-radius: 50%/100%;
+      background: #7ffcff;
+    }
+
+    .flobot-face.laugh {
+      animation: laughShake 0.3s ease-in-out 6;
+    }
+
+    @keyframes laughShake {
+      0%, 100% { transform: translateY(0); }
+      25% { transform: translateY(-5px); }
+      50% { transform: translateY(5px); }
+      75% { transform: translateY(-3px); }
+    }
+
     .flobot-eye {
-      width: 19px; height: 19px;
+      width: 18px; height: 18px;
       background: #03faff;
       border-radius: 50%;
       position: absolute;
-      top: 44px;
-      transition: left 0.13s, right 0.13s, background 0.13s, height 0.2s;
-      box-shadow: 0 0 7px #00e7ff, 0 0 14px #00e7ff44;
-      z-index: 2;
+      top: 42px;
+      box-shadow: 0 0 7px #00e7ff;
     }
-    .flobot-eye.left  { left: 37px; }
-    .flobot-eye.right { right: 37px; }
-    .flobot-eye.blink { height: 4px; background: #0090a8; }
+
+    .flobot-eye.left  { left: 35px; }
+    .flobot-eye.right { right: 35px; }
+
     .flobot-mouth {
-      width: 46px; height: 8px;
+      width: 46px;
+      height: 8px;
       background: #03faff;
       border-radius: 6px;
       position: absolute;
-      bottom: 38px;
-      left: 50%; transform: translateX(-50%);
-      transition: width 0.22s, border-radius 0.22s, background 0.22s;
+      bottom: 35px;
+      left: 50%;
+      transform: translateX(-50%);
       box-shadow: 0 0 4px #00e7ff99;
+      transition: height 0.15s ease, background 0.15s;
     }
-    .flobot-face.happy .flobot-mouth {
-      width: 56px; height: 16px;
-      border-radius: 60px 60px 80px 80px / 90px 90px 100px 100px;
-      background: #7ffcff;
-    }
-    .flobot-face.sad .flobot-mouth {
-      width: 30px; height: 13px;
-      border-radius: 0 0 22px 22px / 0 0 35px 35px;
-      background: #00c5ff;
-      bottom: 37px;
-      transform: translateX(-50%) rotate(180deg);
-    }
-    .flobot-face.surprised .flobot-mouth {
-      width: 19px; height: 19px;
+
+    .bubble {
+      position: absolute;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
-      background: #aafaff;
-      bottom: 40px;
-      left: 50%; transform: translateX(-50%);
+      background: #03faff;
+      box-shadow: 0 0 12px #00faffaa;
+      opacity: 0.6;
+      animation: bubbleUp 2s forwards;
+    }
+
+    @keyframes bubbleUp {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-160px) scale(1.5);
+        opacity: 0;
+      }
+    }
+
+    .control-btn {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 1em;
+      background: #03faff;
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 14px #03faff88;
+      font-weight: bold;
+      transition: transform 0.2s;
+    }
+
+    .control-btn:active {
+      transform: scale(0.95);
     }
   </style>
 </head>
 <body>
   <div class="flobot-container">
     <div class="flobot-message" id="flo-msg">
-      Hello! I'm FloBot —<br>
-      your AI assistant 👋
+      Heey, I’m Flo! 😄<br>I blink, I talk, and I LAUGH too! Hahaha!
     </div>
     <div class="flobot-face" id="flo-face">
-      <div class="flobot-eye left" id="eye-l"></div>
-      <div class="flobot-eye right" id="eye-r"></div>
-      <div class="flobot-mouth" id="mouth"></div>
+      <div class="flobot-eye left"></div>
+      <div class="flobot-eye right"></div>
+      <div class="flobot-mouth" id="flo-mouth"></div>
     </div>
+    <button class="control-btn" onclick="speakFunnyIntro()">🔁 Play Again</button>
   </div>
+
   <script>
-    const face = document.getElementById('flo-face');
-    const msg = document.getElementById('flo-msg');
-    const eyeL = document.getElementById('eye-l');
-    const eyeR = document.getElementById('eye-r');
-    let moods = ['','happy','sad','surprised'];
-    let moodMsgs = [
-      "Hello! I'm FloBot —<br>your AI assistant 👋",
-      "I'm feeling great! 😊<br>What can I help you with?",
-      "A bit sad...<br>But ready to help you! 😅",
-      "Wow! Did you call me? 👀"
-    ];
-    let mood = 0;
+    const face = document.getElementById("flo-face");
+    const mouth = document.getElementById("flo-mouth");
 
-    setInterval(() => {
-      face.className = 'flobot-face ' + moods[mood%4];
-      msg.innerHTML = moodMsgs[mood%4];
-      mood++;
-    }, 3500);
+    function speakFunnyIntro() {
+      const speech = new SpeechSynthesisUtterance(
+        "Heey, I’m Flo! Your AI buddy. I blink, I talk, and guess what... I laugh too! Hahaha!"
+      );
+      speech.lang = 'en-US';
+      speech.pitch = 1.1;
+      speech.rate = 1;
+      speech.volume = 1;
 
-    // تتبع العين للماوس
-    document.onmousemove = function(e){
-      let x = e.clientX / window.innerWidth;
-      eyeL.style.left = (37+12*x)+'px';
-      eyeR.style.right = (37+12*(1-x))+'px';
+      const voices = window.speechSynthesis.getVoices();
+      speech.voice = voices.find(v => v.lang === 'en-US' && v.name.includes("Google")) || voices[0];
 
-      // دوران خفيف حسب حركة الماوس (يمين/يسار فقط)
-      let rotateY = (x - 0.5) * 20; // من -10 إلى +10 درجة
-      face.style.transform = `rotateY(${rotateY}deg)`;
-    };
+      speech.onstart = () => {
+        face.classList.add("happy");
+        animateMouth();
+      };
 
-    document.ontouchmove = function(e){
-      let x = e.touches[0].clientX / window.innerWidth;
-      eyeL.style.left = (37+12*x)+'px';
-      eyeR.style.right = (37+12*(1-x))+'px';
+      setTimeout(() => {
+        face.classList.add("laugh");
+        document.body.classList.add("laughing");
+        for(let i = 0; i < 6; i++) createBubble();
+      }, 3200);
 
-      let rotateY = (x - 0.5) * 20;
-      face.style.transform = `rotateY(${rotateY}deg)`;
-    };
+      speech.onend = () => {
+        face.classList.remove("laugh", "happy");
+        document.body.classList.remove("laughing");
+        clearInterval(mouthTimer);
+        mouth.style.height = "8px";
+      };
 
-    // رمش تلقائي
-    function blink(){
-      eyeL.classList.add('blink');
-      eyeR.classList.add('blink');
-      setTimeout(()=>{
-        eyeL.classList.remove('blink');
-        eyeR.classList.remove('blink');
-      }, 120);
-      setTimeout(blink, Math.random()*4000+1800);
+      window.speechSynthesis.speak(speech);
     }
-    setTimeout(blink, 2300);
+
+    let mouthTimer;
+    function animateMouth() {
+      mouthTimer = setInterval(() => {
+        mouth.style.height = (Math.random() > 0.5 ? '20px' : '8px');
+      }, 120);
+    }
+
+    function createBubble() {
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      bubble.style.left = (window.innerWidth/2 - 10 + Math.random()*60 - 30) + 'px';
+      bubble.style.top = (window.innerHeight/2 - 20) + 'px';
+      document.body.appendChild(bubble);
+      setTimeout(() => bubble.remove(), 2000);
+    }
+
+    window.speechSynthesis.onvoiceschanged = speakFunnyIntro;
   </script>
 </body>
 </html>
