@@ -7,7 +7,7 @@
   <style>
     html, body {
       height: 100%; margin: 0; padding: 0;
-      background: radial-gradient(circle at 60% 50%, #10131d 40%, #000 100%);
+      background: radial-gradient(circle at 60% 50%, #10131d 45%, #000 100%);
       font-family: 'Segoe UI', Arial, monospace;
       overflow: hidden;
     }
@@ -22,62 +22,151 @@
     }
     .flobot-message {
       padding: 16px 28px;
-      border: 2px solid #03faff;
+      border: 2.5px solid #03faff;
       border-radius: 14px;
       background: rgba(0,0,0,0.87);
       color: #fff;
-      font-size: 1.22em;
+      font-size: 1.24em;
       text-align: center;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
       box-shadow: 0 0 18px #03faff66, 0 0 0px #00e7ff;
       text-shadow: 0 0 6px #03faff99;
+      font-family: 'Segoe UI', monospace;
+      letter-spacing: 0.5px;
+      animation: msgPulse 1.7s infinite alternate;
+    }
+    @keyframes msgPulse {
+      from { box-shadow: 0 0 8px #00e7ff66; }
+      to   { box-shadow: 0 0 28px #00e7ffbb; }
     }
     .flobot-face {
-      width: 120px; height: 120px;
+      width: 130px; height: 130px;
       background: #181c23;
       border: 4px solid #03faff;
-      border-radius: 18px;
+      border-radius: 23px;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      box-shadow: 0 0 32px #00e7ffcc, 0 0 40px #000 inset;
+      box-shadow: 0 0 36px #00e7ffcc, 0 0 44px #000 inset;
       position: relative;
       margin: 0 auto;
-      animation: facePulse 2s infinite alternate;
+      animation: facePulse 2.1s infinite alternate, headWobble 3.7s infinite;
+      transition: border 0.25s, box-shadow 0.25s;
+    }
+    @keyframes facePulse {
+      0% { box-shadow: 0 0 22px #00e7ff88, 0 0 36px #001 inset; }
+      100% { box-shadow: 0 0 42px #00e7ffcc, 0 0 54px #00e7ff0d inset; }
+    }
+    @keyframes headWobble {
+      0%   { transform: rotate(-3deg);}
+      13%  { transform: rotate(2deg);}
+      27%  { transform: rotate(-2deg);}
+      44%  { transform: rotate(1.7deg);}
+      59%  { transform: rotate(-1deg);}
+      78%  { transform: rotate(2deg);}
+      100% { transform: rotate(-3deg);}
     }
     .flobot-eye {
-      width: 16px; height: 16px;
+      width: 19px; height: 19px;
       background: #03faff;
       border-radius: 50%;
       position: absolute;
-      top: 38px;
+      top: 44px;
+      transition: left 0.13s, right 0.13s, background 0.13s, height 0.2s;
+      box-shadow: 0 0 7px #00e7ff, 0 0 14px #00e7ff44;
+      z-index: 2;
     }
-    .flobot-eye.left  { left: 34px; }
-    .flobot-eye.right { right: 34px; }
+    .flobot-eye.left  { left: 37px; }
+    .flobot-eye.right { right: 37px; }
+    .flobot-eye.blink { height: 4px; background: #0090a8; }
     .flobot-mouth {
-      width: 38px; height: 6px;
+      width: 46px; height: 8px;
       background: #03faff;
       border-radius: 6px;
       position: absolute;
-      bottom: 34px;
+      bottom: 38px;
       left: 50%; transform: translateX(-50%);
+      transition: width 0.22s, border-radius 0.22s, background 0.22s;
+      box-shadow: 0 0 4px #00e7ff99;
     }
-    @keyframes facePulse {
-      0% { box-shadow: 0 0 16px #00e7ff99, 0 0 40px #001 inset; }
-      100% { box-shadow: 0 0 28px #00e7ffcc, 0 0 50px #000a inset; }
+    .flobot-face.happy .flobot-mouth {
+      width: 56px; height: 16px;
+      border-radius: 60px 60px 80px 80px / 90px 90px 100px 100px;
+      background: #7ffcff;
+    }
+    .flobot-face.sad .flobot-mouth {
+      width: 30px; height: 13px;
+      border-radius: 0 0 22px 22px / 0 0 35px 35px;
+      background: #00c5ff;
+      bottom: 37px;
+      transform: translateX(-50%) rotate(180deg);
+    }
+    .flobot-face.surprised .flobot-mouth {
+      width: 19px; height: 19px;
+      border-radius: 50%;
+      background: #aafaff;
+      bottom: 40px;
+      left: 50%; transform: translateX(-50%);
     }
   </style>
 </head>
 <body>
   <div class="flobot-container">
-    <div class="flobot-message">
+    <div class="flobot-message" id="flo-msg">
       Hello! I'm FloBot —<br>
       your AI assistant 👋
     </div>
-    <div class="flobot-face">
-      <div class="flobot-eye left"></div>
-      <div class="flobot-eye right"></div>
-      <div class="flobot-mouth"></div>
+    <div class="flobot-face" id="flo-face">
+      <div class="flobot-eye left" id="eye-l"></div>
+      <div class="flobot-eye right" id="eye-r"></div>
+      <div class="flobot-mouth" id="mouth"></div>
     </div>
   </div>
+  <script>
+    // تعبير وجه متغير تلقائياً (سعيد/زعلان/مفاجئ/عادي)
+    const face = document.getElementById('flo-face');
+    const msg = document.getElementById('flo-msg');
+    let moods = ['','happy','sad','surprised'];
+    let moodMsgs = [
+      "Hello! I'm FloBot —<br>your AI assistant 👋",
+      "I'm feeling great! 😊<br>What can I help you with?",
+      "A bit sad...<br>But ready to help you! 😅",
+      "Wow! Did you call me? 👀"
+    ];
+    let mood = 0;
+    setInterval(()=>{
+      face.className = 'flobot-face ' + moods[mood%4];
+      msg.innerHTML = moodMsgs[mood%4];
+      mood++;
+    }, 3500);
+
+    // تتبع المؤشر للعيون (عينان تتابع حركة الماوس)
+    const eyeL = document.getElementById('eye-l');
+    const eyeR = document.getElementById('eye-r');
+    document.onmousemove = function(e){
+      let x = e.clientX / window.innerWidth;
+      eyeL.style.left = (37+12*x)+'px';
+      eyeR.style.right = (37+12*(1-x))+'px';
+    };
+    // للموبايل (تتبع لمس)
+    document.ontouchmove = function(e){
+      let x = e.touches[0].clientX / window.innerWidth;
+      eyeL.style.left = (37+12*x)+'px';
+      eyeR.style.right = (37+12*(1-x))+'px';
+    };
+
+    // رمش تلقائي للعيون
+    function blink(){
+      eyeL.classList.add('blink');
+      eyeR.classList.add('blink');
+      setTimeout(()=>{
+        eyeL.classList.remove('blink');
+        eyeR.classList.remove('blink');
+      }, 120);
+      setTimeout(blink, Math.random()*4000+1800); // رمشة عشوائية كل 2-6 ثواني
+    }
+    setTimeout(blink, 2300);
+
+    // ملاحظة: إذا تريد حركة فم عند الكلام أو تدوير/اهتزاز أكثر — ممكن أضيفه فوراً!
+  </script>
 </body>
 </html>
