@@ -2,12 +2,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Floating Planets with Swap</title>
+  <title>Static Planets with Background</title>
   <style>
     body {
       margin: 0;
       overflow: hidden;
-      background: radial-gradient(#000000, #010308);
+      background: black;
     }
     canvas {
       display: block;
@@ -29,60 +29,78 @@ pointLight.position.set(200, 200, 200);
 scene.add(pointLight);
 
 const textureLoader = new THREE.TextureLoader();
-const planetData = [
-  { texture: 'sho.png', radius: 50, position: [-100, 50, 0] },
-  { texture: 'code rom.png', radius: 40, position: [80, -30, -20] },
-  { texture: 'food.png', radius: 30, position: [-50, -80, 30] },
-  { texture: 'games room.png', radius: 20, position: [60, 70, -40] }
+const planetTextures = [
+  'sho.png',
+  'code rom.png',
+  'food.png',
+  'games room.png'
+];
+
+const positions = [
+  [-100, 80, 0],
+  [100, 80, 0],
+  [-100, -80, 0],
+  [100, -80, 0]
 ];
 
 const planets = [];
 
-planetData.forEach((data, i) => {
-  const geo = new THREE.SphereGeometry(data.radius, 64, 64);
-  const mat = new THREE.MeshStandardMaterial({ map: textureLoader.load(data.texture) });
+// الكواكب الأربعة الجانبية
+planetTextures.forEach((texture, i) => {
+  const geo = new THREE.SphereGeometry(50, 64, 64);
+  const mat = new THREE.MeshStandardMaterial({ map: textureLoader.load(texture) });
   const planet = new THREE.Mesh(geo, mat);
-  planet.position.set(...data.position);
+  planet.position.set(...positions[i]);
 
-  // توهج داخلي
-  const glowGeo = new THREE.SphereGeometry(data.radius * 0.6, 32, 32);
+  const glowGeo = new THREE.SphereGeometry(30, 32, 32);
   const glowMat = new THREE.MeshBasicMaterial({ color: 0x00ccff, transparent: true, opacity: 0.06 });
   const glow = new THREE.Mesh(glowGeo, glowMat);
   planet.add(glow);
 
-  planets.push({
-    mesh: planet,
-    speed: 0.001 + Math.random() * 0.003,
-    dir: Math.random() * 2 * Math.PI,
-    target: data.position.slice(),
-    current: data.position.slice()
-  });
+  planets.push({ mesh: planet, speed: 0.002 });
   scene.add(planet);
 });
 
-// كل 8 ثواني يتم تبديل الأهداف بين الكواكب
-setInterval(() => {
-  const targets = planets.map(p => p.mesh.position.clone());
-  for (let i = 0; i < planets.length; i++) {
-    let j;
-    do {
-      j = Math.floor(Math.random() * planets.length);
-    } while (j === i);
-    planets[i].target = [targets[j].x, targets[j].y, targets[j].z];
-  }
-}, 8000);
+// ✅ كوكب خامس مركزي أكبر
+const centerTexture = textureLoader.load('sho.png');
+const centerGeo = new THREE.SphereGeometry(65, 64, 64);
+const centerMat = new THREE.MeshStandardMaterial({ map: centerTexture });
+const centerPlanet = new THREE.Mesh(centerGeo, centerMat);
+centerPlanet.position.set(0, 0, 0);
+
+const centerGlowGeo = new THREE.SphereGeometry(40, 32, 32);
+const centerGlowMat = new THREE.MeshBasicMaterial({ color: 0x00ccff, transparent: true, opacity: 0.06 });
+const centerGlow = new THREE.Mesh(centerGlowGeo, centerGlowMat);
+centerPlanet.add(centerGlow);
+
+scene.add(centerPlanet);
+
+// ✅ خلفية نجوم بسيطة
+const starsGeometry = new THREE.BufferGeometry();
+const starCount = 1000;
+const positionsArray = new Float32Array(starCount * 3);
+
+for (let i = 0; i < starCount * 3; i++) {
+  positionsArray[i] = (Math.random() - 0.5) * 2000;
+}
+
+starsGeometry.setAttribute('position', new THREE.BufferAttribute(positionsArray, 3));
+const starsMaterial = new THREE.PointsMaterial({ color: 0x88ccff, size: 1 });
+const stars = new THREE.Points(starsGeometry, starsMaterial);
+scene.add(stars);
 
 function animate() {
   requestAnimationFrame(animate);
-  planets.forEach((planetObj, i) => {
-    const mesh = planetObj.mesh;
-    mesh.rotation.y += planetObj.speed;
 
-    // حركة انتقال تدريجية نحو الهدف الجديد
-    mesh.position.x += (planetObj.target[0] - mesh.position.x) * 0.01;
-    mesh.position.y += (planetObj.target[1] - mesh.position.y) * 0.01;
-    mesh.position.z += (planetObj.target[2] - mesh.position.z) * 0.01;
+  planets.forEach(planetObj => {
+    planetObj.mesh.rotation.y += planetObj.speed;
   });
+  centerPlanet.rotation.y += 0.0015;
+
+  // خلفية تتحرك ببطء لإعطاء العمق
+  stars.rotation.y += 0.0002;
+  stars.rotation.x += 0.0001;
+
   renderer.render(scene, camera);
 }
 animate();
