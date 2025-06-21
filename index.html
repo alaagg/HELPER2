@@ -1,100 +1,115 @@
-<!DOCTYPE html>
-<html lang="tr">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FloBot Cute Final</title>
+  <title>FloBot Living 3D</title>
   <style>
     html, body {
-      margin: 0;
-      padding: 0;
-      background: radial-gradient(circle at center, #010308 0%, #000 100%);
-      height: 100%;
+      margin: 0; padding: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle at center, #010308, #000);
       overflow: hidden;
-      font-family: sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
-    }
+    }.scene {
+  width: 200px;
+  height: 200px;
+  perspective: 800px;
+}
 
-    .cube {
-      width: 100px;
-      height: 100px;
-      border-radius: 20px;
-      background: #111;
-      position: relative;
-      box-shadow: 0 0 10px white, 0 0 20px white;
-      animation: greenPulse 1.2s infinite ease-in-out;
-    }
+.cube {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: slowRotate 12s infinite linear;
+}
 
-    @keyframes greenPulse {
-      0%, 100% {
-        box-shadow: 0 0 10px white, 0 0 20px white;
-      }
-      50% {
-        box-shadow:
-          0 0 10px white, 0 0 20px white,
-          0 0 30px #00cc00, 0 0 60px #00cc00, 0 0 100px #00cc00;
-      }
-    }
+.face {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: #111;
+  border-radius: 24px;
+  box-shadow: 0 0 24px white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
+  color: white;
+}
 
-    .eye {
-      width: 14px;
-      height: 14px;
-      background: white;
-      border-radius: 50%;
-      position: absolute;
-      top: 28px;
-      box-shadow: 0 0 4px #fff;
-      animation: blink 2s infinite ease-in-out;
-      transform-origin: center;
-    }
+.front  { transform: rotateY(0deg) translateZ(100px); }
+.back   { transform: rotateY(180deg) translateZ(100px); }
+.right  { transform: rotateY(90deg) translateZ(100px); }
+.left   { transform: rotateY(-90deg) translateZ(100px); }
+.top    { transform: rotateX(90deg) translateZ(100px); }
+.bottom { transform: rotateX(-90deg) translateZ(100px); }
 
-    .eye.left {
-      left: 25px;
-    }
+@keyframes slowRotate {
+  0%   { transform: rotateX(0deg) rotateY(0deg); }
+  50%  { transform: rotateX(15deg) rotateY(180deg); }
+  100% { transform: rotateX(0deg) rotateY(360deg); }
+}
 
-    .eye.right {
-      right: 25px;
-    }
+.eyes {
+  position: absolute;
+  top: 60px;
+  display: flex;
+  gap: 40px;
+}
 
-    @keyframes blink {
-      0%, 95%, 100% {
-        transform: scaleY(1);
-      }
-      96%, 97% {
-        transform: scaleY(0.15);
-      }
-    }
+.eye {
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 6px white;
+  animation: eyeLook 4s infinite ease-in-out;
+}
 
-    .mouth {
-      width: 24px;
-      height: 8px;
-      background: white;
-      border-radius: 0 0 10px 10px;
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      animation: mouthTalk 1s infinite ease-in-out;
-      box-shadow: 0 0 4px white;
-    }
+.mouth {
+  position: absolute;
+  bottom: 50px;
+  width: 50px;
+  height: 20px;
+  background: white;
+  border-radius: 0 0 25px 25px;
+  animation: mouthBreathe 2.5s infinite ease-in-out;
+  box-shadow: 0 0 6px white;
+}
 
-    @keyframes mouthTalk {
-      0%, 100% {
-        height: 8px;
-      }
-      50% {
-        height: 14px;
-      }
-    }
+@keyframes mouthBreathe {
+  0%, 100% { transform: scaleY(1); }
+  50%      { transform: scaleY(1.5); }
+}
+
+@keyframes eyeLook {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-5px); }
+  50%      { transform: translateX(5px); }
+  75%      { transform: translateX(-3px); }
+}
+
   </style>
 </head>
 <body>
-  <div class="cube">
-    <div class="eye left"></div>
-    <div class="eye right"></div>
-    <div class="mouth"></div>
+  <div class="scene">
+    <div class="cube">
+      <div class="face front">
+        <div class="eyes">
+          <div class="eye"></div>
+          <div class="eye"></div>
+        </div>
+        <div class="mouth"></div>
+      </div>
+      <div class="face back">😴</div>
+      <div class="face right">🤖</div>
+      <div class="face left">💡</div>
+      <div class="face top">🔍</div>
+      <div class="face bottom">⚡</div>
+    </div>
   </div>
 </body>
 </html>
