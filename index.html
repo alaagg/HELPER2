@@ -1,76 +1,120 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Pulsing Glowing Cube</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FloBot</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      width: 100vw;
-      height: 100vh;
-      background: #000;
+      background: radial-gradient(circle at center, #010308, #000);
+      overflow: hidden;
+      height: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
-      perspective: 800px;
       touch-action: none;
-    }
+    }.ring {
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  border: 6px solid #00f0ff88;
+  position: absolute;
+  animation: rotate 16s linear infinite;
+}
 
-    .scene {
-      width: 50px;
-      height: 50px;
-      position: relative;
-      transform-style: preserve-3d;
-      transform: rotateX(-20deg) rotateY(30deg);
-    }
+.cube {
+  width: 140px;
+  height: 140px;
+  background: rgba(0, 255, 255, 0.05);
+  border: 2px solid #00f0ffcc;
+  box-shadow: 0 0 18px #00f0ff88, inset 0 0 8px #00f0ff66;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-style: preserve-3d;
+  transition: all 0.5s ease;
+}
 
-    .face {
-      position: absolute;
-      width: 50px;
-      height: 50px;
-      background: #000;
-      border-radius: 2px;
-      box-shadow:
-        0 0 6px #00ccff,
-        0 0 12px #00ccff,
-        inset 0 0 4px #00ccff;
-      animation: pulseGlow 2s infinite ease-in-out;
-    }
+.core-symbol {
+  font-size: 26px;
+  color: #00f0ff;
+  text-shadow: 0 0 4px #00f0ff, 0 0 8px #00f0ff;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
 
-    .front  { transform: translateZ(25px); }
-    .back   { transform: rotateY(180deg) translateZ(25px); }
-    .right  { transform: rotateY(90deg)  translateZ(25px); }
-    .left   { transform: rotateY(-90deg) translateZ(25px); }
-    .top    { transform: rotateX(90deg)  translateZ(25px); }
-    .bottom { transform: rotateX(-90deg) translateZ(25px); }
+.core-symbol.hidden {
+  opacity: 0;
+  transform: scale(0.2);
+}
 
-    @keyframes pulseGlow {
-      0%, 100% {
-        box-shadow:
-          0 0 6px #00ccff,
-          0 0 12px #00ccff,
-          inset 0 0 4px #00ccff;
-      }
-      50% {
-        box-shadow:
-          0 0 10px #00e7ff,
-          0 0 20px #00e7ff,
-          inset 0 0 6px #00e7ff;
-      }
-    }
+.calm {
+  border-color: #00f0ffcc;
+  box-shadow: 0 0 12px #00f0ff88, inset 0 0 8px #00f0ff66;
+}
+
+.excited {
+  border-color: #00ffff;
+  box-shadow: 0 0 28px #00ffffaa, inset 0 0 16px #00f0ff88;
+  transform: scale(1.1);
+}
+
+.withdrawn {
+  border-color: #003a4a;
+  box-shadow: 0 0 6px #003a4a, inset 0 0 4px #002f3f;
+  transform: scale(0.9);
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
   </style>
 </head>
 <body>
-  <div class="scene">
-    <div class="face front"></div>
-    <div class="face back"></div>
-    <div class="face right"></div>
-    <div class="face left"></div>
-    <div class="face top"></div>
-    <div class="face bottom"></div>
-  </div>
-</body>
+  <div class="ring"></div>
+  <div class="cube calm" id="cube">
+    <div class="core-symbol" id="symbol">☍</div>
+  </div>  <script>
+    const cube = document.getElementById("cube");
+    const symbol = document.getElementById("symbol");
+
+    let lastTouch = Date.now();
+    let touchSpeeds = [];
+
+    function updateState() {
+      const now = Date.now();
+      const sinceLast = now - lastTouch;
+
+      if (sinceLast > 7000) {
+        cube.className = 'cube withdrawn';
+        symbol.textContent = "…";
+      } else {
+        let speedAvg = touchSpeeds.length ? (touchSpeeds.reduce((a,b)=>a+b) / touchSpeeds.length) : 300;
+        if (speedAvg < 200) {
+          cube.className = 'cube excited';
+          symbol.textContent = "⚠";
+        } else {
+          cube.className = 'cube calm';
+          symbol.textContent = "☍";
+        }
+      }
+
+      setTimeout(updateState, 1000);
+    }
+
+    cube.addEventListener("click", () => {
+      const now = Date.now();
+      let speed = now - lastTouch;
+      lastTouch = now;
+
+      if (speed < 1000) {
+        touchSpeeds.push(speed);
+        if (touchSpeeds.length > 5) touchSpeeds.shift();
+      }
+    });
+
+    updateState();
+  </script></body>
 </html>
