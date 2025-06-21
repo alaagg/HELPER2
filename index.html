@@ -2,273 +2,82 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>HELPAR — All In One Avatar Cube</title>
+  <title>FloBot — AI assistant</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <style>
     html, body {
-      margin: 0; padding: 0; height: 100vh;
-      background: radial-gradient(circle at center, #010308 65%, #000 100%);
-      font-family: 'Segoe UI', 'Consolas', monospace;
-      color: #00ccff; overflow: hidden;
+      height: 100%; margin: 0; padding: 0;
+      background: radial-gradient(circle at 60% 50%, #10131d 40%, #000 100%);
+      font-family: 'Segoe UI', Arial, monospace;
+      overflow: hidden;
     }
-    #neonMessage {
-      text-align: center;
-      font-size: 1.6em;
-      margin-top: 3vh;
-      text-shadow: 0 0 18px #00e7ff, 0 0 6px #00e7ff88;
-      letter-spacing: 1.5px;
-      font-family: 'Consolas', monospace;
-      font-weight: bold;
-      animation: welcomePulse 2.2s infinite alternate;
-    }
-    @keyframes welcomePulse {
-      from { text-shadow: 0 0 10px #00e7ff; }
-      to   { text-shadow: 0 0 24px #00e7ff, 0 0 40px #00f; }
-    }
-    /* مكعب */
-    .scene {
-      width: 265px; height: 265px;
-      margin: 42px auto 0 auto;
-      perspective: 1200px;
-      user-select: none;
-      touch-action: none;
-    }
-    .cube {
-      width: 255px; height: 255px;
-      position: relative;
-      transform-style: preserve-3d;
-      animation: spin 8s linear infinite;
-      transition: transform 1s cubic-bezier(.42,1.34,.7,.89);
-      filter: drop-shadow(0 0 24px #00e7ff55);
-    }
-    .cube.paused { animation-play-state: paused; }
-    .face {
-      position: absolute;
-      width: 255px; height: 255px;
+    body {
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      background: rgba(0, 10, 24, 0.92);
-      border: 2.7px solid #00ccffcc;
-      box-shadow: 0 0 26px #00e7ff88, 0 0 100px #00e7ff0a inset;
-      font-size: 29px; font-weight: bold; color: #00ccff;
-      cursor: pointer; text-align: center; user-select: none;
-      text-shadow: 0 0 12px #00e7ffcc;
-      transition: background 0.3s, border 0.3s;
+      height: 100vh;
     }
-    .face:hover { background: #001b26f7; border-color: #00e7ff; }
-    .front  { transform: rotateY(  0deg) translateZ(127.5px);}
-    .back   { transform: rotateY(180deg) translateZ(127.5px);}
-    .right  { transform: rotateY( 90deg) translateZ(127.5px);}
-    .left   { transform: rotateY(-90deg) translateZ(127.5px);}
-    .top    { transform: rotateX( 90deg) translateZ(127.5px);}
-    .bottom { transform: rotateX(-90deg) translateZ(127.5px);}
-    @keyframes spin {
-      0%   { transform: rotateX(-20deg) rotateY(0deg);}
-      100% { transform: rotateX(-20deg) rotateY(360deg);}
+    .flobot-container {
+      display: flex; flex-direction: column; align-items: center; gap: 20px;
+      justify-content: center;
     }
-    /* منبثق */
-    .overlay {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.97); color: #00ccff; font-family: 'Consolas', monospace;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      z-index: 9999; text-align: center; padding: 20px;
-      animation: fadein .7s;
-    }
-    @keyframes fadein { from { opacity:0; } to { opacity:1; } }
-    .overlay h2 { color: #44dfff; margin-bottom: 16px; font-size: 1.5em; }
-    .overlay p  { color: #77faff; font-size: 1.17em; text-shadow:0 0 6px #00e7ff; }
-    .neon-btn {
-      margin-top: 28px; padding: 15px 38px;
-      font-size: 1.13em; background: #000e;
-      border: 2.3px solid #00ccff;
-      border-radius: 16px; color: #00ccff;
-      box-shadow: 0 0 16px #00e7ff99, 0 0 0 #000;
-      cursor: pointer;
-      transition: background .24s, color .24s;
-    }
-    .neon-btn:hover {
-      background: #011a2a; color: #fff; border-color: #00e7ff;
-    }
-    /* أفاتار متحرك */
-    .avatar-container {
-      margin: 20px auto 0 auto; display: flex; flex-direction: column; align-items: center;
-    }
-    .avatar-bubble {
-      padding: 13px 30px 10px 30px;
-      border: 2.5px solid #03faff;
+    .flobot-message {
+      padding: 16px 28px;
+      border: 2px solid #03faff;
       border-radius: 14px;
-      background: rgba(0,0,0,0.88);
+      background: rgba(0,0,0,0.87);
       color: #fff;
-      font-size: 1.12em;
+      font-size: 1.22em;
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       box-shadow: 0 0 18px #03faff66, 0 0 0px #00e7ff;
       text-shadow: 0 0 6px #03faff99;
-      font-family: 'Segoe UI', monospace;
     }
-    .avatar-face {
-      width: 122px; height: 122px;
+    .flobot-face {
+      width: 120px; height: 120px;
       background: #181c23;
       border: 4px solid #03faff;
       border-radius: 18px;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      box-shadow: 0 0 38px #00e7ffcc, 0 0 46px #000 inset;
+      box-shadow: 0 0 32px #00e7ffcc, 0 0 40px #000 inset;
       position: relative;
       margin: 0 auto;
-      animation: facePulse 1.6s infinite alternate;
-      transition: border 0.2s, box-shadow 0.2s;
+      animation: facePulse 2s infinite alternate;
     }
-    .avatar-eye {
-      width: 18px; height: 18px;
+    .flobot-eye {
+      width: 16px; height: 16px;
       background: #03faff;
       border-radius: 50%;
       position: absolute;
       top: 38px;
-      transition: left 0.15s, right 0.15s;
-      filter: drop-shadow(0 0 6px #00e7ff);
     }
-    .avatar-eye.left  { left: 32px; }
-    .avatar-eye.right { right: 32px; }
-    .avatar-mouth {
-      width: 42px; height: 7px;
+    .flobot-eye.left  { left: 34px; }
+    .flobot-eye.right { right: 34px; }
+    .flobot-mouth {
+      width: 38px; height: 6px;
       background: #03faff;
-      border-radius: 8px;
+      border-radius: 6px;
       position: absolute;
-      bottom: 33px; left: 50%; transform: translateX(-50%);
-      transition: width 0.22s, border-radius 0.22s, background 0.22s;
-      filter: drop-shadow(0 0 4px #00e7ff99);
-    }
-    .avatar-face.happy .avatar-mouth {
-      width: 50px; height: 13px;
-      border-radius: 60px 60px 80px 80px / 100px 100px 100px 100px;
-      background: #6ff;
-    }
-    .avatar-face.sad .avatar-mouth {
-      width: 33px; height: 10px;
-      border-radius: 0 0 22px 22px / 0 0 35px 35px;
-      background: #00c5ff;
-      top: unset; bottom: 28px;
-      transform: translateX(-50%) rotate(180deg);
-    }
-    .avatar-face.surprised .avatar-mouth {
-      width: 18px; height: 18px;
-      border-radius: 50%;
-      background: #aafaff;
-      top: unset; bottom: 36px;
+      bottom: 34px;
       left: 50%; transform: translateX(-50%);
     }
     @keyframes facePulse {
-      0% { box-shadow: 0 0 18px #00e7ff99, 0 0 60px #001 inset; }
-      100% { box-shadow: 0 0 32px #00e7ffcc, 0 0 110px #00e7ff0d inset; }
+      0% { box-shadow: 0 0 16px #00e7ff99, 0 0 40px #001 inset; }
+      100% { box-shadow: 0 0 28px #00e7ffcc, 0 0 50px #000a inset; }
     }
   </style>
 </head>
 <body>
-  <div id="neonMessage">👋 Welcome to HELPAR</div>
-  <div class="scene">
-    <div class="cube" id="cube">
-      <div class="face front"  data-section="chat">💬<br>Quantum Chat</div>
-      <div class="face back"   data-section="avatar">🤖<br>Avatar</div>
-      <div class="face right"  data-section="trends">🌍<br>Trends</div>
-      <div class="face left"   data-section="xp">💠<br>XP</div>
-      <div class="face top"    data-section="time">🕒<br>Time</div>
-      <div class="face bottom" data-section="voice">🎤<br>Voice</div>
+  <div class="flobot-container">
+    <div class="flobot-message">
+      Hello! I'm FloBot —<br>
+      your AI assistant 👋
+    </div>
+    <div class="flobot-face">
+      <div class="flobot-eye left"></div>
+      <div class="flobot-eye right"></div>
+      <div class="flobot-mouth"></div>
     </div>
   </div>
-  <script>
-    // دوران المكعب توقف/تشغيل عند الضغط
-    const cube = document.getElementById("cube");
-    cube.addEventListener("click", e => {
-      cube.classList.toggle("paused");
-    });
-    // كل وجه يفتح منبثق
-    document.querySelectorAll('.face').forEach(face => {
-      face.addEventListener('click', function(e){
-        e.stopPropagation();
-        showOverlay(this.dataset.section);
-      });
-    });
-    // محتوى كل قسم (منبثق)
-    function showOverlay(section) {
-      const overlay = document.createElement('div');
-      overlay.className = 'overlay';
-      let content = '';
-      switch(section) {
-        case "chat":
-          content = `<h2>Quantum Chat</h2>
-            <p class="neon-glow">[واجهة محادثة GPT قريبًا]</p>`;
-          break;
-        case "avatar":
-          content = `<h2>HELPar Avatar</h2>
-            <div class="avatar-container">
-              <div class="avatar-bubble" id="avatar-bubble">Hello! I'm HELPar — your AI friend 👋</div>
-              <div class="avatar-face" id="avatar-face">
-                <div class="avatar-eye left" id="eye-l"></div>
-                <div class="avatar-eye right" id="eye-r"></div>
-                <div class="avatar-mouth" id="mouth"></div>
-              </div>
-            </div>
-            <script>
-              (function(){
-                const face = document.getElementById('avatar-face');
-                const mouth = document.getElementById('mouth');
-                let moods = ['happy','sad','surprised',''];
-                let mood = 0;
-                setInterval(()=>{
-                  face.className = 'avatar-face ' + moods[mood%4];
-                  mood++;
-                }, 2200);
-                // تتبع المؤشر
-                const eyeL = document.getElementById('eye-l');
-                const eyeR = document.getElementById('eye-r');
-                document.onmousemove = function(e){
-                  let x = e.clientX/window.innerWidth;
-                  eyeL.style.left = (32+16*x)+'px';
-                  eyeR.style.right = (32+16*(1-x))+'px';
-                };
-              })();
-            </script>
-          `;
-          break;
-        case "trends":
-          content = `<h2>Trends</h2>
-            <p class="neon-glow">[ترندات الدولة/العالم — لاحقًا]</p>`;
-          break;
-        case "xp":
-          const xp = localStorage.getItem('xp') || 0;
-          content = `<h2>XP Points</h2>
-            <p class="neon-glow">${xp} XP</p>`;
-          break;
-        case "time":
-          const hour = new Date().getHours();
-          content = `<h2>Time Mode</h2>
-            <p class="neon-glow">${hour < 12 ? '☀️ Good Morning' : '🌙 Good Evening'}</p>`;
-          break;
-        case "voice":
-          content = `<h2>🎤 Voice Mode</h2>
-            <p class="neon-glow">Say "chat" or "avatar"…</p>`;
-          activateVoice();
-          break;
-      }
-      overlay.innerHTML = content + '<button class="neon-btn" onclick="this.parentElement.remove()">Close</button>';
-      document.body.appendChild(overlay);
-    }
-    // تحكم صوتي (اختياري)
-    function activateVoice() {
-      if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
-        alert('Voice recognition not supported on your browser!');
-        return;
-      }
-      const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-      rec.lang = "en-US";
-      rec.start();
-      rec.onresult = (e) => {
-        const command = e.results[0][0].transcript.toLowerCase();
-        if (command.includes("chat")) showOverlay("chat");
-        if (command.includes("avatar")) showOverlay("avatar");
-      };
-    }
-  </script>
 </body>
 </html>
