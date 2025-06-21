@@ -1,8 +1,9 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="tr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HELPAR — Full Project</title>
+  <title>HELPAR Final Full</title>
   <style>
     html, body {
       margin: 0; padding: 0;
@@ -12,17 +13,17 @@
       overflow: hidden;
       touch-action: none;
     }
-    /* ------------------------ Common ------------------------ */
-    .hidden { display: none; }
     .centered {
       position: absolute;
-      top: 50%; left: 50%;
+      top: 45%;
+      left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
       color: #00ccff;
     }
     .helpar-logo {
       width: 100px;
+      margin-bottom: 10px;
       animation: pulseGlow 2s infinite;
     }
     .helpar-title {
@@ -42,132 +43,145 @@
       margin-top: 50px;
     }
     @keyframes pulseGlow {
-      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 12px #00ccff); }
-      50% { transform: scale(1.07); filter: drop-shadow(0 0 22px #00e7ff); }
-    }/* -------------------- Language Cube -------------------- */
-.scene { position: absolute; width: 150px; height: 150px; top: 50%; left: 50%; transform: translate(-50%, -50%); perspective: 800px; }
-.cube {
-  width: 100%; height: 100%;
-  transform-style: preserve-3d;
-  animation: rotateLang 6s linear infinite;
-}
-.face {
-  position: absolute;
-  width: 150px; height: 150px;
-  border: 2px solid #00ccff;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
-  color: #00ccff;
-  flex-direction: column;
-}
-.front  { transform: rotateY(0deg) translateZ(75px); }
-.back   { transform: rotateY(180deg) translateZ(75px); }
-.right  { transform: rotateY(90deg) translateZ(75px); }
-.left   { transform: rotateY(-90deg) translateZ(75px); }
-.lang-label { font-size: 1rem; margin-top: 8px; }
-@keyframes rotateLang {
-  from { transform: rotateX(-10deg) rotateY(0deg); }
-  to { transform: rotateX(-10deg) rotateY(360deg); }
-}
+      0%, 100% {
+        filter: drop-shadow(0 0 12px #00e7ff) drop-shadow(0 0 24px #00ccff);
+        transform: scale(1);
+      }
+      50% {
+        filter: drop-shadow(0 0 20px #00e7ff) drop-shadow(0 0 40px #00ccff);
+        transform: scale(1.07);
+      }
+    }
+    .scene, #videoSection, #sectionCubeContainer, #flobotContainer {
+      display: none;
+      position: absolute;
+      width: 100vw; height: 100vh;
+      top: 0; left: 0;
+      justify-content: center;
+      align-items: center;
+    }
+    .scene { perspective: 800px; }
+    .cube {
+      width: 150px; height: 150px;
+      transform-style: preserve-3d;
+      animation: spin 6s linear infinite;
+    }
+    @keyframes spin {
+      from { transform: rotateX(-10deg) rotateY(0deg); }
+      to   { transform: rotateX(-10deg) rotateY(360deg); }
+    }
+    .face {
+      position: absolute;
+      width: 150px; height: 150px;
+      border: 2px solid #00ccff;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      color: #00ccff;
+    }
+    .front  { transform: rotateY(0deg) translateZ(75px); }
+    .back   { transform: rotateY(180deg) translateZ(75px); }
+    .right  { transform: rotateY(90deg) translateZ(75px); }
+    .left   { transform: rotateY(-90deg) translateZ(75px); }
+    video {
+      max-width: 90vw;
+      max-height: 90vh;
+      border: 2px solid #00ccff;
+      border-radius: 10px;
+    }
+    .section-face {
+      position: absolute;
+      width: 275px; height: 275px;
+      background-color: #000;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      border: 2px solid #00ccff;
+    }
+    .scene-section {
+      width: 275px;
+      height: 275px;
+      perspective: 1000px;
+    }
+    .cube-section {
+      width: 275px;
+      height: 275px;
+      transform-style: preserve-3d;
+      transform: rotateX(-18deg) rotateY(0deg);
+      transition: transform 0.5s ease;
+    }
+    .front-sec  { transform: rotateY(0deg) translateZ(137.5px); background-image: url('sho.png'); }
+    .back-sec   { transform: rotateY(180deg) translateZ(137.5px); background-image: url('code rom.png'); }
+    .right-sec  { transform: rotateY(90deg) translateZ(137.5px); background-image: url('food.png'); }
+    .left-sec   { transform: rotateY(-90deg) translateZ(137.5px); background-image: url('games room.png'); }
 
-/* -------------------- Video -------------------- */
-#videoSection {
-  display: none;
-  position: absolute; width: 100%; height: 100%; top: 0; left: 0;
-  justify-content: center;
-  align-items: center;
-}
-video {
-  max-width: 90vw;
-  max-height: 90vh;
-  border: 2px solid #00ccff;
-  border-radius: 12px;
-  box-shadow: 0 0 16px #00ccff;
-}
-
-/* -------------------- Section Cube -------------------- */
-#sectionCubeContainer { display: none; position: absolute; width: 100%; height: 100%; top: 0; left: 0; }
-.scene-section {
-  width: 275px; height: 275px;
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  perspective: 1000px;
-}
-.cube-section {
-  width: 275px; height: 275px;
-  transform-style: preserve-3d;
-  transition: transform 0.5s ease;
-  transform: rotateX(-18deg) rotateY(0deg);
-}
-.section-face {
-  position: absolute;
-  width: 275px; height: 275px;
-  border: 2px solid #00ccff;
-  background-size: cover;
-  background-position: center;
-}
-.front-sec { transform: rotateY(0deg) translateZ(137.5px); background-image: url('sho.png'); }
-.back-sec { transform: rotateY(180deg) translateZ(137.5px); background-image: url('code rom.png'); }
-.right-sec { transform: rotateY(90deg) translateZ(137.5px); background-image: url('food.png'); }
-.left-sec { transform: rotateY(-90deg) translateZ(137.5px); background-image: url('games room.png'); }
-
-/* -------------------- Floating Cube (Flo) -------------------- */
-#floCube {
-  display: none;
-  position: absolute;
-  bottom: 40px; left: 50%;
-  transform: translateX(-50%);
-  width: 100px; height: 100px;
-  background: #101820;
-  border-radius: 20px;
-  box-shadow: 0 0 12px #00ccff, 0 0 24px #00ccff inset;
-}
-#floCube .eye {
-  width: 18px; height: 18px;
-  border-radius: 50%;
-  background: #00ccff;
-  position: absolute;
-  top: 30%;
-  transition: all 0.1s linear;
-}
-#floCube .eye.left { left: 25%; }
-#floCube .eye.right { right: 25%; }
-#floCube .excl {
-  width: 6px; height: 12px;
-  background: #00ccff;
-  position: absolute;
-  top: -12px; left: 50%;
-  transform: translateX(-50%);
-  border-radius: 2px;
-  animation: blinkEx 2s infinite;
-}
-@keyframes blinkEx {
-  0%, 100% { opacity: 0.2; transform: translateX(-50%) scale(0.7); }
-  50% { opacity: 1; transform: translateX(-50%) scale(1.4); }
-}
-
+    .flobot-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      background: radial-gradient(circle at 60% 50%, #10131d 45%, #000 100%);
+    }
+    .flobot-face {
+      width: 130px; height: 130px;
+      background: #181c23;
+      border: 4px solid #03faff;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 0 36px #00e7ffcc, 0 0 44px #000 inset;
+    }
+    .flobot-eye {
+      width: 18px; height: 18px;
+      background: #03faff;
+      border-radius: 50%;
+      position: absolute;
+      top: 42px;
+      box-shadow: 0 0 7px #00e7ff;
+    }
+    .flobot-eye.left  { left: 35px; }
+    .flobot-eye.right { right: 35px; }
+    .flobot-mouth {
+      width: 46px;
+      height: 8px;
+      background: #03faff;
+      border-radius: 6px;
+      position: absolute;
+      bottom: 35px;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 4px #00e7ff99;
+      transition: height 0.15s ease;
+    }
   </style>
 </head>
 <body>
   <div id="start" class="centered">
     <img src="logo.png" class="helpar-logo" />
     <div class="helpar-title">HELPAR</div>
-    <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
-  </div>  <div class="scene hidden" id="langCube">
-    <div class="cube">
-      <div class="face front">🇬🇧<span class="lang-label">English</span></div>
-      <div class="face back">🇸🇦<span class="lang-label">العربية</span></div>
-      <div class="face right">🇪🇸<span class="lang-label">Español</span></div>
-      <div class="face left">🇫🇷<span class="lang-label">Français</span></div>
+    <button class="lang-btn" onclick="showLanguages()">Dili Seç</button>
+  </div>
+
+  <div class="scene" id="sceneLang">
+    <div class="cube" id="cubeLang">
+      <div class="face front">🇹🇷 Türkçe</div>
+      <div class="face back">🇬🇧 English</div>
+      <div class="face right">🇸🇦 عربي</div>
+      <div class="face left">🇪🇸 Español</div>
     </div>
-  </div>  <div id="videoSection">
-    <video id="introVideo" autoplay muted playsinline>
-      <source src="HELBERpro.mp4" type="video/mp4" />
+  </div>
+
+  <div id="videoSection">
+    <video id="introVideo" autoplay>
+      <source src="HELBERpro.mp4" type="video/mp4">
     </video>
-  </div>  <div id="sectionCubeContainer">
+  </div>
+
+  <div id="sectionCubeContainer">
     <div class="scene-section">
       <div class="cube-section" id="cubeSection">
         <div class="section-face front-sec"></div>
@@ -176,29 +190,41 @@ video {
         <div class="section-face left-sec"></div>
       </div>
     </div>
-  </div>  <div id="floCube">
-    <div class="eye left" id="eyeLeft"></div>
-    <div class="eye right" id="eyeRight"></div>
-    <div class="excl"></div>
-  </div>  <script>
-    const langCube = document.getElementById("langCube");
+  </div>
+
+  <div class="flobot-container" id="flobotContainer">
+    <div class="flobot-face">
+      <div class="flobot-eye left"></div>
+      <div class="flobot-eye right"></div>
+      <div class="flobot-mouth" id="flo-mouth"></div>
+    </div>
+    <div style="color:#fff;text-align:center;font-size:18px;">FloBot: Devran Bey, Yeni Güne Hazır mısınız?</div>
+  </div>
+
+  <script>
+    const cubeLang = document.getElementById("cubeLang");
+    const sceneLang = document.getElementById("sceneLang");
     const start = document.getElementById("start");
     const videoSection = document.getElementById("videoSection");
     const introVideo = document.getElementById("introVideo");
     const sectionCubeContainer = document.getElementById("sectionCubeContainer");
+    const flobotContainer = document.getElementById("flobotContainer");
     const cubeSection = document.getElementById("cubeSection");
-    const floCube = document.getElementById("floCube");
-    const eyeLeft = document.getElementById("eyeLeft");
-    const eyeRight = document.getElementById("eyeRight");
+    const floMouth = document.getElementById("flo-mouth");
+
+    let angleSec = 0;
+    let rotating = true;
+    let autoRotateInterval;
+    let mouthTimer;
 
     function showLanguages() {
       start.style.display = "none";
-      langCube.classList.remove("hidden");
+      sceneLang.style.display = "flex";
     }
 
-    document.querySelectorAll(".lang-label").forEach(label => {
-      label.parentElement.addEventListener("click", () => {
-        langCube.classList.add("hidden");
+    document.querySelectorAll("#cubeLang .face").forEach(face => {
+      face.addEventListener("click", () => {
+        sceneLang.style.display = "none";
         videoSection.style.display = "flex";
         introVideo.play();
       });
@@ -206,18 +232,43 @@ video {
 
     introVideo.onended = () => {
       videoSection.style.display = "none";
-      sectionCubeContainer.style.display = "block";
+      sectionCubeContainer.style.display = "flex";
+      autoRotateInterval = setInterval(() => {
+        angleSec += 1;
+        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
+      }, 30);
       setTimeout(() => {
         sectionCubeContainer.style.display = "none";
-        floCube.style.display = "block";
-      }, 5000);
+        flobotContainer.style.display = "flex";
+        startFloBot();
+      }, 8000);
     };
 
-    document.addEventListener("touchmove", (e) => {
-      const x = e.touches[0].clientX / window.innerWidth;
-      const y = e.touches[0].clientY / window.innerHeight;
-      eyeLeft.style.transform = `translate(${(x - 0.5) * 20}px, ${(y - 0.5) * 20}px)`;
-      eyeRight.style.transform = `translate(${(x - 0.5) * 20}px, ${(y - 0.5) * 20}px)`;
-    });
-  </script></body>
+    function startFloBot() {
+      const speech = new SpeechSynthesisUtterance("Devran Bey, Yeni Güne Hazır mısınız?");
+      speech.lang = 'tr-TR';
+      speech.pitch = 1.1;
+      speech.rate = 1;
+      speech.volume = 1;
+
+      const voices = window.speechSynthesis.getVoices();
+      if (voices.length > 0) {
+        speech.voice = voices.find(v => v.lang === 'tr-TR') || voices[0];
+      }
+
+      speech.onstart = () => {
+        mouthTimer = setInterval(() => {
+          floMouth.style.height = (Math.random() > 0.5 ? '20px' : '8px');
+        }, 130);
+      };
+
+      speech.onend = () => {
+        clearInterval(mouthTimer);
+        floMouth.style.height = "8px";
+      };
+
+      window.speechSynthesis.speak(speech);
+    }
+  </script>
+</body>
 </html>
