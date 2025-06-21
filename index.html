@@ -11,8 +11,7 @@
       font-family: Arial, sans-serif;
       overflow: hidden;
       touch-action: none;
-    }/* HELPAR Elements */
-#start, #sceneLang, #videoSection, #sectionCubeContainer {
+    }#start, #videoSection, #sectionCubeContainer {
   position: absolute;
   width: 100vw; height: 100vh;
   top: 0; left: 0;
@@ -39,7 +38,6 @@
   margin-top: 70px;
 }
 
-/* Section Cube */
 .scene-section {
   width: 275px;
   height: 275px;
@@ -57,49 +55,60 @@
   width: 275px; height: 275px;
   border: 2px solid #00ccff;
   background-color: #000;
+  background-size: cover;
+  background-position: center;
 }
-.front-sec  { transform: rotateY(0deg) translateZ(137.5px); background: url('sho.png') center/cover no-repeat; }
-.back-sec   { transform: rotateY(180deg) translateZ(137.5px); background: url('code rom.png') center/cover no-repeat; }
-.right-sec  { transform: rotateY(90deg) translateZ(137.5px); background: url('food.png') center/cover no-repeat; }
-.left-sec   { transform: rotateY(-90deg) translateZ(137.5px); background: url('games room.png') center/cover no-repeat; }
+.front-sec  { transform: rotateY(0deg) translateZ(137.5px); background-image: url('sho.png'); }
+.back-sec   { transform: rotateY(180deg) translateZ(137.5px); background-image: url('code rom.png'); }
+.right-sec  { transform: rotateY(90deg) translateZ(137.5px); background-image: url('food.png'); }
+.left-sec   { transform: rotateY(-90deg) translateZ(137.5px); background-image: url('games room.png'); }
 
 /* FloBot */
 #flobot {
-  position: absolute;
-  bottom: 30px;
-  right: 30px;
-  width: 130px;
-  height: 130px;
+  position: fixed;
+  width: 160px;
+  height: 160px;
   background: #181c23;
   border: 4px solid #03faff;
-  border-radius: 14px;
+  border-radius: 18px;
   box-shadow: 0 0 20px #00e7ffcc, 0 0 30px #000 inset;
   display: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  animation: fadeInPop 0.5s ease forwards;
   z-index: 99;
 }
+
+@keyframes fadeInPop {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
 .flobot-eye {
-  width: 18px; height: 18px;
+  width: 20px; height: 20px;
   background: #03faff;
   border-radius: 50%;
-  box-shadow: 0 0 7px #00e7ff;
+  box-shadow: 0 0 8px #00e7ff;
   position: absolute;
-  top: 38px;
+  top: 44px;
 }
-.eye-left  { left: 32px; }
-.eye-right { right: 32px; }
+.eye-left  { left: 40px; }
+.eye-right { right: 40px; }
+
 .flobot-mouth {
-  width: 46px;
-  height: 8px;
+  width: 50px;
+  height: 10px;
   background: #03faff;
   border-radius: 6px;
   position: absolute;
-  bottom: 30px;
+  bottom: 38px;
   left: 50%;
   transform: translateX(-50%);
-  box-shadow: 0 0 4px #00e7ff99;
+  box-shadow: 0 0 5px #00e7ff99;
 }
 
   </style>
@@ -107,7 +116,7 @@
 <body>
   <div id="start">
     <div class="helpar-title">HELPAR</div>
-    <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
+    <button class="lang-btn" onclick="startVideo()">Choose Language</button>
   </div>  <div id="videoSection">
     <video id="introVideo" autoplay playsinline>
       <source src="HELBERpro.mp4" type="video/mp4">
@@ -122,7 +131,7 @@
   </div>  <div id="flobot">
     <div class="flobot-eye eye-left"></div>
     <div class="flobot-eye eye-right"></div>
-    <div class="flobot-mouth" id="flo-mouth"></div>
+    <div class="flobot-mouth"></div>
   </div>  <script>
     const start = document.getElementById("start");
     const videoSection = document.getElementById("videoSection");
@@ -135,7 +144,7 @@
     let rotating = true;
     let startX = 0;
 
-    function showLanguages() {
+    function startVideo() {
       start.style.display = "none";
       videoSection.style.display = "flex";
       introVideo.play();
@@ -175,14 +184,20 @@
 
     function speakFlo() {
       const speech = new SpeechSynthesisUtterance(
-        "Heey! I'm Flo, your AI buddy. Welcome in! Let's explore this section together!"
+        "Hey! I'm Flo, your AI buddy. Welcome to this section!"
       );
       speech.lang = 'en-US';
       speech.pitch = 1.1;
       speech.rate = 1;
       const voices = window.speechSynthesis.getVoices();
-      speech.voice = voices.find(v => v.lang === 'en-US' && v.name.includes("Google")) || voices[0];
+      if (voices.length > 0) {
+        speech.voice = voices.find(v => v.lang === 'en-US' && v.name.includes("Google")) || voices[0];
+      }
       window.speechSynthesis.speak(speech);
+
+      setTimeout(() => {
+        flobot.style.display = "none";
+      }, 5000);
     }
   </script></body>
 </html>
