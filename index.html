@@ -142,9 +142,16 @@
       position: absolute;
       top: 42px;
       box-shadow: 0 0 7px #00e7ff;
+      animation: eyeMove 0.3s infinite alternate;
     }
     .flobot-eye.left  { left: 35px; }
     .flobot-eye.right { right: 35px; }
+
+    @keyframes eyeMove {
+      0%   { transform: translate(0, 0); }
+      100% { transform: translate(1px, -1px); }
+    }
+
     .flobot-mouth {
       width: 46px;
       height: 8px;
@@ -213,7 +220,6 @@
     const floMouth = document.getElementById("flo-mouth");
 
     let angleSec = 0;
-    let rotating = true;
     let autoRotateInterval;
     let mouthTimer;
 
@@ -245,10 +251,10 @@
     };
 
     function startFloBot() {
-      const speech = new SpeechSynthesisUtterance("Devran Bey, Yeni Güne Hazır mısınız?");
+      const speech = new SpeechSynthesisUtterance("Devran Bey Yeni Güne Hazır mısınız?");
       speech.lang = 'tr-TR';
-      speech.pitch = 1.1;
-      speech.rate = 1;
+      speech.pitch = 1.2;
+      speech.rate = 1.5;
       speech.volume = 1;
 
       const voices = window.speechSynthesis.getVoices();
@@ -259,7 +265,7 @@
       speech.onstart = () => {
         mouthTimer = setInterval(() => {
           floMouth.style.height = (Math.random() > 0.5 ? '20px' : '8px');
-        }, 130);
+        }, 100);
       };
 
       speech.onend = () => {
@@ -271,4 +277,4 @@
     }
   </script>
 </body>
-</html>
+  </html>
