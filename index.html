@@ -2,139 +2,168 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>HELPAR — 3D Quantum Cube</title>
+  <title>HELPAR — Neon Quantum Cube</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <style>
     html, body {
-      margin: 0; padding: 0;
-      height: 100vh;
-      background: radial-gradient(circle at center, #010308 60%, #000 100%);
-      font-family: monospace;
-      color: #00ccff;
-      overflow: hidden;
+      margin: 0; padding: 0; height: 100vh;
+      background: radial-gradient(circle at center, #010308 70%, #000 100%);
+      font-family: 'Consolas', monospace;
+      color: #00ccff; overflow: hidden;
     }
     #neonMessage {
       text-align: center;
       font-size: 1.5em;
       margin-top: 3vh;
-      text-shadow: 0 0 8px #00e7ff;
-      letter-spacing: 1px;
+      text-shadow: 0 0 18px #00e7ff;
+      letter-spacing: 1.5px;
+      font-family: 'Consolas', monospace;
     }
     .scene {
-      width: 210px; height: 210px;
-      margin: 40px auto 0 auto;
-      perspective: 1200px;
+      width: 260px; height: 260px;
+      margin: 35px auto 0 auto;
+      perspective: 1400px;
       user-select: none;
       touch-action: none;
     }
     .cube {
-      width: 200px; height: 200px;
+      width: 250px; height: 250px;
       position: relative;
       transform-style: preserve-3d;
       animation: spin 8s linear infinite;
       transition: transform 1s cubic-bezier(.42,1.34,.7,.89);
+      filter: drop-shadow(0 0 24px #00e7ff55);
     }
     .cube.paused { animation-play-state: paused; }
     .face {
       position: absolute;
-      width: 200px; height: 200px;
+      width: 250px; height: 250px;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      background: rgba(0, 0, 20, 0.92);
-      border: 2px solid #00ccff33;
-      box-shadow: 0 0 14px #00ccff33;
-      font-size: 17px; font-weight: bold; color: #00ccff;
-      cursor: pointer; text-align: center;
-      user-select: none;
-      transition: background 0.3s;
+      background: rgba(0, 8, 28, 0.93);
+      border: 2.7px solid #00ccffcc;
+      box-shadow: 0 0 24px #00e7ff88, 0 0 100px #00e7ff0a inset;
+      font-size: 27px; font-weight: bold; color: #00ccff;
+      cursor: pointer; text-align: center; user-select: none;
+      text-shadow: 0 0 10px #00e7ffcc;
+      transition: background 0.3s, border 0.3s;
     }
-    .face:hover { background: #021C27; }
-    .front  { transform: rotateY(  0deg) translateZ(100px);}
-    .back   { transform: rotateY(180deg) translateZ(100px);}
-    .right  { transform: rotateY( 90deg) translateZ(100px);}
-    .left   { transform: rotateY(-90deg) translateZ(100px);}
-    .top    { transform: rotateX( 90deg) translateZ(100px);}
-    .bottom { transform: rotateX(-90deg) translateZ(100px);}
+    .face:hover { background: #001b26ee; border-color: #00e7ff; }
+    .front  { transform: rotateY(  0deg) translateZ(125px);}
+    .back   { transform: rotateY(180deg) translateZ(125px);}
+    .right  { transform: rotateY( 90deg) translateZ(125px);}
+    .left   { transform: rotateY(-90deg) translateZ(125px);}
+    .top    { transform: rotateX( 90deg) translateZ(125px);}
+    .bottom { transform: rotateX(-90deg) translateZ(125px);}
     @keyframes spin {
       0%   { transform: rotateX(-20deg) rotateY(0deg);}
       100% { transform: rotateX(-20deg) rotateY(360deg);}
     }
+    /* منبثق */
     .overlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.96); color: #00ccff; font-family: monospace;
+      background: rgba(0,0,0,0.96); color: #00ccff; font-family: 'Consolas', monospace;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       z-index: 9999; text-align: center; padding: 20px;
+      animation: fadein .7s;
     }
-    .overlay button {
-      margin-top: 26px; padding: 12px 30px;
-      font-size: 1em; background: #021c28;
-      border: 2px solid #00ccff;
-      border-radius: 12px; color: #00ccff;
-      box-shadow: 0 0 8px #00ccff55;
+    @keyframes fadein { from { opacity:0; } to { opacity:1; } }
+    .overlay h2 { color: #44dfff; margin-bottom: 16px; font-size: 1.5em; }
+    .overlay p  { color: #77faff; font-size: 1.18em; text-shadow:0 0 6px #00e7ff; }
+    .neon-glow {
+      color: #44dfff;
+      text-shadow: 0 0 22px #00ccff, 0 0 44px #00e7ff77;
+      font-size: 1.18em;
+      font-family: 'Consolas', monospace;
+    }
+    .neon-btn {
+      margin-top: 28px; padding: 15px 38px;
+      font-size: 1.13em; background: #000e;
+      border: 2.3px solid #00ccff;
+      border-radius: 16px; color: #00ccff;
+      box-shadow: 0 0 16px #00e7ff99, 0 0 0 #000;
       cursor: pointer;
+      transition: background .24s, color .24s;
+    }
+    .neon-btn:hover {
+      background: #011a2a; color: #fff; border-color: #00e7ff;
+    }
+    .neon-ball {
+      width: 72px; height: 72px; border-radius: 50%;
+      margin: 24px auto 18px auto;
+      background: radial-gradient(circle, #00e7ff 22%, #001a27 85%);
+      box-shadow: 0 0 48px #00e7ff88, 0 0 200px #00e7ff11;
+      animation: pulseglow 1.6s infinite alternate;
+    }
+    @keyframes pulseglow {
+      from { box-shadow: 0 0 32px #00e7ff88, 0 0 70px #00e7ff11; }
+      to   { box-shadow: 0 0 48px #00e7ffdd, 0 0 220px #00e7ff22;}
     }
   </style>
 </head>
 <body>
-  <!-- رسالة ترحيب -->
   <div id="neonMessage">👋 Welcome to HELPAR</div>
-  <!-- مشهد المكعب -->
   <div class="scene">
     <div class="cube" id="cube">
-      <div class="face front"  data-section="chat">💬<br>Quantum Chat</div>
-      <div class="face back"   data-section="avatar">🎭<br>Avatar</div>
-      <div class="face right"  data-section="trends">🌍<br>Trends</div>
-      <div class="face left"   data-section="xp">💠<br>XP</div>
-      <div class="face top"    data-section="time">🕒<br>Time</div>
-      <div class="face bottom" data-section="voice">🎤<br>Voice</div>
+      <div class="face front"  data-section="chat">💬<br><span class="neon-glow">Quantum Chat</span></div>
+      <div class="face back"   data-section="avatar">🤖<br><span class="neon-glow">Avatar</span></div>
+      <div class="face right"  data-section="trends">🌍<br><span class="neon-glow">Trends</span></div>
+      <div class="face left"   data-section="xp">💠<br><span class="neon-glow">XP</span></div>
+      <div class="face top"    data-section="time">🕒<br><span class="neon-glow">Time</span></div>
+      <div class="face bottom" data-section="voice">🎤<br><span class="neon-glow">Voice</span></div>
     </div>
   </div>
   <script>
-    // توقف/تشغيل الدوران عند الضغط على المكعب نفسه
+    // تحكم دوران المكعب (توقف عند الضغط)
     const cube = document.getElementById("cube");
-    let spinning = true;
     cube.addEventListener("click", e => {
       cube.classList.toggle("paused");
-      spinning = !spinning;
     });
-    // فتح منبثق لكل وجه عند الضغط عليه
+
+    // كل وجه يفتح نافذة منبثقة نيونية
     document.querySelectorAll('.face').forEach(face => {
       face.addEventListener('click', function(e){
-        e.stopPropagation(); // لا توقف دوران المكعب عند ضغط الوجه فقط
+        e.stopPropagation(); // يمنع تداخل الضغط مع المكعب
         showOverlay(this.dataset.section);
       });
     });
-    // واجهات منبثقة لكل قسم
+
+    // محتوى الواجهات المنبثقة
     function showOverlay(section) {
       const overlay = document.createElement('div');
       overlay.className = 'overlay';
       let content = '';
       switch(section) {
         case "chat":
-          content = "<h2>Quantum Chat</h2><p>[نافذة محادثة GPT (للتفعيل لاحقًا)]</p>";
+          content = `<h2>Quantum Chat</h2>
+            <p class="neon-glow">[واجهة محادثة GPT قريبًا]</p>`;
           break;
         case "avatar":
           content = `<h2>HELPar Avatar</h2>
-            <p style="text-shadow:0 0 10px #00e7ff;">\"How can I help you today?\"</p>
-            <div style="margin:25px auto 0 auto; border-radius:50%; width:72px; height:72px; background:radial-gradient(circle,#00ccff 10%,#012233 80%); box-shadow:0 0 16px #00e7ff99;"></div>`;
+            <p class="neon-glow">"How can I help you today?"</p>
+            <div class="neon-ball"></div>`;
           break;
         case "trends":
-          content = "<h2>Trends</h2><p>[ترندات الدولة/العالم (في التحديث القادم)]</p>";
+          content = `<h2>Trends</h2>
+            <p class="neon-glow">[ترندات الدولة/العالم — لاحقًا]</p>`;
           break;
         case "xp":
           const xp = localStorage.getItem('xp') || 0;
-          content = `<h2>XP Points</h2><p>${xp} XP</p>`;
+          content = `<h2>XP Points</h2>
+            <p class="neon-glow">${xp} XP</p>`;
           break;
         case "time":
           const hour = new Date().getHours();
-          content = `<h2>Time Mode</h2><p>${hour < 12 ? '☀️ Good Morning' : '🌙 Good Evening'}</p>`;
+          content = `<h2>Time Mode</h2>
+            <p class="neon-glow">${hour < 12 ? '☀️ Good Morning' : '🌙 Good Evening'}</p>`;
           break;
         case "voice":
-          content = `<h2>🎤 Voice Mode</h2><p>Say \"chat\" or \"avatar\"...</p>`;
+          content = `<h2>🎤 Voice Mode</h2>
+            <p class="neon-glow">Say "chat" or "avatar"…</p>`;
           activateVoice();
           break;
       }
-      overlay.innerHTML = content + '<button onclick="this.parentElement.remove()">Close</button>';
+      overlay.innerHTML = content + '<button class="neon-btn" onclick="this.parentElement.remove()">Close</button>';
       document.body.appendChild(overlay);
     }
     // تحكم صوتي (اختياري)
