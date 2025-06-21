@@ -2,11 +2,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HELPAR Full Project</title>
-  <link rel="preload" href="sho.png" as="image">
-  <link rel="preload" href="code rom.png" as="image">
-  <link rel="preload" href="food.png" as="image">
-  <link rel="preload" href="games room.png" as="image">
+  <title>HELPAR — Full Project</title>
   <style>
     html, body {
       margin: 0; padding: 0;
@@ -16,164 +12,160 @@
       overflow: hidden;
       touch-action: none;
     }
+    /* ------------------------ Common ------------------------ */
+    .hidden { display: none; }
     .centered {
       position: absolute;
-      top: 45%; left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
       color: #00ccff;
     }
     .helpar-logo {
-      width: 100px; margin-bottom: 10px;
-      animation: pulseGlowLogo 2s infinite;
+      width: 100px;
+      animation: pulseGlow 2s infinite;
     }
     .helpar-title {
-      font-size: 2.5em; font-weight: bold;
+      font-size: 2.5em;
+      font-weight: bold;
       color: #00ccff;
       text-shadow: 0 0 4px #00ccff, 0 0 8px #00e7ff;
     }
     .lang-btn {
-      padding: 12px 24px; font-size: 18px;
-      background: transparent; border: 2px solid #00ccff;
-      border-radius: 10px; color: #00ccff;
-      cursor: pointer; margin-top: 70px;
-    }
-    @keyframes pulseGlowLogo {
-      0%, 100% { filter: drop-shadow(0 0 12px #00e7ff) drop-shadow(0 0 24px #00ccff); transform: scale(1); }
-      50% { filter: drop-shadow(0 0 20px #00e7ff) drop-shadow(0 0 40px #00ccff); transform: scale(1.07); }
-    }
-    .scene, .scene-section {
-      width: 150px; height: 150px;
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      perspective: 800px;
-      display: none;
-    }
-    .scene-section { width: 275px; height: 275px; perspective: 1000px; }
-    .cube, .cube-section {
-      width: 100%; height: 100%;
-      transform-style: preserve-3d;
-      transition: transform 0.5s ease;
-    }
-    .cube-section { transform: rotateX(-18deg) rotateY(0deg); }
-    @keyframes rotateCubeLang {
-      from { transform: rotateX(-10deg) rotateY(0deg); }
-      to { transform: rotateX(-10deg) rotateY(360deg); }
-    }
-    #cubeLang.rotating { animation: rotateCubeLang 6s linear infinite; }
-    .face, .section-face {
-      position: absolute;
-      width: 150px; height: 150px;
+      padding: 12px 24px;
+      font-size: 18px;
+      background: transparent;
       border: 2px solid #00ccff;
-      background: rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
       color: #00ccff;
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
-      font-size: 2.5rem;
+      cursor: pointer;
+      margin-top: 50px;
     }
-    .section-face {
-      width: 275px; height: 275px;
-      background-color: #000;
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-    .lang-label { font-size: 1rem; margin-top: 8px; color: #00ccff; }
-    .front  { transform: rotateY(0deg) translateZ(75px); }
-    .back   { transform: rotateY(180deg) translateZ(75px); }
-    .right  { transform: rotateY(90deg) translateZ(75px); }
-    .left   { transform: rotateY(-90deg) translateZ(75px); }
-    .front-sec  { transform: rotateY(0deg) translateZ(137.5px); background-image: url('sho.png'); }
-    .back-sec   { transform: rotateY(180deg) translateZ(137.5px); background-image: url('code rom.png'); }
-    .right-sec  { transform: rotateY(90deg) translateZ(137.5px); background-image: url('food.png'); }
-    .left-sec   { transform: rotateY(-90deg) translateZ(137.5px); background-image: url('games room.png'); }
-    .glow-core {
-      position: absolute; width: 10px; height: 10px;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: #00ccff; border-radius: 50%;
-      pointer-events: none;
-      animation: pulseCore 1.8s infinite;
-      box-shadow: 0 0 6px #00ccff, 0 0 12px #00ccff, 0 0 18px #00e7ff, 0 0 32px #00e7ff;
-    }
-    @keyframes pulseCore {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); }
-      50% { transform: translate(-50%, -50%) scale(1.2); }
-    }
-    #videoSection, #sectionCubeContainer, #floatingCubeWrapper {
-      display: none;
-      position: absolute;
-      width: 100vw; height: 100vh;
-      top: 0; left: 0;
-      justify-content: center;
-      align-items: center;
-    }
-    video {
-      max-width: 90vw; max-height: 90vh;
-      object-fit: contain;
-      border: 2px solid #00ccff;
-      box-shadow: 0 0 20px #00ccff;
-      border-radius: 12px;
-    }
-    /* المكعب الطائر */
-    .floating-cube {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%) rotateX(45deg) rotateY(45deg);
-      width: 75px; height: 75px;
-      background: linear-gradient(135deg, #00ccff, #000);
-      border: 2px solid #00e7ff;
-      box-shadow: 0 0 18px #00ccffaa, 0 0 42px #00e7ff66;
-      animation: floatY 3s ease-in-out infinite alternate;
-      border-radius: 6px;
-    }
-    @keyframes floatY {
-      from { transform: translateX(-50%) translateY(0) rotateX(45deg) rotateY(45deg); }
-      to   { transform: translateX(-50%) translateY(-15px) rotateX(45deg) rotateY(45deg); }
-    }
-    .floating-eye {
-      width: 12px; height: 12px;
-      background: #00faff;
-      border-radius: 50%;
-      position: absolute;
-      top: 22px;
-      box-shadow: 0 0 6px #00e7ff;
-    }
-    .eye-left { left: 20px; }
-    .eye-right { right: 20px; }
-    .surprise {
-      position: absolute;
-      top: -12px; left: 50%;
-      transform: translateX(-50%);
-      font-size: 16px;
-      color: #00ccff;
-      animation: pulseSurprise 1.2s infinite;
-      text-shadow: 0 0 4px #00e7ff;
-    }
-    @keyframes pulseSurprise {
-      0%, 100% { transform: translateX(-50%) scale(1); opacity: 1; }
-      50% { transform: translateX(-50%) scale(1.3); opacity: 0.6; }
-    }
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 12px #00ccff); }
+      50% { transform: scale(1.07); filter: drop-shadow(0 0 22px #00e7ff); }
+    }/* -------------------- Language Cube -------------------- */
+.scene { position: absolute; width: 150px; height: 150px; top: 50%; left: 50%; transform: translate(-50%, -50%); perspective: 800px; }
+.cube {
+  width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  animation: rotateLang 6s linear infinite;
+}
+.face {
+  position: absolute;
+  width: 150px; height: 150px;
+  border: 2px solid #00ccff;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  color: #00ccff;
+  flex-direction: column;
+}
+.front  { transform: rotateY(0deg) translateZ(75px); }
+.back   { transform: rotateY(180deg) translateZ(75px); }
+.right  { transform: rotateY(90deg) translateZ(75px); }
+.left   { transform: rotateY(-90deg) translateZ(75px); }
+.lang-label { font-size: 1rem; margin-top: 8px; }
+@keyframes rotateLang {
+  from { transform: rotateX(-10deg) rotateY(0deg); }
+  to { transform: rotateX(-10deg) rotateY(360deg); }
+}
+
+/* -------------------- Video -------------------- */
+#videoSection {
+  display: none;
+  position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+  justify-content: center;
+  align-items: center;
+}
+video {
+  max-width: 90vw;
+  max-height: 90vh;
+  border: 2px solid #00ccff;
+  border-radius: 12px;
+  box-shadow: 0 0 16px #00ccff;
+}
+
+/* -------------------- Section Cube -------------------- */
+#sectionCubeContainer { display: none; position: absolute; width: 100%; height: 100%; top: 0; left: 0; }
+.scene-section {
+  width: 275px; height: 275px;
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  perspective: 1000px;
+}
+.cube-section {
+  width: 275px; height: 275px;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+  transform: rotateX(-18deg) rotateY(0deg);
+}
+.section-face {
+  position: absolute;
+  width: 275px; height: 275px;
+  border: 2px solid #00ccff;
+  background-size: cover;
+  background-position: center;
+}
+.front-sec { transform: rotateY(0deg) translateZ(137.5px); background-image: url('sho.png'); }
+.back-sec { transform: rotateY(180deg) translateZ(137.5px); background-image: url('code rom.png'); }
+.right-sec { transform: rotateY(90deg) translateZ(137.5px); background-image: url('food.png'); }
+.left-sec { transform: rotateY(-90deg) translateZ(137.5px); background-image: url('games room.png'); }
+
+/* -------------------- Floating Cube (Flo) -------------------- */
+#floCube {
+  display: none;
+  position: absolute;
+  bottom: 40px; left: 50%;
+  transform: translateX(-50%);
+  width: 100px; height: 100px;
+  background: #101820;
+  border-radius: 20px;
+  box-shadow: 0 0 12px #00ccff, 0 0 24px #00ccff inset;
+}
+#floCube .eye {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: #00ccff;
+  position: absolute;
+  top: 30%;
+  transition: all 0.1s linear;
+}
+#floCube .eye.left { left: 25%; }
+#floCube .eye.right { right: 25%; }
+#floCube .excl {
+  width: 6px; height: 12px;
+  background: #00ccff;
+  position: absolute;
+  top: -12px; left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  animation: blinkEx 2s infinite;
+}
+@keyframes blinkEx {
+  0%, 100% { opacity: 0.2; transform: translateX(-50%) scale(0.7); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.4); }
+}
+
   </style>
 </head>
 <body>
   <div id="start" class="centered">
-    <img src="logo.png" alt="HELPAR Logo" class="helpar-logo" />
+    <img src="logo.png" class="helpar-logo" />
     <div class="helpar-title">HELPAR</div>
     <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
-  </div>  <div class="scene" id="sceneLang">
-    <div class="cube" id="cubeLang">
+  </div>  <div class="scene hidden" id="langCube">
+    <div class="cube">
       <div class="face front">🇬🇧<span class="lang-label">English</span></div>
       <div class="face back">🇸🇦<span class="lang-label">العربية</span></div>
       <div class="face right">🇪🇸<span class="lang-label">Español</span></div>
       <div class="face left">🇫🇷<span class="lang-label">Français</span></div>
-      <div class="glow-core"></div>
     </div>
   </div>  <div id="videoSection">
-    <video id="introVideo" autoplay playsinline>
-      <source src="HELBERpro.mp4" type="video/mp4">
+    <video id="introVideo" autoplay muted playsinline>
+      <source src="HELBERpro.mp4" type="video/mp4" />
     </video>
   </div>  <div id="sectionCubeContainer">
     <div class="scene-section">
@@ -184,39 +176,29 @@
         <div class="section-face left-sec"></div>
       </div>
     </div>
-  </div>  <!-- المكعب الطائر -->  <div id="floatingCubeWrapper">
-    <div class="floating-cube" id="floatingCube">
-      <div class="floating-eye eye-left" id="eyeLeft"></div>
-      <div class="floating-eye eye-right" id="eyeRight"></div>
-      <div class="surprise">!</div>
-    </div>
+  </div>  <div id="floCube">
+    <div class="eye left" id="eyeLeft"></div>
+    <div class="eye right" id="eyeRight"></div>
+    <div class="excl"></div>
   </div>  <script>
-    const sceneLang = document.getElementById("sceneLang");
-    const cubeLang = document.getElementById("cubeLang");
+    const langCube = document.getElementById("langCube");
     const start = document.getElementById("start");
     const videoSection = document.getElementById("videoSection");
     const introVideo = document.getElementById("introVideo");
     const sectionCubeContainer = document.getElementById("sectionCubeContainer");
     const cubeSection = document.getElementById("cubeSection");
-    const floatingCubeWrapper = document.getElementById("floatingCubeWrapper");
-
-    let angleSec = 0;
-    let rotating = true;
-    let autoRotateInterval;
-    let startX = 0;
+    const floCube = document.getElementById("floCube");
+    const eyeLeft = document.getElementById("eyeLeft");
+    const eyeRight = document.getElementById("eyeRight");
 
     function showLanguages() {
-      sceneLang.style.display = "block";
-      cubeLang.classList.add("rotating");
+      start.style.display = "none";
+      langCube.classList.remove("hidden");
     }
 
-    document.querySelectorAll("#cubeLang .face").forEach(face => {
-      face.addEventListener("click", () => {
-        const selectedLang = face.querySelector(".lang-label").textContent;
-        localStorage.setItem("language", selectedLang);
-        cubeLang.classList.remove("rotating");
-        start.style.display = "none";
-        sceneLang.style.display = "none";
+    document.querySelectorAll(".lang-label").forEach(label => {
+      label.parentElement.addEventListener("click", () => {
+        langCube.classList.add("hidden");
         videoSection.style.display = "flex";
         introVideo.play();
       });
@@ -225,79 +207,17 @@
     introVideo.onended = () => {
       videoSection.style.display = "none";
       sectionCubeContainer.style.display = "block";
-      startCubeSection();
-      // مباشرة بعد المكعب
       setTimeout(() => {
         sectionCubeContainer.style.display = "none";
-        floatingCubeWrapper.style.display = "block";
-      }, 2000);
+        floCube.style.display = "block";
+      }, 5000);
     };
 
-    function startCubeSection() {
-      autoRotateInterval = setInterval(() => {
-        angleSec += 1;
-        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
-      }, 30);
-    }
-
-    cubeSection.addEventListener("touchstart", e => {
-      if (rotating) {
-        clearInterval(autoRotateInterval);
-        rotating = false;
-        angleSec = Math.round(angleSec / 90) * 90;
-        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
-      }
-      startX = e.touches[0].clientX;
-    });
-
-    cubeSection.addEventListener("touchmove", e => {
-      if (!rotating) {
-        let deltaX = e.touches[0].clientX - startX;
-        let rotateBy = deltaX * 0.6;
-        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec + rotateBy}deg)`;
-      }
-    });
-
-    cubeSection.addEventListener("touchend", e => {
-      if (!rotating) {
-        let deltaX = e.changedTouches[0].clientX - startX;
-        angleSec += Math.round(deltaX * 0.6 / 90) * 90;
-        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
-      }
-    });
-
-    window.onpopstate = function () {
-      if (videoSection.style.display === 'flex') {
-        videoSection.style.display = 'none';
-        sceneLang.style.display = 'none';
-        start.style.display = 'block';
-      } else if (sectionCubeContainer.style.display === 'block') {
-        sectionCubeContainer.style.display = 'none';
-        videoSection.style.display = 'flex';
-      }
-    };
-
-    // 👁️ تحريك العيون حسب مكان اللمس
-    const eyeLeft = document.getElementById("eyeLeft");
-    const eyeRight = document.getElementById("eyeRight");
-
-    document.addEventListener("mousemove", (e) => {
-      moveEyes(e.clientX, e.clientY);
-    });
     document.addEventListener("touchmove", (e) => {
-      const touch = e.touches[0];
-      moveEyes(touch.clientX, touch.clientY);
+      const x = e.touches[0].clientX / window.innerWidth;
+      const y = e.touches[0].clientY / window.innerHeight;
+      eyeLeft.style.transform = `translate(${(x - 0.5) * 20}px, ${(y - 0.5) * 20}px)`;
+      eyeRight.style.transform = `translate(${(x - 0.5) * 20}px, ${(y - 0.5) * 20}px)`;
     });
-
-    function moveEyes(x, y) {
-      const cube = document.getElementById("floatingCube");
-      const rect = cube.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const offsetX = ((x - centerX) / 30);
-      const offsetY = ((y - centerY) / 30);
-      eyeLeft.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-      eyeRight.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-    }
   </script></body>
-    </html>
+</html>
