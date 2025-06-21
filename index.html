@@ -1,214 +1,188 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>FloBot — Funny AI</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HELPAR + FloBot</title>
   <style>
     html, body {
       margin: 0; padding: 0;
       width: 100%; height: 100%;
-      background: radial-gradient(circle at 60% 50%, #10131d 45%, #000 100%);
-      font-family: 'Segoe UI', Arial, monospace;
+      background: radial-gradient(circle at center, #010308 0%, #000 100%);
+      font-family: Arial, sans-serif;
       overflow: hidden;
-    }
-    body.laughing {
-      animation: bgShake 0.15s infinite;
-    }
-    @keyframes bgShake {
-      0% { transform: translate(0, 0); }
-      25% { transform: translate(2px, -2px); }
-      50% { transform: translate(-2px, 2px); }
-      75% { transform: translate(1px, -1px); }
-      100% { transform: translate(0, 0); }
-    }
+      touch-action: none;
+    }/* HELPAR Elements */
+#start, #sceneLang, #videoSection, #sectionCubeContainer {
+  position: absolute;
+  width: 100vw; height: 100vh;
+  top: 0; left: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+#start { display: flex; flex-direction: column; align-items: center; }
 
-    .flobot-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-      padding-top: 50px;
-    }
+.helpar-title {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #00ccff;
+  text-shadow: 0 0 4px #00ccff, 0 0 8px #00e7ff;
+}
+.lang-btn {
+  padding: 12px 24px;
+  font-size: 18px;
+  background: transparent;
+  border: 2px solid #00ccff;
+  border-radius: 10px;
+  color: #00ccff;
+  cursor: pointer;
+  margin-top: 70px;
+}
 
-    .flobot-message {
-      padding: 16px 28px;
-      border: 2.5px solid #03faff;
-      border-radius: 14px;
-      background: rgba(0,0,0,0.87);
-      color: #fff;
-      font-size: 1.2em;
-      text-align: center;
-      box-shadow: 0 0 18px #03faff66;
-      text-shadow: 0 0 6px #03faff99;
-    }
+/* Section Cube */
+.scene-section {
+  width: 275px;
+  height: 275px;
+  perspective: 1000px;
+}
+.cube-section {
+  width: 275px;
+  height: 275px;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+  transform: rotateX(-18deg) rotateY(0deg);
+}
+.section-face {
+  position: absolute;
+  width: 275px; height: 275px;
+  border: 2px solid #00ccff;
+  background-color: #000;
+}
+.front-sec  { transform: rotateY(0deg) translateZ(137.5px); background: url('sho.png') center/cover no-repeat; }
+.back-sec   { transform: rotateY(180deg) translateZ(137.5px); background: url('code rom.png') center/cover no-repeat; }
+.right-sec  { transform: rotateY(90deg) translateZ(137.5px); background: url('food.png') center/cover no-repeat; }
+.left-sec   { transform: rotateY(-90deg) translateZ(137.5px); background: url('games room.png') center/cover no-repeat; }
 
-    .flobot-face {
-      width: 130px; height: 130px;
-      background: #181c23;
-      border: 4px solid #03faff;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      box-shadow: 0 0 36px #00e7ffcc, 0 0 44px #000 inset;
-      transform-style: preserve-3d;
-      transition: transform 0.2s ease;
-    }
+/* FloBot */
+#flobot {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  width: 130px;
+  height: 130px;
+  background: #181c23;
+  border: 4px solid #03faff;
+  border-radius: 14px;
+  box-shadow: 0 0 20px #00e7ffcc, 0 0 30px #000 inset;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+}
+.flobot-eye {
+  width: 18px; height: 18px;
+  background: #03faff;
+  border-radius: 50%;
+  box-shadow: 0 0 7px #00e7ff;
+  position: absolute;
+  top: 38px;
+}
+.eye-left  { left: 32px; }
+.eye-right { right: 32px; }
+.flobot-mouth {
+  width: 46px;
+  height: 8px;
+  background: #03faff;
+  border-radius: 6px;
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 4px #00e7ff99;
+}
 
-    .flobot-face.happy .flobot-mouth {
-      height: 20px;
-      border-radius: 50%/100%;
-      background: #7ffcff;
-    }
-
-    .flobot-face.laugh {
-      animation: laughShake 0.3s ease-in-out 6;
-    }
-
-    @keyframes laughShake {
-      0%, 100% { transform: translateY(0); }
-      25% { transform: translateY(-5px); }
-      50% { transform: translateY(5px); }
-      75% { transform: translateY(-3px); }
-    }
-
-    .flobot-eye {
-      width: 18px; height: 18px;
-      background: #03faff;
-      border-radius: 50%;
-      position: absolute;
-      top: 42px;
-      box-shadow: 0 0 7px #00e7ff;
-    }
-    .flobot-eye.left  { left: 35px; }
-    .flobot-eye.right { right: 35px; }
-
-    .flobot-mouth {
-      width: 46px;
-      height: 8px;
-      background: #03faff;
-      border-radius: 6px;
-      position: absolute;
-      bottom: 35px;
-      left: 50%;
-      transform: translateX(-50%);
-      box-shadow: 0 0 4px #00e7ff99;
-      transition: height 0.15s ease, background 0.15s;
-    }
-
-    .bubble {
-      position: absolute;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: #03faff;
-      box-shadow: 0 0 12px #00faffaa;
-      opacity: 0.6;
-      animation: bubbleUp 2s forwards;
-    }
-
-    @keyframes bubbleUp {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 0.6;
-      }
-      100% {
-        transform: translateY(-160px) scale(1.5);
-        opacity: 0;
-      }
-    }
-
-    .control-btn {
-      margin-top: 25px;
-      padding: 12px 24px;
-      font-size: 1em;
-      background: #03faff;
-      color: #000;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      box-shadow: 0 0 14px #03faff88;
-      font-weight: bold;
-      transition: transform 0.2s;
-    }
-
-    .control-btn:active {
-      transform: scale(0.95);
-    }
   </style>
 </head>
 <body>
-  <div class="flobot-container">
-    <div class="flobot-message" id="flo-msg">
-      Click below to hear FloBot speak and laugh! 😄
+  <div id="start">
+    <div class="helpar-title">HELPAR</div>
+    <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
+  </div>  <div id="videoSection">
+    <video id="introVideo" autoplay playsinline>
+      <source src="HELBERpro.mp4" type="video/mp4">
+    </video>
+  </div>  <div id="sectionCubeContainer" class="scene-section">
+    <div class="cube-section" id="cubeSection">
+      <div class="section-face front-sec"></div>
+      <div class="section-face back-sec"></div>
+      <div class="section-face right-sec"></div>
+      <div class="section-face left-sec"></div>
     </div>
-    <div class="flobot-face" id="flo-face">
-      <div class="flobot-eye left"></div>
-      <div class="flobot-eye right"></div>
-      <div class="flobot-mouth" id="flo-mouth"></div>
-    </div>
-    <button class="control-btn" onclick="speakFunnyIntro()">🔁 Play Again</button>
-  </div>
+  </div>  <div id="flobot">
+    <div class="flobot-eye eye-left"></div>
+    <div class="flobot-eye eye-right"></div>
+    <div class="flobot-mouth" id="flo-mouth"></div>
+  </div>  <script>
+    const start = document.getElementById("start");
+    const videoSection = document.getElementById("videoSection");
+    const introVideo = document.getElementById("introVideo");
+    const sectionCubeContainer = document.getElementById("sectionCubeContainer");
+    const cubeSection = document.getElementById("cubeSection");
+    const flobot = document.getElementById("flobot");
 
-  <script>
-    const face = document.getElementById("flo-face");
-    const mouth = document.getElementById("flo-mouth");
+    let angleSec = 0;
+    let rotating = true;
+    let startX = 0;
 
-    function speakFunnyIntro() {
-      // إذا الجهاز كان يحكي، نوقفه
-      window.speechSynthesis.cancel();
+    function showLanguages() {
+      start.style.display = "none";
+      videoSection.style.display = "flex";
+      introVideo.play();
+    }
 
+    introVideo.onended = () => {
+      videoSection.style.display = "none";
+      sectionCubeContainer.style.display = "block";
+      startCubeSection();
+    };
+
+    function startCubeSection() {
+      setInterval(() => {
+        angleSec += 1;
+        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
+      }, 30);
+    }
+
+    cubeSection.addEventListener("touchstart", e => {
+      rotating = false;
+      startX = e.touches[0].clientX;
+    });
+
+    cubeSection.addEventListener("touchend", e => {
+      const delta = e.changedTouches[0].clientX - startX;
+      if (Math.abs(delta) > 50) {
+        angleSec += delta > 0 ? 90 : -90;
+        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
+        showFloBot();
+      }
+    });
+
+    function showFloBot() {
+      flobot.style.display = "flex";
+      speakFlo();
+    }
+
+    function speakFlo() {
       const speech = new SpeechSynthesisUtterance(
-        "Heey, I’m Flo! Your AI buddy. I blink, I talk, and guess what... I laugh too! Hahaha!"
+        "Heey! I'm Flo, your AI buddy. Welcome in! Let's explore this section together!"
       );
       speech.lang = 'en-US';
       speech.pitch = 1.1;
       speech.rate = 1;
-      speech.volume = 1;
-
       const voices = window.speechSynthesis.getVoices();
-      if (voices.length > 0) {
-        speech.voice = voices.find(v => v.lang === 'en-US' && v.name.includes("Google")) || voices[0];
-      }
-
-      // بداية التفاعل
-      speech.onstart = () => {
-        face.classList.add("happy");
-        animateMouth();
-        setTimeout(() => {
-          face.classList.add("laugh");
-          document.body.classList.add("laughing");
-          for(let i = 0; i < 6; i++) createBubble();
-        }, 3000);
-      };
-
-      speech.onend = () => {
-        face.classList.remove("laugh", "happy");
-        document.body.classList.remove("laughing");
-        clearInterval(mouthTimer);
-        mouth.style.height = "8px";
-      };
-
+      speech.voice = voices.find(v => v.lang === 'en-US' && v.name.includes("Google")) || voices[0];
       window.speechSynthesis.speak(speech);
     }
-
-    let mouthTimer;
-    function animateMouth() {
-      mouthTimer = setInterval(() => {
-        mouth.style.height = (Math.random() > 0.5 ? '20px' : '8px');
-      }, 120);
-    }
-
-    function createBubble() {
-      const bubble = document.createElement('div');
-      bubble.className = 'bubble';
-      bubble.style.left = (window.innerWidth/2 - 10 + Math.random()*60 - 30) + 'px';
-      bubble.style.top = (window.innerHeight/2 - 20) + 'px';
-      document.body.appendChild(bubble);
-      setTimeout(() => bubble.remove(), 2000);
-    }
-  </script>
-</body>
+  </script></body>
 </html>
