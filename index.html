@@ -26,7 +26,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      animation: glowCycle 3s infinite ease-in-out;
+      box-shadow: 0 0 10px white, 0 0 20px white; /* دائمًا أبيض */
+      animation: greenPulse 3s infinite ease-in-out;
     }
 
     .cube::before {
@@ -35,15 +36,17 @@
       height: 10px;
       border-radius: 5px;
       background-color: white;
-      box-shadow: 0 0 4px white, 0 0 8px white;
+      box-shadow: 0 0 6px white, 0 0 12px white;
     }
 
-    @keyframes glowCycle {
+    @keyframes greenPulse {
       0%, 100% {
-        box-shadow: 0 0 12px white, 0 0 24px white;
+        box-shadow: 0 0 10px white, 0 0 20px white;
       }
       50% {
-        box-shadow: 0 0 12px #00cc00, 0 0 24px #00cc00;
+        box-shadow: 
+          0 0 10px white, 0 0 20px white, /* الأبيض دائم */
+          0 0 25px #00cc00, 0 0 55px #00cc00, 0 0 90px #00cc00; /* إشعاع أخضر قوي */
       }
     }
 
