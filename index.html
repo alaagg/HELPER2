@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Helper Pren – AI Interface</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -73,22 +73,19 @@
   </div>
 
   <script>
-    // تحديد الموقع الجغرافي
-    let userLocation = "موقعك غير معروف";
+    let userLocation = "تعذر تحديد الموقع";
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        function(position) {
-          const lat = position.coords.latitude.toFixed(4);
-          const lon = position.coords.longitude.toFixed(4);
+        function(pos) {
+          const lat = pos.coords.latitude.toFixed(4);
+          const lon = pos.coords.longitude.toFixed(4);
           userLocation = `https://www.google.com/maps/search/مطاعم/@${lat},${lon},15z`;
         },
-        function(error) {
+        function(err) {
           userLocation = "تعذر الوصول إلى موقعك";
         }
       );
-    } else {
-      userLocation = "المتصفح لا يدعم الموقع الجغرافي";
     }
 
     function normalizeText(text) {
@@ -102,18 +99,14 @@
 
     function handleKey(e) {
       if (e.key === "Enter") {
-        const input = document.getElementById("userInput").value.trim();
-        if (input !== "") {
-          respondToUser(input);
-        }
+        const val = document.getElementById("userInput").value.trim();
+        if (val !== "") respondToUser(val);
       }
     }
 
     function manualSend() {
-      const input = document.getElementById("userInput").value.trim();
-      if (input !== "") {
-        respondToUser(input);
-      }
+      const val = document.getElementById("userInput").value.trim();
+      if (val !== "") respondToUser(val);
     }
 
     function respondToUser(text) {
@@ -124,7 +117,7 @@
       if (normalized.includes("تسلي") || normalized.includes("ملل") || normalized.includes("فيديو")) {
         reply = "🎥 عرض مقاطع فيديو ترفيهية جديدة لك الآن...";
       } else if (normalized.includes("جعان") || normalized.includes("اكل") || normalized.includes("غدا")) {
-        reply = `🍔 أقرب مطاعم مقترحة بناءً على موقعك:\n📍 افتح: ${userLocation}`;
+        reply = `🍔 أقرب مطاعم مقترحة بناءً على موقعك:<br><br>📍 <a href="${userLocation}" target="_blank" style="display:inline-block; padding:10px 18px; background:#00ccff; color:#000; font-weight:bold; border-radius:10px; text-decoration:none; box-shadow:0 0 10px #00ccff88;">عرض في Google Maps</a>`;
       } else if (normalized.includes("تعبان") || normalized.includes("راحه") || normalized.includes("صحه")) {
         reply = "🧘‍♂️ تمارين خفيفة + جلسة تأمل لمدة 5 دقائق...";
       } else if (normalized.includes("ادرس") || normalized.includes("تعلم") || normalized.includes("ركز")) {
@@ -134,7 +127,7 @@
       }
 
       res.style.display = "block";
-      res.textContent = reply;
+      res.innerHTML = reply;
     }
   </script>
 </body>
