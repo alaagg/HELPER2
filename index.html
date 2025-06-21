@@ -2,130 +2,321 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Realistic 3D Planets</title>
+  <title>HELPAR Full Project</title>
+
+  <!-- ✅ تحميل مسبق للصور لتسريع عرض المكعب -->
+  <link rel="preload" href="sho.png" as="image">
+  <link rel="preload" href="code rom.png" as="image">
+  <link rel="preload" href="food.png" as="image">
+  <link rel="preload" href="games room.png" as="image">
+
   <style>
-    body {
-      margin: 0;
+    html, body {
+      margin: 0; padding: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle at center, #010308 0%, #000 100%);
+      font-family: Arial, sans-serif;
       overflow: hidden;
-      background: black;
+      touch-action: none;
     }
-    canvas {
-      display: block;
+
+    .centered {
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #00ccff;
     }
+
+    .helpar-logo {
+      width: 100px;
+      height: auto;
+      margin-bottom: 10px;
+      animation: pulseGlowLogo 2s infinite;
+    }
+
+    .helpar-title {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #00ccff;
+      text-shadow: 0 0 4px #00ccff, 0 0 8px #00e7ff;
+    }
+
+    .lang-btn {
+      padding: 12px 24px;
+      font-size: 18px;
+      background: transparent;
+      border: 2px solid #00ccff;
+      border-radius: 10px;
+      color: #00ccff;
+      cursor: pointer;
+      margin-top: 70px;
+    }
+
+    @keyframes pulseGlowLogo {
+      0%, 100% {
+        filter: drop-shadow(0 0 12px #00e7ff) drop-shadow(0 0 24px #00ccff);
+        transform: scale(1);
+      }
+      50% {
+        filter: drop-shadow(0 0 20px #00e7ff) drop-shadow(0 0 40px #00ccff);
+        transform: scale(1.07);
+      }
+    }
+
+    .scene {
+      width: 150px;
+      height: 150px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      perspective: 800px;
+      display: none;
+    }
+
+    .cube {
+      width: 100%; height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+      position: relative;
+    }
+
+    @keyframes rotateCubeLang {
+      from { transform: rotateX(-10deg) rotateY(0deg); }
+      to { transform: rotateX(-10deg) rotateY(360deg); }
+    }
+
+    #cubeLang.rotating {
+      animation: rotateCubeLang 6s linear infinite;
+    }
+
+    .face {
+      position: absolute;
+      width: 150px; height: 150px;
+      border: 2px solid #00ccff;
+      background: rgba(0, 0, 0, 0.5);
+      color: #00ccff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.5rem;
+    }
+
+    .lang-label {
+      font-size: 1rem;
+      margin-top: 8px;
+      color: #00ccff;
+    }
+
+    .front  { transform: rotateY(0deg) translateZ(75px); }
+    .back   { transform: rotateY(180deg) translateZ(75px); }
+    .right  { transform: rotateY(90deg) translateZ(75px); }
+    .left   { transform: rotateY(-90deg) translateZ(75px); }
+
+    .glow-core {
+      position: absolute;
+      width: 10px; height: 10px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: #00ccff;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: pulseCore 1.8s infinite;
+      box-shadow:
+        0 0 6px #00ccff,
+        0 0 12px #00ccff,
+        0 0 18px #00e7ff,
+        0 0 32px #00e7ff;
+    }
+
+    @keyframes pulseCore {
+      0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        box-shadow:
+          0 0 6px #00ccff,
+          0 0 12px #00ccff,
+          0 0 18px #00e7ff,
+          0 0 32px #00e7ff;
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.2);
+        box-shadow:
+          0 0 10px #00e7ff,
+          0 0 18px #00e7ff,
+          0 0 26px #00ccff,
+          0 0 42px #00ccff;
+      }
+    }
+
+    #videoSection, #sectionCubeContainer {
+      display: none;
+      position: absolute;
+      width: 100vw; height: 100vh;
+      top: 0; left: 0;
+      justify-content: center;
+      align-items: center;
+    }
+
+    video {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border: 2px solid #00ccff;
+      box-shadow: 0 0 20px #00ccff;
+      border-radius: 12px;
+    }
+
+    .scene-section {
+      width: 275px;
+      height: 275px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      perspective: 1000px;
+    }
+
+    .cube-section {
+      width: 275px;
+      height: 275px;
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+      transform: rotateX(-18deg) rotateY(0deg);
+    }
+
+    .section-face {
+      position: absolute;
+      width: 275px; height: 275px;
+      border: 2px solid #00ccff;
+      background-color: #000;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .front-sec  { transform: rotateY(0deg) translateZ(137.5px); background-image: url('sho.png'); }
+    .back-sec   { transform: rotateY(180deg) translateZ(137.5px); background-image: url('code rom.png'); }
+    .right-sec  { transform: rotateY(90deg) translateZ(137.5px); background-image: url('food.png'); }
+    .left-sec   { transform: rotateY(-90deg) translateZ(137.5px); background-image: url('games room.png'); }
   </style>
 </head>
 <body>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+  <div id="start" class="centered">
+    <img src="logo.png" alt="HELPAR Logo" class="helpar-logo" />
+    <div class="helpar-title">HELPAR</div>
+    <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
+  </div>
+
+  <div class="scene" id="sceneLang">
+    <div class="cube" id="cubeLang">
+      <div class="face front">🇬🇧<span class="lang-label">English</span></div>
+      <div class="face back">🇸🇦<span class="lang-label">العربية</span></div>
+      <div class="face right">🇪🇸<span class="lang-label">Español</span></div>
+      <div class="face left">🇫🇷<span class="lang-label">Français</span></div>
+      <div class="glow-core"></div>
+    </div>
+  </div>
+
+  <div id="videoSection">
+    <video id="introVideo" autoplay playsinline>
+      <source src="HELBERpro.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <div id="sectionCubeContainer">
+    <div class="scene-section">
+      <div class="cube-section" id="cubeSection">
+        <div class="section-face front-sec"></div>
+        <div class="section-face back-sec"></div>
+        <div class="section-face right-sec"></div>
+        <div class="section-face left-sec"></div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 300;const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+    const sceneLang = document.getElementById("sceneLang");
+    const cubeLang = document.getElementById("cubeLang");
+    const start = document.getElementById("start");
+    const videoSection = document.getElementById("videoSection");
+    const introVideo = document.getElementById("introVideo");
+    const sectionCubeContainer = document.getElementById("sectionCubeContainer");
+    const cubeSection = document.getElementById("cubeSection");
 
-// إضاءة أساسية + موجهة لإظهار العمق
-scene.add(new THREE.AmbientLight(0xffffff, 0.4));
-const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-directionalLight.position.set(-100, 100, 200);
-scene.add(directionalLight);
+    let angleSec = 0;
+    let rotating = true;
+    let autoRotateInterval;
+    let startX = 0;
 
-const categories = [
-  { name: '🛍️ Shopping', offsetX: -90, offsetY: 90, delay: 0 },
-  { name: '🎮 Games', offsetX: 90, offsetY: 90, delay: 0.2 },
-  { name: '🍔 Food', offsetX: -90, offsetY: -90, delay: 0.4 },
-  { name: '💻 Tech', offsetX: 90, offsetY: -90, delay: 0.6 }
-];
+    function showLanguages() {
+      sceneLang.style.display = "block";
+      cubeLang.classList.add("rotating");
+    }
 
-function createPlanetWithText(text, radius = 50, delay = 0) {
-  const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 256;
-  const ctx = canvas.getContext('2d');
+    document.querySelectorAll("#cubeLang .face").forEach(face => {
+      face.addEventListener("click", () => {
+        const selectedLang = face.querySelector(".lang-label").textContent;
+        localStorage.setItem("language", selectedLang);
+        cubeLang.classList.remove("rotating");
+        start.style.display = "none";
+        sceneLang.style.display = "none";
+        videoSection.style.display = "flex";
+        introVideo.play();
+      });
+    });
 
-  ctx.fillStyle = 'rgba(0,0,0,0)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+    introVideo.onended = () => {
+      videoSection.style.display = "none";
+      sectionCubeContainer.style.display = "block";
+      startCubeSection();
+    };
 
-  ctx.fillStyle = '#00b3ff';
-  ctx.shadowColor = '#00ccff';
-  ctx.shadowBlur = 40;
-  ctx.font = 'bold 42px Arial';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+    function startCubeSection() {
+      autoRotateInterval = setInterval(() => {
+        angleSec += 1;
+        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
+      }, 30);
+    }
 
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.needsUpdate = true;
+    cubeSection.addEventListener("touchstart", e => {
+      if (rotating) {
+        clearInterval(autoRotateInterval);
+        rotating = false;
+        angleSec = Math.round(angleSec / 90) * 90;
+        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
+      }
+      startX = e.touches[0].clientX;
+    });
 
-  // مادة أكثر واقعية مع بريق ولمعان
-  const material = new THREE.MeshPhongMaterial({
-    map: texture,
-    color: 0x001122,
-    specular: new THREE.Color(0x00ccff),
-    shininess: 80,
-    transparent: true,
-    opacity: 0.8
-  });
+    cubeSection.addEventListener("touchmove", e => {
+      if (!rotating) {
+        let deltaX = e.touches[0].clientX - startX;
+        let rotateBy = deltaX * 0.6;
+        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec + rotateBy}deg)`;
+      }
+    });
 
-  const geometry = new THREE.SphereGeometry(radius, 64, 64);
-  const planet = new THREE.Mesh(geometry, material);
+    cubeSection.addEventListener("touchend", e => {
+      if (!rotating) {
+        let deltaX = e.changedTouches[0].clientX - startX;
+        angleSec += Math.round(deltaX * 0.6 / 90) * 90;
+        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
+      }
+    });
 
-  // توهج نيون داخلي
-  const glowGeo = new THREE.SphereGeometry(radius * 1.05, 64, 64);
-  const glowMat = new THREE.MeshBasicMaterial({
-    color: 0x00ccff,
-    transparent: true,
-    opacity: 0.2,
-    blending: THREE.AdditiveBlending,
-    side: THREE.BackSide
-  });
-  const glow = new THREE.Mesh(glowGeo, glowMat);
-  planet.add(glow);
-
-  planet.userData.delay = delay;
-  planet.rotation.x = -0.3;
-  planet.rotation.y = delay * 2;
-
-  return planet;
-}
-
-const planets = [];
-categories.forEach(cat => {
-  const planet = createPlanetWithText(cat.name, 50, cat.delay);
-  planet.position.set(cat.offsetX, cat.offsetY, 0);
-  planets.push(planet);
-  scene.add(planet);
-});
-
-const starsGeometry = new THREE.BufferGeometry();
-const starCount = 1000;
-const positionsArray = new Float32Array(starCount * 3);
-for (let i = 0; i < starCount * 3; i++) {
-  positionsArray[i] = (Math.random() - 0.5) * 2000;
-}
-starsGeometry.setAttribute('position', new THREE.BufferAttribute(positionsArray, 3));
-const starsMaterial = new THREE.PointsMaterial({ color: 0x88ccff, size: 1 });
-const stars = new THREE.Points(starsGeometry, starsMaterial);
-scene.add(stars);
-
-function animate(time) {
-  requestAnimationFrame(animate);
-  planets.forEach(p => {
-    const speed = 0.006;
-    p.rotation.y += speed;
-  });
-  stars.rotation.y += 0.0002;
-  stars.rotation.x += 0.0001;
-  renderer.render(scene, camera);
-}
-
-animate();
-
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
-
+    window.onpopstate = function (event) {
+      if (videoSection.style.display === 'flex') {
+        videoSection.style.display = 'none';
+        sceneLang.style.display = 'none';
+        start.style.display = 'block';
+      } else if (sectionCubeContainer.style.display === 'block') {
+        sectionCubeContainer.style.display = 'none';
+        videoSection.style.display = 'flex';
+      }
+    };
   </script>
 </body>
 </html>
