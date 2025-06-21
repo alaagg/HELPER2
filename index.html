@@ -1,9 +1,10 @@
-<!DOCTYPE html><html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HELPAR + FloBot</title>
-  <style>
+  <title>HELPAR Full Project</title>  <!-- ✅ تحميل مسبق للصور لتسريع عرض المكعب -->  <link rel="preload" href="sho.png" as="image">
+  <link rel="preload" href="code rom.png" as="image">
+  <link rel="preload" href="food.png" as="image">
+  <link rel="preload" href="games room.png" as="image">  <style>
     html, body {
       margin: 0; padding: 0;
       width: 100%; height: 100%;
@@ -11,188 +12,235 @@
       font-family: Arial, sans-serif;
       overflow: hidden;
       touch-action: none;
-    }#start, #langScene, #videoSection, #sectionScene {
-  position: absolute;
-  width: 100vw; height: 100vh;
-  top: 0; left: 0;
-  display: none;
-  justify-content: center;
-  align-items: center;
-}
-#start { display: flex; flex-direction: column; align-items: center; }
+    }
 
-.helpar-title {
-  font-size: 2.5em;
-  font-weight: bold;
-  color: #00ccff;
-  text-shadow: 0 0 4px #00ccff, 0 0 8px #00e7ff;
-}
-.lang-btn {
-  padding: 12px 24px;
-  font-size: 18px;
-  background: transparent;
-  border: 2px solid #00ccff;
-  border-radius: 10px;
-  color: #00ccff;
-  cursor: pointer;
-  margin-top: 70px;
-}
+    .centered {
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #00ccff;
+    }
 
-.scene {
-  width: 150px;
-  height: 150px;
-  perspective: 800px;
-  display: none;
-}
-.lang-cube {
-  width: 100%; height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.5s ease;
-  position: relative;
-}
-@keyframes rotateLangCube {
-  from { transform: rotateX(-10deg) rotateY(0deg); }
-  to { transform: rotateX(-10deg) rotateY(360deg); }
-}
-#langCube.rotating {
-  animation: rotateLangCube 6s linear infinite;
-}
-.face {
-  position: absolute;
-  width: 150px; height: 150px;
-  border: 2px solid #00ccff;
-  background: rgba(0, 0, 0, 0.5);
-  color: #00ccff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 2.5rem;
-}
-.lang-label {
-  font-size: 1rem;
-  margin-top: 8px;
-}
-.front  { transform: rotateY(0deg) translateZ(75px); }
-.back   { transform: rotateY(180deg) translateZ(75px); }
-.right  { transform: rotateY(90deg) translateZ(75px); }
-.left   { transform: rotateY(-90deg) translateZ(75px); }
+    .helpar-logo {
+      width: 100px;
+      height: auto;
+      margin-bottom: 10px;
+      animation: pulseGlowLogo 2s infinite;
+    }
 
-.scene-section {
-  width: 275px;
-  height: 275px;
-  perspective: 1000px;
-}
-.main-cube {
-  width: 275px;
-  height: 275px;
-  transform-style: preserve-3d;
-  transition: transform 0.5s ease;
-  transform: rotateX(-18deg) rotateY(0deg);
-}
-.section-face {
-  position: absolute;
-  width: 275px; height: 275px;
-  border: 2px solid #00ccff;
-  background-color: #000;
-  background-size: cover;
-  background-position: center;
-}
-.front-sec  { transform: rotateY(0deg) translateZ(137.5px); background-image: url('sho.png'); }
-.back-sec   { transform: rotateY(180deg) translateZ(137.5px); background-image: url('code rom.png'); }
-.right-sec  { transform: rotateY(90deg) translateZ(137.5px); background-image: url('food.png'); }
-.left-sec   { transform: rotateY(-90deg) translateZ(137.5px); background-image: url('games room.png'); }
+    .helpar-title {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #00ccff;
+      text-shadow: 0 0 4px #00ccff, 0 0 8px #00e7ff;
+    }
 
-#flobot {
-  display: none;
-  position: fixed;
-  width: 140px;
-  height: 140px;
-  background: #181c23;
-  border: 4px solid #03faff;
-  border-radius: 16px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 20px #00e7ffcc;
-  z-index: 99;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.flobot-eye {
-  width: 16px;
-  height: 16px;
-  background: #03faff;
-  border-radius: 50%;
-  position: absolute;
-  top: 40px;
-}
-.eye-left { left: 34px; }
-.eye-right { right: 34px; }
-.flobot-mouth {
-  width: 40px;
-  height: 8px;
-  background: #03faff;
-  border-radius: 6px;
-  position: absolute;
-  bottom: 36px;
-  left: 50%;
-  transform: translateX(-50%);
-}
+    .lang-btn {
+      padding: 12px 24px;
+      font-size: 18px;
+      background: transparent;
+      border: 2px solid #00ccff;
+      border-radius: 10px;
+      color: #00ccff;
+      cursor: pointer;
+      margin-top: 70px;
+    }
 
-  </style>
-</head>
+    @keyframes pulseGlowLogo {
+      0%, 100% {
+        filter: drop-shadow(0 0 12px #00e7ff) drop-shadow(0 0 24px #00ccff);
+        transform: scale(1);
+      }
+      50% {
+        filter: drop-shadow(0 0 20px #00e7ff) drop-shadow(0 0 40px #00ccff);
+        transform: scale(1.07);
+      }
+    }
+
+    .scene, #scene-fly {
+      width: 150px;
+      height: 150px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      perspective: 800px;
+      display: none;
+    }
+
+    .cube, .fly-cube {
+      width: 100%; height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+      position: relative;
+    }
+
+    @keyframes rotateCubeLang {
+      from { transform: rotateX(-10deg) rotateY(0deg); }
+      to { transform: rotateX(-10deg) rotateY(360deg); }
+    }
+
+    #cubeLang.rotating {
+      animation: rotateCubeLang 6s linear infinite;
+    }
+
+    .face {
+      position: absolute;
+      width: 150px; height: 150px;
+      border: 2px solid #00ccff;
+      background: rgba(0, 0, 0, 0.5);
+      color: #00ccff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.5rem;
+    }
+
+    .lang-label {
+      font-size: 1rem;
+      margin-top: 8px;
+      color: #00ccff;
+    }
+
+    .front  { transform: rotateY(0deg) translateZ(75px); }
+    .back   { transform: rotateY(180deg) translateZ(75px); }
+    .right  { transform: rotateY(90deg) translateZ(75px); }
+    .left   { transform: rotateY(-90deg) translateZ(75px); }
+
+    .glow-core {
+      position: absolute;
+      width: 10px; height: 10px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: #00ccff;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: pulseCore 1.8s infinite;
+      box-shadow:
+        0 0 6px #00ccff,
+        0 0 12px #00ccff,
+        0 0 18px #00e7ff,
+        0 0 32px #00e7ff;
+    }
+
+    @keyframes pulseCore {
+      0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.2);
+      }
+    }
+
+    #videoSection, #sectionCubeContainer, #scene-fly {
+      display: none;
+      position: absolute;
+      width: 100vw; height: 100vh;
+      top: 0; left: 0;
+      justify-content: center;
+      align-items: center;
+    }
+
+    video {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border: 2px solid #00ccff;
+      box-shadow: 0 0 20px #00ccff;
+      border-radius: 12px;
+    }
+
+    .scene-section {
+      width: 275px;
+      height: 275px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      perspective: 1000px;
+    }
+
+    .cube-section {
+      width: 275px;
+      height: 275px;
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+      transform: rotateX(-18deg) rotateY(0deg);
+    }
+
+    .section-face {
+      position: absolute;
+      width: 275px; height: 275px;
+      border: 2px solid #00ccff;
+      background-color: #000;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .front-sec  { transform: rotateY(0deg) translateZ(137.5px); background-image: url('sho.png'); }
+    .back-sec   { transform: rotateY(180deg) translateZ(137.5px); background-image: url('code rom.png'); }
+    .right-sec  { transform: rotateY(90deg) translateZ(137.5px); background-image: url('food.png'); }
+    .left-sec   { transform: rotateY(-90deg) translateZ(137.5px); background-image: url('games room.png'); }
+  </style></head>
 <body>
-  <div id="start">
+  <div id="start" class="centered">
+    <img src="logo.png" alt="HELPAR Logo" class="helpar-logo" />
     <div class="helpar-title">HELPAR</div>
-    <button class="lang-btn" onclick="showLangCube()">Choose Language</button>
-  </div>  <div class="scene" id="langScene">
-    <div class="lang-cube" id="langCube">
+    <button class="lang-btn" onclick="showLanguages()">Choose Language</button>
+  </div>  <div class="scene" id="sceneLang">
+    <div class="cube" id="cubeLang">
       <div class="face front">🇬🇧<span class="lang-label">English</span></div>
       <div class="face back">🇸🇦<span class="lang-label">العربية</span></div>
       <div class="face right">🇪🇸<span class="lang-label">Español</span></div>
       <div class="face left">🇫🇷<span class="lang-label">Français</span></div>
+      <div class="glow-core"></div>
     </div>
   </div>  <div id="videoSection">
     <video id="introVideo" autoplay playsinline>
       <source src="HELBERpro.mp4" type="video/mp4">
     </video>
-  </div>  <div id="sectionScene" class="scene-section">
-    <div class="main-cube" id="mainCube">
-      <div class="section-face front-sec"></div>
-      <div class="section-face back-sec"></div>
-      <div class="section-face right-sec"></div>
-      <div class="section-face left-sec"></div>
+  </div>  <div id="sectionCubeContainer">
+    <div class="scene-section">
+      <div class="cube-section" id="cubeSection">
+        <div class="section-face front-sec"></div>
+        <div class="section-face back-sec"></div>
+        <div class="section-face right-sec"></div>
+        <div class="section-face left-sec"></div>
+      </div>
     </div>
-  </div>  <div id="flobot">
-    <div class="flobot-eye eye-left"></div>
-    <div class="flobot-eye eye-right"></div>
-    <div class="flobot-mouth"></div>
+  </div>  <div class="scene" id="scene-fly">
+    <div class="fly-cube" style="width: 100px; height: 100px; background: #fff; border: 2px solid #00ccff; box-shadow: 0 0 30px #00ccff; border-radius: 12px; animation: flySpin 3s linear infinite;"></div>
   </div>  <script>
+    const sceneLang = document.getElementById("sceneLang");
+    const cubeLang = document.getElementById("cubeLang");
     const start = document.getElementById("start");
-    const langScene = document.getElementById("langScene");
-    const langCube = document.getElementById("langCube");
     const videoSection = document.getElementById("videoSection");
     const introVideo = document.getElementById("introVideo");
-    const sectionScene = document.getElementById("sectionScene");
-    const mainCube = document.getElementById("mainCube");
-    const flobot = document.getElementById("flobot");
+    const sectionCubeContainer = document.getElementById("sectionCubeContainer");
+    const cubeSection = document.getElementById("cubeSection");
+    const sceneFly = document.getElementById("scene-fly");
 
-    let angle = 0;
+    let angleSec = 0;
+    let rotating = true;
+    let autoRotateInterval;
     let startX = 0;
 
-    function showLangCube() {
-      start.style.display = "none";
-      langScene.style.display = "flex";
-      langCube.classList.add("rotating");
+    function showLanguages() {
+      sceneLang.style.display = "block";
+      cubeLang.classList.add("rotating");
     }
 
-    document.querySelectorAll("#langCube .face").forEach(face => {
+    document.querySelectorAll("#cubeLang .face").forEach(face => {
       face.addEventListener("click", () => {
         const selectedLang = face.querySelector(".lang-label").textContent;
         localStorage.setItem("language", selectedLang);
-        langScene.style.display = "none";
+        cubeLang.classList.remove("rotating");
+        start.style.display = "none";
+        sceneLang.style.display = "none";
         videoSection.style.display = "flex";
         introVideo.play();
       });
@@ -200,51 +248,58 @@
 
     introVideo.onended = () => {
       videoSection.style.display = "none";
-      sectionScene.style.display = "block";
-      startMainCube();
+      sectionCubeContainer.style.display = "block";
+      startCubeSection();
+
+      // بعد 6 ثوانٍ من عرض مكعب الأقسام، إظهار المكعب الطائر
+      setTimeout(() => {
+        sectionCubeContainer.style.display = "none";
+        sceneFly.style.display = "block";
+      }, 6000);
     };
 
-    function startMainCube() {
-      setInterval(() => {
-        angle += 1;
-        mainCube.style.transform = `rotateX(-18deg) rotateY(${angle}deg)`;
+    function startCubeSection() {
+      autoRotateInterval = setInterval(() => {
+        angleSec += 1;
+        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
       }, 30);
     }
 
-    mainCube.addEventListener("touchstart", e => {
+    cubeSection.addEventListener("touchstart", e => {
+      if (rotating) {
+        clearInterval(autoRotateInterval);
+        rotating = false;
+        angleSec = Math.round(angleSec / 90) * 90;
+        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
+      }
       startX = e.touches[0].clientX;
     });
 
-    mainCube.addEventListener("touchend", e => {
-      const delta = e.changedTouches[0].clientX - startX;
-      if (Math.abs(delta) > 50) {
-        angle += delta > 0 ? 90 : -90;
-        mainCube.style.transform = `rotateX(-18deg) rotateY(${angle}deg)`;
-        showFloBot();
+    cubeSection.addEventListener("touchmove", e => {
+      if (!rotating) {
+        let deltaX = e.touches[0].clientX - startX;
+        let rotateBy = deltaX * 0.6;
+        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec + rotateBy}deg)`;
       }
     });
 
-    function showFloBot() {
-      flobot.style.display = "flex";
-      speakFlo();
-    }
-
-    function speakFlo() {
-      const speech = new SpeechSynthesisUtterance(
-        "Hey! I'm Flo, your AI buddy. Welcome to this section!"
-      );
-      speech.lang = 'en-US';
-      speech.pitch = 1.1;
-      speech.rate = 1;
-      const voices = window.speechSynthesis.getVoices();
-      if (voices.length > 0) {
-        speech.voice = voices.find(v => v.lang === 'en-US' && v.name.includes("Google")) || voices[0];
+    cubeSection.addEventListener("touchend", e => {
+      if (!rotating) {
+        let deltaX = e.changedTouches[0].clientX - startX;
+        angleSec += Math.round(deltaX * 0.6 / 90) * 90;
+        cubeSection.style.transform = `rotateX(-18deg) rotateY(${angleSec}deg)`;
       }
-      window.speechSynthesis.speak(speech);
+    });
 
-      setTimeout(() => {
-        flobot.style.display = "none";
-      }, 5000);
-    }
+    window.onpopstate = function (event) {
+      if (videoSection.style.display === 'flex') {
+        videoSection.style.display = 'none';
+        sceneLang.style.display = 'none';
+        start.style.display = 'block';
+      } else if (sectionCubeContainer.style.display === 'block') {
+        sectionCubeContainer.style.display = 'none';
+        videoSection.style.display = 'flex';
+      }
+    };
   </script></body>
 </html>
