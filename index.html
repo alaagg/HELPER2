@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Seamless Glowing Cube - Mobile</title>
+  <title>Pulsing Glowing Cube</title>
   <style>
     html, body {
       margin: 0;
@@ -24,7 +24,7 @@
       height: 50px;
       position: relative;
       transform-style: preserve-3d;
-      animation: rotate 6s linear infinite;
+      transform: rotateX(-20deg) rotateY(30deg);
     }
 
     .face {
@@ -35,8 +35,9 @@
       border-radius: 2px;
       box-shadow:
         0 0 6px #00ccff,
-        0 0 10px #00ccff,
+        0 0 12px #00ccff,
         inset 0 0 4px #00ccff;
+      animation: pulseGlow 2s infinite ease-in-out;
     }
 
     .front  { transform: translateZ(25px); }
@@ -46,9 +47,19 @@
     .top    { transform: rotateX(90deg)  translateZ(25px); }
     .bottom { transform: rotateX(-90deg) translateZ(25px); }
 
-    @keyframes rotate {
-      0%   { transform: rotateX(0deg) rotateY(0deg); }
-      100% { transform: rotateX(360deg) rotateY(360deg); }
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow:
+          0 0 6px #00ccff,
+          0 0 12px #00ccff,
+          inset 0 0 4px #00ccff;
+      }
+      50% {
+        box-shadow:
+          0 0 10px #00e7ff,
+          0 0 20px #00e7ff,
+          inset 0 0 6px #00e7ff;
+      }
     }
   </style>
 </head>
