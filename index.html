@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FloBot Glow Stars</title>
+  <title>FloBot Cute Final</title>
   <style>
     html, body {
       margin: 0;
@@ -15,38 +15,16 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      flex-direction: column;
-    }
-
-    .wrapper {
-      position: relative;
-      width: 140px;
-      height: 140px;
     }
 
     .cube {
       width: 100px;
       height: 100px;
-      border-radius: 16px;
+      border-radius: 20px;
       background: #111;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      position: relative;
       box-shadow: 0 0 10px white, 0 0 20px white;
-      animation: greenPulse 3s infinite ease-in-out;
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      z-index: 2;
-    }
-
-    .cube::before {
-      content: "";
-      width: 35px;
-      height: 10px;
-      border-radius: 5px;
-      background-color: white;
-      box-shadow: 0 0 6px white, 0 0 12px white;
+      animation: greenPulse 1.2s infinite ease-in-out;
     }
 
     @keyframes greenPulse {
@@ -54,67 +32,69 @@
         box-shadow: 0 0 10px white, 0 0 20px white;
       }
       50% {
-        box-shadow: 0 0 10px white, 0 0 20px white,
-                    0 0 25px #00cc00, 0 0 55px #00cc00, 0 0 90px #00cc00;
+        box-shadow:
+          0 0 10px white, 0 0 20px white,
+          0 0 30px #00cc00, 0 0 60px #00cc00, 0 0 100px #00cc00;
       }
     }
 
-    .star {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background-color: red;
+    .eye {
+      width: 14px;
+      height: 14px;
+      background: white;
       border-radius: 50%;
-      animation: redPulse 2s infinite ease-in-out;
-      opacity: 0.9;
+      position: absolute;
+      top: 28px;
+      box-shadow: 0 0 4px #fff;
+      animation: blink 2s infinite ease-in-out;
+      transform-origin: center;
     }
 
-    /* النجمتين لكل ضلع – وسط الحافة */
-    .star:nth-child(2) { top: 12px; left: 45px; }
-    .star:nth-child(3) { top: 12px; left: 75px; }
+    .eye.left {
+      left: 25px;
+    }
 
-    .star:nth-child(4) { top: 45px; left: 12px; }
-    .star:nth-child(5) { top: 75px; left: 12px; }
+    .eye.right {
+      right: 25px;
+    }
 
-    .star:nth-child(6) { top: 45px; left: 114px; }
-    .star:nth-child(7) { top: 75px; left: 114px; }
+    @keyframes blink {
+      0%, 95%, 100% {
+        transform: scaleY(1);
+      }
+      96%, 97% {
+        transform: scaleY(0.15);
+      }
+    }
 
-    .star:nth-child(8) { top: 114px; left: 45px; }
-    .star:nth-child(9) { top: 114px; left: 75px; }
+    .mouth {
+      width: 24px;
+      height: 8px;
+      background: white;
+      border-radius: 0 0 10px 10px;
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: mouthTalk 1s infinite ease-in-out;
+      box-shadow: 0 0 4px white;
+    }
 
-    @keyframes redPulse {
+    @keyframes mouthTalk {
       0%, 100% {
-        box-shadow: 0 0 6px red, 0 0 10px red;
-        transform: scale(1);
+        height: 8px;
       }
       50% {
-        box-shadow: 0 0 14px red, 0 0 22px red;
-        transform: scale(1.4);
+        height: 14px;
       }
-    }
-
-    .text {
-      margin-top: 20px;
-      color: white;
-      font-size: 18px;
-      text-align: center;
-      text-shadow: 0 0 5px #00ccff;
     }
   </style>
 </head>
 <body>
-  <div class="wrapper">
-    <div class="cube"></div>
-    <!-- النجوم الثمانية -->
-    <span class="star"></span>
-    <span class="star"></span>
-    <span class="star"></span>
-    <span class="star"></span>
-    <span class="star"></span>
-    <span class="star"></span>
-    <span class="star"></span>
-    <span class="star"></span>
+  <div class="cube">
+    <div class="eye left"></div>
+    <div class="eye right"></div>
+    <div class="mouth"></div>
   </div>
-  <div class="text">FloBot: Devran Bey, Yeni Güne Hazır mısınız?</div>
 </body>
 </html>
