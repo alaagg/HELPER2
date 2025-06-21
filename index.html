@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FloBot Glow</title>
+  <title>FloBot Glow Stars</title>
   <style>
     html, body {
       margin: 0;
@@ -18,6 +18,12 @@
       flex-direction: column;
     }
 
+    .wrapper {
+      position: relative;
+      width: 140px;
+      height: 140px;
+    }
+
     .cube {
       width: 100px;
       height: 100px;
@@ -26,8 +32,12 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      box-shadow: 0 0 10px white, 0 0 20px white; /* دائمًا أبيض */
+      box-shadow: 0 0 10px white, 0 0 20px white;
       animation: greenPulse 3s infinite ease-in-out;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 2;
     }
 
     .cube::before {
@@ -44,11 +54,29 @@
         box-shadow: 0 0 10px white, 0 0 20px white;
       }
       50% {
-        box-shadow: 
-          0 0 10px white, 0 0 20px white, /* الأبيض دائم */
-          0 0 25px #00cc00, 0 0 55px #00cc00, 0 0 90px #00cc00; /* إشعاع أخضر قوي */
+        box-shadow: 0 0 10px white, 0 0 20px white,
+                    0 0 25px #00cc00, 0 0 55px #00cc00, 0 0 90px #00cc00;
       }
     }
+
+    .star {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background-color: red;
+      border-radius: 50%;
+      box-shadow: 0 0 5px red;
+      opacity: 0.95;
+    }
+
+    .star:nth-child(2)  { top: 0px;   left: 50%; transform: translateX(-50%); }
+    .star:nth-child(3)  { top: 15px;  left: 15px; }
+    .star:nth-child(4)  { top: 15px;  right: 15px; }
+    .star:nth-child(5)  { top: 50%;  left: 0px; transform: translateY(-50%); }
+    .star:nth-child(6)  { bottom: 0; left: 50%; transform: translateX(-50%); }
+    .star:nth-child(7)  { bottom: 15px; left: 15px; }
+    .star:nth-child(8)  { bottom: 15px; right: 15px; }
+    .star:nth-child(9)  { top: 50%;  right: 0px; transform: translateY(-50%); }
 
     .text {
       margin-top: 20px;
@@ -60,7 +88,17 @@
   </style>
 </head>
 <body>
-  <div class="cube"></div>
+  <div class="wrapper">
+    <div class="cube"></div>
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+    <span class="star"></span>
+  </div>
   <div class="text">FloBot: Devran Bey, Yeni Güne Hazır mısınız?</div>
 </body>
 </html>
