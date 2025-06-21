@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3D Planet</title>
+  <title>Saturn Style Planet</title>
   <style>
     body {
       margin: 0;
@@ -17,58 +17,80 @@
   </style>
 </head>
 <body>
+  <!-- مكتبة Three.js -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
 
   <script>
+    // إنشاء المشهد والكاميرا
     const scene = new THREE.Scene();
-
     const camera = new THREE.PerspectiveCamera(
       75,
       window.innerWidth / window.innerHeight,
       0.1,
       1000
     );
-    camera.position.z = 150;
+    camera.position.z = 200;
 
+    // إعداد الرندر
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-    scene.add(ambientLight);
-
+    // إضاءة المشهد
+    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
     const pointLight = new THREE.PointLight(0xffffff, 1);
     pointLight.position.set(200, 200, 200);
     scene.add(pointLight);
 
+    // تحميل نسيج الكوكب
     const textureLoader = new THREE.TextureLoader();
-    const planetTexture = textureLoader.load("sho.png"); // ✅ تأكد أن الاسم صحيح ومطابق
+    const planetTexture = textureLoader.load("sho.png"); // تأكد أن الصورة موجودة بنفس الاسم
 
-    const geometry = new THREE.SphereGeometry(50, 64, 64);
-    const material = new THREE.MeshStandardMaterial({ map: planetTexture });
-    const planet = new THREE.Mesh(geometry, material);
-    scene.add(planet);
+    // كوكب ثلاثي الأبعاد
+    const planetGeometry = new THREE.SphereGeometry(50, 64, 64);
+    const planetMaterial = new THREE.MeshStandardMaterial({ map: planetTexture });
+    const planet = new THREE.Mesh(planetGeometry, planetMaterial);
 
-    // ✅ الهالة النيون الزرقاء الرقيقة
-    const ringGeometry = new THREE.RingGeometry(52, 53.2, 128);
-    const ringMaterial = new THREE.MeshBasicMaterial({
-      color: 0x00ccff,
-      side: THREE.DoubleSide,
-      transparent: true,
-      opacity: 0.15
-    });
-    const halo = new THREE.Mesh(ringGeometry, ringMaterial);
-    halo.rotation.x = Math.PI / 2;
-    planet.add(halo); // ✅ الهالة ترتبط بالكوكب مباشرة
+    // مجموعة الدوران المائل
+    const tiltedGroup = new THREE.Group();
+    tiltedGroup.add(planet);
+    tiltedGroup.rotation.z = 0.41; // 23.5 درجة
+    scene.add(tiltedGroup);
 
+    // دالة إنشاء حلقات نيون أزرق كهربائي
+    function createGlowRing(innerRadius, outerRadius, opacity) {
+      const ringGeo = new THREE.RingGeometry(innerRadius, outerRadius, 128);
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: 0x00bfff, // 🔵 أزرق كهربائي نيون
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: opacity,
+      });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.rotation.x = Math.PI / 2;
+      return ring;
+    }
+
+    // إنشاء 3 حلقات نيون بحجم متدرج
+    const ring1 = createGlowRing(52, 55, 0.25);
+    const ring2 = createGlowRing(57, 60, 0.2);
+    const ring3 = createGlowRing(63, 67, 0.15);
+
+    // ربط الحلقات بالكوكب
+    planet.add(ring1);
+    planet.add(ring2);
+    planet.add(ring3);
+
+    // تدوير الكوكب بثبات
     function animate() {
       requestAnimationFrame(animate);
-      planet.rotation.y += 0.003;
-      planet.rotation.x += 0.001;
+      tiltedGroup.rotation.y += 0.002; // دوران منتظم
       renderer.render(scene, camera);
     }
+
     animate();
 
+    // تحديث حجم العرض عند تغيير حجم الشاشة
     window.addEventListener("resize", () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
