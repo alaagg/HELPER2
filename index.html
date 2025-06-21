@@ -1,120 +1,141 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="ar">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FloBot</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Helper Pren – AI Interface</title>
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
-      margin: 0;
-      padding: 0;
-      background: radial-gradient(circle at center, #010308, #000);
-      overflow: hidden;
       height: 100%;
+      background: radial-gradient(circle at center, #010308 0%, #000 100%);
+      font-family: 'Segoe UI', sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
-      touch-action: none;
-    }.ring {
-  width: 240px;
-  height: 240px;
-  border-radius: 50%;
-  border: 6px solid #00f0ff88;
-  position: absolute;
-  animation: rotate 16s linear infinite;
-}
-
-.cube {
-  width: 140px;
-  height: 140px;
-  background: rgba(0, 255, 255, 0.05);
-  border: 2px solid #00f0ffcc;
-  box-shadow: 0 0 18px #00f0ff88, inset 0 0 8px #00f0ff66;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform-style: preserve-3d;
-  transition: all 0.5s ease;
-}
-
-.core-symbol {
-  font-size: 26px;
-  color: #00f0ff;
-  text-shadow: 0 0 4px #00f0ff, 0 0 8px #00f0ff;
-  transition: transform 0.4s ease, opacity 0.4s ease;
-}
-
-.core-symbol.hidden {
-  opacity: 0;
-  transform: scale(0.2);
-}
-
-.calm {
-  border-color: #00f0ffcc;
-  box-shadow: 0 0 12px #00f0ff88, inset 0 0 8px #00f0ff66;
-}
-
-.excited {
-  border-color: #00ffff;
-  box-shadow: 0 0 28px #00ffffaa, inset 0 0 16px #00f0ff88;
-  transform: scale(1.1);
-}
-
-.withdrawn {
-  border-color: #003a4a;
-  box-shadow: 0 0 6px #003a4a, inset 0 0 4px #002f3f;
-  transform: scale(0.9);
-}
-
-@keyframes rotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
+      flex-direction: column;
+      color: #fff;
+    }
+    .title {
+      font-size: 2em;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px #00ccff;
+    }
+    .input-box {
+      width: 90%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    input {
+      width: 100%;
+      padding: 15px;
+      border-radius: 10px;
+      border: none;
+      font-size: 1em;
+      background: #111;
+      color: #00ccff;
+      box-shadow: 0 0 10px #00ccff55;
+      outline: none;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 12px 25px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      background-color: #00ccff;
+      color: #000;
+      cursor: pointer;
+      box-shadow: 0 0 10px #00ccff88;
+    }
+    .response {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 1.2em;
+      background: rgba(255,255,255,0.05);
+      padding: 15px 20px;
+      border-radius: 10px;
+      max-width: 90%;
+      box-shadow: 0 0 20px #00ccff22;
+      white-space: pre-line;
+    }
   </style>
 </head>
 <body>
-  <div class="ring"></div>
-  <div class="cube calm" id="cube">
-    <div class="core-symbol" id="symbol">☍</div>
-  </div>  <script>
-    const cube = document.getElementById("cube");
-    const symbol = document.getElementById("symbol");
+  <div class="title">Helper Pren</div>
+  <div class="input-box">
+    <input type="text" id="userInput" placeholder="اكتب ما تريد..." onkeydown="handleKey(event)">
+    <button onclick="manualSend()">Send</button>
+    <div id="response" class="response" style="display:none"></div>
+  </div>
 
-    let lastTouch = Date.now();
-    let touchSpeeds = [];
+  <script>
+    // تحديد الموقع الجغرافي
+    let userLocation = "موقعك غير معروف";
 
-    function updateState() {
-      const now = Date.now();
-      const sinceLast = now - lastTouch;
-
-      if (sinceLast > 7000) {
-        cube.className = 'cube withdrawn';
-        symbol.textContent = "…";
-      } else {
-        let speedAvg = touchSpeeds.length ? (touchSpeeds.reduce((a,b)=>a+b) / touchSpeeds.length) : 300;
-        if (speedAvg < 200) {
-          cube.className = 'cube excited';
-          symbol.textContent = "⚠";
-        } else {
-          cube.className = 'cube calm';
-          symbol.textContent = "☍";
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          const lat = position.coords.latitude.toFixed(4);
+          const lon = position.coords.longitude.toFixed(4);
+          userLocation = `https://www.google.com/maps/search/مطاعم/@${lat},${lon},15z`;
+        },
+        function(error) {
+          userLocation = "تعذر الوصول إلى موقعك";
         }
-      }
-
-      setTimeout(updateState, 1000);
+      );
+    } else {
+      userLocation = "المتصفح لا يدعم الموقع الجغرافي";
     }
 
-    cube.addEventListener("click", () => {
-      const now = Date.now();
-      let speed = now - lastTouch;
-      lastTouch = now;
+    function normalizeText(text) {
+      return text
+        .toLowerCase()
+        .replace(/[أإآا]/g, "ا")
+        .replace(/[ةه]/g, "ه")
+        .replace(/[ى]/g, "ي")
+        .replace(/[ًٌٍَُِّْ]/g, "");
+    }
 
-      if (speed < 1000) {
-        touchSpeeds.push(speed);
-        if (touchSpeeds.length > 5) touchSpeeds.shift();
+    function handleKey(e) {
+      if (e.key === "Enter") {
+        const input = document.getElementById("userInput").value.trim();
+        if (input !== "") {
+          respondToUser(input);
+        }
       }
-    });
+    }
 
-    updateState();
-  </script></body>
+    function manualSend() {
+      const input = document.getElementById("userInput").value.trim();
+      if (input !== "") {
+        respondToUser(input);
+      }
+    }
+
+    function respondToUser(text) {
+      const res = document.getElementById("response");
+      let reply = "";
+      const normalized = normalizeText(text);
+
+      if (normalized.includes("تسلي") || normalized.includes("ملل") || normalized.includes("فيديو")) {
+        reply = "🎥 عرض مقاطع فيديو ترفيهية جديدة لك الآن...";
+      } else if (normalized.includes("جعان") || normalized.includes("اكل") || normalized.includes("غدا")) {
+        reply = `🍔 أقرب مطاعم مقترحة بناءً على موقعك:\n📍 افتح: ${userLocation}`;
+      } else if (normalized.includes("تعبان") || normalized.includes("راحه") || normalized.includes("صحه")) {
+        reply = "🧘‍♂️ تمارين خفيفة + جلسة تأمل لمدة 5 دقائق...";
+      } else if (normalized.includes("ادرس") || normalized.includes("تعلم") || normalized.includes("ركز")) {
+        reply = "📚 وضع تركيز مفعّل + مصادر تعلّم ذكية جاهزة...";
+      } else {
+        reply = "🤖 Helper Pren يفكر... تم تحليل طلبك، جاري تجهيز أفضل رد...";
+      }
+
+      res.style.display = "block";
+      res.textContent = reply;
+    }
+  </script>
+</body>
 </html>
