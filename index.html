@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Centered Rotating Planet</title>
+  <title>Rotating Planet with Tilt</title>
   <style>
     body {
       margin: 0;
@@ -21,7 +21,7 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
 
   <script>
-    // إنشاء المشهد والكاميرا
+    // المشهد والكاميرا
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
       75,
@@ -35,7 +35,7 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    // إضاءة المشهد
+    // إضاءة
     scene.add(new THREE.AmbientLight(0xffffff, 0.6));
     const pointLight = new THREE.PointLight(0xffffff, 1);
     pointLight.position.set(200, 200, 200);
@@ -43,34 +43,35 @@
 
     // تحميل نسيج الكوكب
     const textureLoader = new THREE.TextureLoader();
-    const planetTexture = textureLoader.load("sho.png"); // تأكد من الاسم
+    const planetTexture = textureLoader.load("sho.png");
 
-    // الكوكب نفسه
+    // كوكب
     const planetGeometry = new THREE.SphereGeometry(50, 64, 64);
     const planetMaterial = new THREE.MeshStandardMaterial({ map: planetTexture });
     const planet = new THREE.Mesh(planetGeometry, planetMaterial);
+    planet.rotation.z = 0.15; // ✅ إمالة خفيفة لمحور الدوران
     scene.add(planet);
 
-    // ✅ توهج داخلي داخل الكوكب
+    // توهج داخلي
     const glowGeometry = new THREE.SphereGeometry(30, 32, 32);
     const glowMaterial = new THREE.MeshBasicMaterial({
       color: 0x00ccff,
       transparent: true,
-      opacity: 0.08, // توهج داخلي خفيف
+      opacity: 0.08,
     });
     const innerGlow = new THREE.Mesh(glowGeometry, glowMaterial);
     planet.add(innerGlow);
 
-    // دوران حول المركز فقط (محور Y)
+    // تدوير معكوس وبسرعة أكبر
     function animate() {
       requestAnimationFrame(animate);
-      planet.rotation.y += 0.002;
+      planet.rotation.y -= 0.004; // ✅ عكس الاتجاه وتسريع
       renderer.render(scene, camera);
     }
 
     animate();
 
-    // استجابة لحجم الشاشة
+    // إعادة ضبط الحجم
     window.addEventListener("resize", () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
