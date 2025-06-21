@@ -3,23 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Three.js 3D Sphere 50×50</title>
+  <title>Three.js 3D Sphere 200×200</title>
   <style>
-    body {
+    html, body {
       margin: 0;
-      height: 100vh;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: #111;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #111;
     }
     #container {
-      /* حجم الحاوية = 50×50 px */
-      width: 50px;
-      height: 50px;
+      /* حجم الحاوية 200×200 بكسل */
+      width: 200px;
+      height: 200px;
     }
     canvas {
-      /* يملأ كامل الحاوية */
       display: block;
       width: 100%;
       height: 100%;
@@ -29,23 +30,25 @@
 <body>
   <div id="container"></div>
 
-  <!-- استدعاء Three.js من CDN -->
+  <!-- Three.js من CDN -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
   <script>
-    // إعداد المشهد والكاميرا والعارض
     const container = document.getElementById('container');
-    const scene     = new THREE.Scene();
-    const camera    = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
-    camera.position.z = 100;
 
+    // إعداد المشهد والكاميرا
+    const scene  = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
+    camera.position.z = 250; // تبعد الكاميرا قليلاً لتناسب حجم الكرة
+
+    // الإعدادات الأساسية للعابِر
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(50, 50);
+    renderer.setSize(200, 200);
     container.appendChild(renderer.domElement);
 
-    // إنشاء هندسة الكرة وموادها
-    const geometry = new THREE.SphereGeometry(25, 32, 32); // نصف القطر 25px => قطر 50px
+    // إنشاء كرة نصف قطرها 100px (قطر 200px)
+    const geometry = new THREE.SphereGeometry(100, 32, 32);
     const material = new THREE.MeshStandardMaterial({
-      color: 0xffffff,
+      color:     0xffffff,
       roughness: 0.5,
       metalness: 0.1
     });
@@ -57,13 +60,13 @@
     scene.add(ambientLight);
 
     const dirLight = new THREE.DirectionalLight(0xffffff, 1);
-    dirLight.position.set(50, 50, 100);
+    dirLight.position.set(50, 50, 150);
     scene.add(dirLight);
 
     // حلقة التحريك
     function animate() {
       requestAnimationFrame(animate);
-      sphere.rotation.y += 0.02;  // دوران حول المحور Y
+      sphere.rotation.y += 0.015; // سرعة دوران مناسبة للهاتف
       renderer.render(scene, camera);
     }
     animate();
