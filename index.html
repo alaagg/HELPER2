@@ -2,32 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>HELPAR — Neon Quantum Cube</title>
+  <title>HELPAR — All In One Avatar Cube</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <style>
     html, body {
       margin: 0; padding: 0; height: 100vh;
-      background: radial-gradient(circle at center, #010308 70%, #000 100%);
-      font-family: 'Consolas', monospace;
+      background: radial-gradient(circle at center, #010308 65%, #000 100%);
+      font-family: 'Segoe UI', 'Consolas', monospace;
       color: #00ccff; overflow: hidden;
     }
     #neonMessage {
       text-align: center;
-      font-size: 1.5em;
+      font-size: 1.6em;
       margin-top: 3vh;
-      text-shadow: 0 0 18px #00e7ff;
+      text-shadow: 0 0 18px #00e7ff, 0 0 6px #00e7ff88;
       letter-spacing: 1.5px;
       font-family: 'Consolas', monospace;
+      font-weight: bold;
+      animation: welcomePulse 2.2s infinite alternate;
     }
+    @keyframes welcomePulse {
+      from { text-shadow: 0 0 10px #00e7ff; }
+      to   { text-shadow: 0 0 24px #00e7ff, 0 0 40px #00f; }
+    }
+    /* مكعب */
     .scene {
-      width: 260px; height: 260px;
-      margin: 35px auto 0 auto;
-      perspective: 1400px;
+      width: 265px; height: 265px;
+      margin: 42px auto 0 auto;
+      perspective: 1200px;
       user-select: none;
       touch-action: none;
     }
     .cube {
-      width: 250px; height: 250px;
+      width: 255px; height: 255px;
       position: relative;
       transform-style: preserve-3d;
       animation: spin 8s linear infinite;
@@ -37,24 +44,24 @@
     .cube.paused { animation-play-state: paused; }
     .face {
       position: absolute;
-      width: 250px; height: 250px;
+      width: 255px; height: 255px;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      background: rgba(0, 8, 28, 0.93);
+      background: rgba(0, 10, 24, 0.92);
       border: 2.7px solid #00ccffcc;
-      box-shadow: 0 0 24px #00e7ff88, 0 0 100px #00e7ff0a inset;
-      font-size: 27px; font-weight: bold; color: #00ccff;
+      box-shadow: 0 0 26px #00e7ff88, 0 0 100px #00e7ff0a inset;
+      font-size: 29px; font-weight: bold; color: #00ccff;
       cursor: pointer; text-align: center; user-select: none;
-      text-shadow: 0 0 10px #00e7ffcc;
+      text-shadow: 0 0 12px #00e7ffcc;
       transition: background 0.3s, border 0.3s;
     }
-    .face:hover { background: #001b26ee; border-color: #00e7ff; }
-    .front  { transform: rotateY(  0deg) translateZ(125px);}
-    .back   { transform: rotateY(180deg) translateZ(125px);}
-    .right  { transform: rotateY( 90deg) translateZ(125px);}
-    .left   { transform: rotateY(-90deg) translateZ(125px);}
-    .top    { transform: rotateX( 90deg) translateZ(125px);}
-    .bottom { transform: rotateX(-90deg) translateZ(125px);}
+    .face:hover { background: #001b26f7; border-color: #00e7ff; }
+    .front  { transform: rotateY(  0deg) translateZ(127.5px);}
+    .back   { transform: rotateY(180deg) translateZ(127.5px);}
+    .right  { transform: rotateY( 90deg) translateZ(127.5px);}
+    .left   { transform: rotateY(-90deg) translateZ(127.5px);}
+    .top    { transform: rotateX( 90deg) translateZ(127.5px);}
+    .bottom { transform: rotateX(-90deg) translateZ(127.5px);}
     @keyframes spin {
       0%   { transform: rotateX(-20deg) rotateY(0deg);}
       100% { transform: rotateX(-20deg) rotateY(360deg);}
@@ -62,20 +69,14 @@
     /* منبثق */
     .overlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.96); color: #00ccff; font-family: 'Consolas', monospace;
+      background: rgba(0,0,0,0.97); color: #00ccff; font-family: 'Consolas', monospace;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       z-index: 9999; text-align: center; padding: 20px;
       animation: fadein .7s;
     }
     @keyframes fadein { from { opacity:0; } to { opacity:1; } }
     .overlay h2 { color: #44dfff; margin-bottom: 16px; font-size: 1.5em; }
-    .overlay p  { color: #77faff; font-size: 1.18em; text-shadow:0 0 6px #00e7ff; }
-    .neon-glow {
-      color: #44dfff;
-      text-shadow: 0 0 22px #00ccff, 0 0 44px #00e7ff77;
-      font-size: 1.18em;
-      font-family: 'Consolas', monospace;
-    }
+    .overlay p  { color: #77faff; font-size: 1.17em; text-shadow:0 0 6px #00e7ff; }
     .neon-btn {
       margin-top: 28px; padding: 15px 38px;
       font-size: 1.13em; background: #000e;
@@ -88,16 +89,78 @@
     .neon-btn:hover {
       background: #011a2a; color: #fff; border-color: #00e7ff;
     }
-    .neon-ball {
-      width: 72px; height: 72px; border-radius: 50%;
-      margin: 24px auto 18px auto;
-      background: radial-gradient(circle, #00e7ff 22%, #001a27 85%);
-      box-shadow: 0 0 48px #00e7ff88, 0 0 200px #00e7ff11;
-      animation: pulseglow 1.6s infinite alternate;
+    /* أفاتار متحرك */
+    .avatar-container {
+      margin: 20px auto 0 auto; display: flex; flex-direction: column; align-items: center;
     }
-    @keyframes pulseglow {
-      from { box-shadow: 0 0 32px #00e7ff88, 0 0 70px #00e7ff11; }
-      to   { box-shadow: 0 0 48px #00e7ffdd, 0 0 220px #00e7ff22;}
+    .avatar-bubble {
+      padding: 13px 30px 10px 30px;
+      border: 2.5px solid #03faff;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.88);
+      color: #fff;
+      font-size: 1.12em;
+      text-align: center;
+      margin-bottom: 20px;
+      box-shadow: 0 0 18px #03faff66, 0 0 0px #00e7ff;
+      text-shadow: 0 0 6px #03faff99;
+      font-family: 'Segoe UI', monospace;
+    }
+    .avatar-face {
+      width: 122px; height: 122px;
+      background: #181c23;
+      border: 4px solid #03faff;
+      border-radius: 18px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      box-shadow: 0 0 38px #00e7ffcc, 0 0 46px #000 inset;
+      position: relative;
+      margin: 0 auto;
+      animation: facePulse 1.6s infinite alternate;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+    .avatar-eye {
+      width: 18px; height: 18px;
+      background: #03faff;
+      border-radius: 50%;
+      position: absolute;
+      top: 38px;
+      transition: left 0.15s, right 0.15s;
+      filter: drop-shadow(0 0 6px #00e7ff);
+    }
+    .avatar-eye.left  { left: 32px; }
+    .avatar-eye.right { right: 32px; }
+    .avatar-mouth {
+      width: 42px; height: 7px;
+      background: #03faff;
+      border-radius: 8px;
+      position: absolute;
+      bottom: 33px; left: 50%; transform: translateX(-50%);
+      transition: width 0.22s, border-radius 0.22s, background 0.22s;
+      filter: drop-shadow(0 0 4px #00e7ff99);
+    }
+    .avatar-face.happy .avatar-mouth {
+      width: 50px; height: 13px;
+      border-radius: 60px 60px 80px 80px / 100px 100px 100px 100px;
+      background: #6ff;
+    }
+    .avatar-face.sad .avatar-mouth {
+      width: 33px; height: 10px;
+      border-radius: 0 0 22px 22px / 0 0 35px 35px;
+      background: #00c5ff;
+      top: unset; bottom: 28px;
+      transform: translateX(-50%) rotate(180deg);
+    }
+    .avatar-face.surprised .avatar-mouth {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: #aafaff;
+      top: unset; bottom: 36px;
+      left: 50%; transform: translateX(-50%);
+    }
+    @keyframes facePulse {
+      0% { box-shadow: 0 0 18px #00e7ff99, 0 0 60px #001 inset; }
+      100% { box-shadow: 0 0 32px #00e7ffcc, 0 0 110px #00e7ff0d inset; }
     }
   </style>
 </head>
@@ -105,30 +168,28 @@
   <div id="neonMessage">👋 Welcome to HELPAR</div>
   <div class="scene">
     <div class="cube" id="cube">
-      <div class="face front"  data-section="chat">💬<br><span class="neon-glow">Quantum Chat</span></div>
-      <div class="face back"   data-section="avatar">🤖<br><span class="neon-glow">Avatar</span></div>
-      <div class="face right"  data-section="trends">🌍<br><span class="neon-glow">Trends</span></div>
-      <div class="face left"   data-section="xp">💠<br><span class="neon-glow">XP</span></div>
-      <div class="face top"    data-section="time">🕒<br><span class="neon-glow">Time</span></div>
-      <div class="face bottom" data-section="voice">🎤<br><span class="neon-glow">Voice</span></div>
+      <div class="face front"  data-section="chat">💬<br>Quantum Chat</div>
+      <div class="face back"   data-section="avatar">🤖<br>Avatar</div>
+      <div class="face right"  data-section="trends">🌍<br>Trends</div>
+      <div class="face left"   data-section="xp">💠<br>XP</div>
+      <div class="face top"    data-section="time">🕒<br>Time</div>
+      <div class="face bottom" data-section="voice">🎤<br>Voice</div>
     </div>
   </div>
   <script>
-    // تحكم دوران المكعب (توقف عند الضغط)
+    // دوران المكعب توقف/تشغيل عند الضغط
     const cube = document.getElementById("cube");
     cube.addEventListener("click", e => {
       cube.classList.toggle("paused");
     });
-
-    // كل وجه يفتح نافذة منبثقة نيونية
+    // كل وجه يفتح منبثق
     document.querySelectorAll('.face').forEach(face => {
       face.addEventListener('click', function(e){
-        e.stopPropagation(); // يمنع تداخل الضغط مع المكعب
+        e.stopPropagation();
         showOverlay(this.dataset.section);
       });
     });
-
-    // محتوى الواجهات المنبثقة
+    // محتوى كل قسم (منبثق)
     function showOverlay(section) {
       const overlay = document.createElement('div');
       overlay.className = 'overlay';
@@ -140,8 +201,35 @@
           break;
         case "avatar":
           content = `<h2>HELPar Avatar</h2>
-            <p class="neon-glow">"How can I help you today?"</p>
-            <div class="neon-ball"></div>`;
+            <div class="avatar-container">
+              <div class="avatar-bubble" id="avatar-bubble">Hello! I'm HELPar — your AI friend 👋</div>
+              <div class="avatar-face" id="avatar-face">
+                <div class="avatar-eye left" id="eye-l"></div>
+                <div class="avatar-eye right" id="eye-r"></div>
+                <div class="avatar-mouth" id="mouth"></div>
+              </div>
+            </div>
+            <script>
+              (function(){
+                const face = document.getElementById('avatar-face');
+                const mouth = document.getElementById('mouth');
+                let moods = ['happy','sad','surprised',''];
+                let mood = 0;
+                setInterval(()=>{
+                  face.className = 'avatar-face ' + moods[mood%4];
+                  mood++;
+                }, 2200);
+                // تتبع المؤشر
+                const eyeL = document.getElementById('eye-l');
+                const eyeR = document.getElementById('eye-r');
+                document.onmousemove = function(e){
+                  let x = e.clientX/window.innerWidth;
+                  eyeL.style.left = (32+16*x)+'px';
+                  eyeR.style.right = (32+16*(1-x))+'px';
+                };
+              })();
+            </script>
+          `;
           break;
         case "trends":
           content = `<h2>Trends</h2>
