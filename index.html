@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rotating Planet with Tilt</title>
+  <title>Floating Planets with Swap</title>
   <style>
     body {
       margin: 0;
       overflow: hidden;
       background: radial-gradient(#000000, #010308);
-      touch-action: none;
     }
     canvas {
       display: block;
@@ -17,66 +15,84 @@
   </style>
 </head>
 <body>
-  <!-- مكتبة Three.js -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
-
   <script>
-    // المشهد والكاميرا
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
-    camera.position.z = 200;
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    camera.position.z = 300;const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+const pointLight = new THREE.PointLight(0xffffff, 1);
+pointLight.position.set(200, 200, 200);
+scene.add(pointLight);
 
-    // إضاءة
-    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-    const pointLight = new THREE.PointLight(0xffffff, 1);
-    pointLight.position.set(200, 200, 200);
-    scene.add(pointLight);
+const textureLoader = new THREE.TextureLoader();
+const planetData = [
+  { texture: 'sho.png', radius: 50, position: [-100, 50, 0] },
+  { texture: 'code rom.png', radius: 40, position: [80, -30, -20] },
+  { texture: 'food.png', radius: 30, position: [-50, -80, 30] },
+  { texture: 'games room.png', radius: 20, position: [60, 70, -40] }
+];
 
-    // تحميل نسيج الكوكب
-    const textureLoader = new THREE.TextureLoader();
-    const planetTexture = textureLoader.load("sho.png");
+const planets = [];
 
-    // كوكب
-    const planetGeometry = new THREE.SphereGeometry(50, 64, 64);
-    const planetMaterial = new THREE.MeshStandardMaterial({ map: planetTexture });
-    const planet = new THREE.Mesh(planetGeometry, planetMaterial);
-    planet.rotation.z = 0.15; // ✅ إمالة خفيفة لمحور الدوران
-    scene.add(planet);
+planetData.forEach((data, i) => {
+  const geo = new THREE.SphereGeometry(data.radius, 64, 64);
+  const mat = new THREE.MeshStandardMaterial({ map: textureLoader.load(data.texture) });
+  const planet = new THREE.Mesh(geo, mat);
+  planet.position.set(...data.position);
 
-    // توهج داخلي
-    const glowGeometry = new THREE.SphereGeometry(30, 32, 32);
-    const glowMaterial = new THREE.MeshBasicMaterial({
-      color: 0x00ccff,
-      transparent: true,
-      opacity: 0.08,
-    });
-    const innerGlow = new THREE.Mesh(glowGeometry, glowMaterial);
-    planet.add(innerGlow);
+  // توهج داخلي
+  const glowGeo = new THREE.SphereGeometry(data.radius * 0.6, 32, 32);
+  const glowMat = new THREE.MeshBasicMaterial({ color: 0x00ccff, transparent: true, opacity: 0.06 });
+  const glow = new THREE.Mesh(glowGeo, glowMat);
+  planet.add(glow);
 
-    // تدوير معكوس وبسرعة أكبر
-    function animate() {
-      requestAnimationFrame(animate);
-      planet.rotation.y -= 0.004; // ✅ عكس الاتجاه وتسريع
-      renderer.render(scene, camera);
-    }
+  planets.push({
+    mesh: planet,
+    speed: 0.001 + Math.random() * 0.003,
+    dir: Math.random() * 2 * Math.PI,
+    target: data.position.slice(),
+    current: data.position.slice()
+  });
+  scene.add(planet);
+});
 
-    animate();
+// كل 8 ثواني يتم تبديل الأهداف بين الكواكب
+setInterval(() => {
+  const targets = planets.map(p => p.mesh.position.clone());
+  for (let i = 0; i < planets.length; i++) {
+    let j;
+    do {
+      j = Math.floor(Math.random() * planets.length);
+    } while (j === i);
+    planets[i].target = [targets[j].x, targets[j].y, targets[j].z];
+  }
+}, 8000);
 
-    // إعادة ضبط الحجم
-    window.addEventListener("resize", () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
+function animate() {
+  requestAnimationFrame(animate);
+  planets.forEach((planetObj, i) => {
+    const mesh = planetObj.mesh;
+    mesh.rotation.y += planetObj.speed;
+
+    // حركة انتقال تدريجية نحو الهدف الجديد
+    mesh.position.x += (planetObj.target[0] - mesh.position.x) * 0.01;
+    mesh.position.y += (planetObj.target[1] - mesh.position.y) * 0.01;
+    mesh.position.z += (planetObj.target[2] - mesh.position.z) * 0.01;
+  });
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
   </script>
 </body>
 </html>
