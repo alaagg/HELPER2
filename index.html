@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CSS 3D Sphere 50×50×50</title>
+  <title>Three.js 3D Sphere 50×50</title>
   <style>
     body {
       margin: 0;
@@ -12,27 +12,61 @@
       justify-content: center;
       align-items: center;
       background: #111;
-      perspective: 400px; /* لإبراز العمق ثلاثي الأبعاد */
     }
-    .sphere {
+    #container {
+      /* حجم الحاوية = 50×50 px */
       width: 50px;
       height: 50px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #fafafa, #888 80%);
-      box-shadow:
-        inset -5px -5px 8px rgba(0,0,0,0.6),
-        5px 5px 10px rgba(0,0,0,0.4);
-      transform-style: preserve-3d;
-      animation: spinY 4s linear infinite;
     }
-
-    @keyframes spinY {
-      from { transform: rotateX(20deg) rotateY(0deg); }
-      to   { transform: rotateX(20deg) rotateY(360deg); }
+    canvas {
+      /* يملأ كامل الحاوية */
+      display: block;
+      width: 100%;
+      height: 100%;
     }
   </style>
 </head>
 <body>
-  <div class="sphere"></div>
+  <div id="container"></div>
+
+  <!-- استدعاء Three.js من CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+  <script>
+    // إعداد المشهد والكاميرا والعارض
+    const container = document.getElementById('container');
+    const scene     = new THREE.Scene();
+    const camera    = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
+    camera.position.z = 100;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(50, 50);
+    container.appendChild(renderer.domElement);
+
+    // إنشاء هندسة الكرة وموادها
+    const geometry = new THREE.SphereGeometry(25, 32, 32); // نصف القطر 25px => قطر 50px
+    const material = new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+      roughness: 0.5,
+      metalness: 0.1
+    });
+    const sphere = new THREE.Mesh(geometry, material);
+    scene.add(sphere);
+
+    // إضافة إضاءة
+    const ambientLight = new THREE.AmbientLight(0x444444);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+    dirLight.position.set(50, 50, 100);
+    scene.add(dirLight);
+
+    // حلقة التحريك
+    function animate() {
+      requestAnimationFrame(animate);
+      sphere.rotation.y += 0.02;  // دوران حول المحور Y
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
 </body>
 </html>
